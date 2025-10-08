@@ -85,7 +85,7 @@ interface Showcase {
   category: string;
   description: string;
   tag: string;
-  mediaType: "image" | "video" | "figma" | "presentation" | "googleslides";
+  mediaType: "image" | "video" | "figma" | "presentation" | "googleslides" | "powerpoint";
   media: string | string[];
   challenge: string;
   process: string;
@@ -295,6 +295,27 @@ const MediaDisplay: React.FC<{ project: Showcase }> = ({ project }) => {
     );
   }
 
+  if (project.mediaType === "powerpoint") {
+    return (
+      <div className="relative w-full">
+        <div className="bg-gray-100 rounded-xl overflow-hidden">
+          <iframe
+            src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(project.media as string)}`}
+            width="100%"
+            height="400"
+            frameBorder="0"
+            title={`${project.title} PowerPoint presentation`}
+            className="rounded-xl"
+            allowFullScreen
+          />
+        </div>
+        <p className="text-xs text-gray-500 mt-2">
+          View in fullscreen for best experience and animations
+        </p>
+      </div>
+    );
+  }
+
   return null;
 };
 
@@ -328,10 +349,10 @@ const ThumbnailPreview: React.FC<{ project: Showcase }> = ({ project }) => {
     );
   }
 
-  if (project.mediaType === "googleslides") {
+  if (project.mediaType === "powerpoint") {
     return (
-      <div className="w-full h-full bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
-        <span className="text-white font-bold">Slides</span>
+      <div className="w-full h-full bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center">
+        <span className="text-white font-bold">PowerPoint</span>
       </div>
     );
   }
@@ -434,7 +455,7 @@ export default function Portfolio() {
       description: "Logo and identity system showcase.",
       tag: "Branding",
       mediaType: "image",
-      media: "/images/brand-identity.png",
+      media: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/brand-identity/Motor%20Marvels_1.jpg",
       challenge: "Develop a cohesive brand identity for a fintech startup.",
       process: "Created mood boards, designed logos in Adobe Illustrator, and developed brand guidelines.",
       outcome: "Increased brand recognition by 30% within three months.",
@@ -464,6 +485,17 @@ export default function Portfolio() {
       challenge: "...",
       process: "...",
       outcome: "..."
+    },
+    {
+      title: "Q4 Business Plan",
+      category: "Presentation",
+      description: "Strategic business presentation with animations.",
+      tag: "Slide Decks",
+      mediaType: "powerpoint",
+      media: "/presentations/Circle reveal.pptx", // Direct file path
+      challenge: "Present quarterly strategy to executives.",
+      process: "Created comprehensive deck with transition animations.",
+      outcome: "Approved budget increase of 25%.",
     },
     {
       title: "Demo Video",
@@ -787,4 +819,3 @@ export default function Portfolio() {
     </main>
   );
 }
-
