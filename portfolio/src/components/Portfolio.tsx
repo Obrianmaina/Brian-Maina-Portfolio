@@ -130,6 +130,7 @@ const CardContent: React.FC<{ children: React.ReactNode }> = ({ children }) => (
 // Media Display Component
 const MediaDisplay: React.FC<{ project: Showcase }> = ({ project }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
 
   if (project.mediaType === "image") {
     const media = Array.isArray(project.media) ? project.media : [project.media];
@@ -181,6 +182,18 @@ const MediaDisplay: React.FC<{ project: Showcase }> = ({ project }) => {
   if (project.mediaType === "figma") {
     return (
       <div className="relative w-full" style={{ paddingBottom: "56.25%", height: 0 }}>
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-xl">
+            <div className="flex flex-col items-center gap-4">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                className="w-12 h-12 border-4 border-gray-300 border-t-teal-500 rounded-full"
+              />
+              <p className="text-sm text-gray-600">Loading prototype...</p>
+            </div>
+          </div>
+        )}
         <iframe
           style={{
             position: "absolute",
@@ -188,11 +201,14 @@ const MediaDisplay: React.FC<{ project: Showcase }> = ({ project }) => {
             left: 0,
             width: "100%",
             height: "100%",
+            opacity: isLoading ? 0 : 1,
+            transition: "opacity 0.3s ease-in-out",
           }}
           src={project.media as string}
           allowFullScreen
           title={`${project.title} Figma prototype`}
           className="rounded-xl"
+          onLoad={() => setIsLoading(false)}
         />
       </div>
     );
@@ -201,6 +217,18 @@ const MediaDisplay: React.FC<{ project: Showcase }> = ({ project }) => {
   if (project.mediaType === "googleslides") {
     return (
       <div className="relative w-full" style={{ paddingBottom: "56.25%", height: 0 }}>
+        {isLoading && (
+          <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-xl">
+            <div className="flex flex-col items-center gap-4">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                className="w-12 h-12 border-4 border-gray-300 border-t-orange-500 rounded-full"
+              />
+              <p className="text-sm text-gray-600">Loading slides...</p>
+            </div>
+          </div>
+        )}
         <iframe
           style={{
             position: "absolute",
@@ -208,11 +236,15 @@ const MediaDisplay: React.FC<{ project: Showcase }> = ({ project }) => {
             left: 0,
             width: "100%",
             height: "100%",
+            opacity: isLoading ? 0 : 1,
+            transition: "opacity 0.3s ease-in-out",
+            border: "none",
           }}
           src={project.media as string}
           allowFullScreen
           title={`${project.title} Google Slides presentation`}
-          className="rounded-xl border-none"
+          className="rounded-xl"
+          onLoad={() => setIsLoading(false)}
         />
       </div>
     );
@@ -422,17 +454,16 @@ export default function Portfolio() {
       process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Twitter.",
       outcome: "Boosted campaign engagement by 25%.",
     },
-
     {
-      "title": "Product Strategy Deck",
-      "category": "Presentation",
-      "description": "Q4 strategy presentation in Google Slides.",
-      "tag": "Slide Decks",
-      "mediaType": "googleslides",
-      "media": "https://docs.google.com/presentation/d/e/2PACX-1vTIYm5lReqSuqb2KM_6YqYkm2kDyDh6U4YuDIKGxzSiDfc-wF8eZgvJkN12eysdCiV49AST7nYTIDr-/pubembed?start=false&loop=false&delayms=3000",
-      "challenge": "...",
-      "process": "...",
-      "outcome": "..."
+      title: "Product Strategy Deck",
+      category: "Presentation",
+      description: "Q4 strategy presentation in Google Slides.",
+      tag: "Slide Decks",
+      mediaType: "googleslides",
+      media: "https://docs.google.com/presentation/d/e/2PACX-1vTIYm5lReqSuqb2KM_6YqYkm2kDyDh6U4YuDIKGxzSiDfc-wF8eZgvJkN12eysdCiV49AST7nYTIDr-/pubembed?start=false&loop=false&delayms=3000",
+      challenge: "...",
+      process: "...",
+      outcome: "..."
     },
     {
       title: "Demo Video",
