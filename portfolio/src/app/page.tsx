@@ -1,3 +1,5 @@
+"use client"; // This is a client component because it uses hooks
+
 import { useState, useEffect } from "react";
 import Image from 'next/image';
 import { motion } from "framer-motion";
