@@ -12,7 +12,18 @@ const Timeline: React.FC<{ sections: TimelineSection[] }> = ({ sections }) => {
                 <div className="absolute -left-[11px] top-1 h-5 w-5 bg-teal-500 rounded-full border-4 border-white"></div>
                 <p className="text-sm text-gray-500">{entry.date}</p>
                 <h5 className="font-medium mt-1">{entry.title}</h5>
-                <p className="text-sm text-gray-700 mt-1">{entry.description}</p>
+
+                {/* This block checks if the description is an array and renders a list, otherwise it renders a paragraph. */}
+                {Array.isArray(entry.description) ? (
+                  <ul className="list-disc pl-5 mt-1 space-y-1 text-sm text-gray-700">
+                    {entry.description.map((point, pointIdx) => (
+                      <li key={pointIdx}>{point}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="text-sm text-gray-700 mt-1">{entry.description}</p>
+                )}
+                
               </div>
             ))}
           </div>
@@ -23,4 +34,3 @@ const Timeline: React.FC<{ sections: TimelineSection[] }> = ({ sections }) => {
 };
 
 export default Timeline;
-

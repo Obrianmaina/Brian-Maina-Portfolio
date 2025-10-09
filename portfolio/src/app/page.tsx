@@ -30,21 +30,64 @@ export default function PortfolioPage() {
   const [unlockError, setUnlockError] = useState("");
 
   const educationData: TimelineSection[] = [
-    {
-      heading: "University of Nairobi",
-      entries: [{
-        title: "B.A. Kiswahili",
-        date: "Graduated 2021",
-        description: "Focused on linguistics and literature, developing strong analytical and communication skills."
-      }]
-    },
+    
     {
       heading: "Dual Study Program, Germany",
       entries: [{
         title: "B.Sc. Computer Science",
-        date: "2024 – Present",
-        description: "Currently enrolled in a dual study program combining academic learning with practical experience in the tech industry."
+        date: "2024 Septemebr - 2025 October",
+        description: "Undertook one year of computer science studies to bridge the gap between design and technical implementation. Gained foundational knowledge in software development, data visualization, and UI/UX principles through a combination of academic learning and practical application."
       }]
+    },
+    {
+      heading: "Moi University, Kenya",
+      entries: [{
+        title: "B.A. Kiswahili",
+        date: "Graduated 2021 (Seecond Class Honours, Upper Division)",
+        description: "Focused on Communication, Marketing, Translation, and Swahili literature and linguistics."
+      }]
+    },
+     // START: New Courses & Certifications Section
+    {
+      heading: "Courses & Certifications",
+      entries: [
+        {
+          title: "LinkedIn Learning",
+          date: "",
+          description: [
+            "After Effects CC 2023",
+            "After Effects 2020 Essential Training",
+            "An Introduction to AI and Sustainability",
+            "Career Essentials in Software Development",
+            "Figma For UX Design"
+          ]
+        },
+        {
+          title: "Coursera",
+          date: "",
+          description: [
+            "Getting Started with Figma",
+            "Introduction to UI Design (University of Minnesota)",
+            "Graphic Design (University of Colorado Boulder)"
+          ]
+        },
+        {
+          title: "Goethe Institute (Bonn)",
+          date: "",
+          description: [
+            "German A1 Certificate",
+          ]
+        },
+        {
+          title: "Other",
+          date: "",
+          description: [
+            "Effective Presentation Skills Certificate (Metropolitan School of Business and Management)",
+            "Ajira Program: Writing and Translation",
+            "Computer Studies (Arknet Computer College)"
+          ]
+        }
+      ]
     }
   ];
 
@@ -53,34 +96,96 @@ export default function PortfolioPage() {
       heading: "SAP SE",
       entries: [
         {
-          title: "Visual Designer",
-          date: "2023 – 2024",
-          description: "Led visual design for enterprise dashboards, creating UI mockups and iterating based on user feedback to enhance usability for thousands of daily users."
+          title: "VT Student",
+          date: "2024 Septemebr - 2025 October",
+          description: "Worked on real-world projects, learning from mentors on the implementation of UI5 Framework in SAP Systems and in my final rotation delivered a Web Components API Viewer for the SAP UI5 Core Framework team."
         },
         {
-          title: "Design Intern",
-          date: "Summer 2022",
-          description: "Assisted the senior design team with asset creation, wireframing, and participated in user research sessions for upcoming product features."
+          title: "Visual Designer",
+          date: "February 2024 - September 2024",
+          description: [
+                "Designed banners, corporate slide decks, and edited images and videos for the Experience Technology team.",
+                "Created User Interface designs and updated existing components for the Discovery Showroom.",
+                "Assisted in the design of the Experience Technology team and Afrika Kommt! Workzone pages."
+              ]
         }
       ]
-    },
-    {
-      heading: "Aspira",
-      entries: [{
-        title: "Graphic Designer",
-        date: "2021 – 2023",
-        description: "Designed marketing and brand materials for a fintech startup, including social media visuals, pitch decks, and event branding."
-      }]
     },
     {
       heading: "AFRIKA KOMMT! Fellowship",
       entries: [{
         title: "Fellow",
-        date: "2023 – 2024",
-        description: "Completed an intensive program focused on leadership, cross-cultural exchange, and management training in Germany."
+        date: "November 2023 - November 2024",
+        description: ["Completed an intensive program focused on leadership, cross-cultural exchange, and management training in Germany.",
+                      "Selected as one of 42 fellows from over 5,000 applicants for the 12th Afrika Kommt! Fellowship."
+        ]
       }]
+    },
+    {
+      heading: "Aspira",
+      entries: [{
+        title: "Junior Marketing Officer",
+        date: "December 2022 - Sept. 2023",
+        description: [
+                      "Created digital and print marketing materials, including social media and web banners, catalogues, brochures, posters, and office branding for over 50 partner retailers.",
+                      "Created marketing copy and designed Google Ads.",
+                      "Liaised with partner companies to get current offers and promotions.",
+                      "Conducted web and social media audits."
+        ]
+      },
+      {
+        title: "Marketing and Design Associate",
+        date: "June 2022 - November 2022",
+        description: "Designed marketing and brand materials for a fintech startup, including social media visuals, pitch decks, and event branding."
+      }
+    ]
+    },
+    {
+      heading: "Unicorn Stable",
+      entries: [{
+        title: "Apprenticeship (Video Editor)",
+        date: "April 2022 - May 2022",
+        description: 
+                      "Learned and applied essentials in video editing, audio design, set management, and camera usage."
+        
+      },
+      {
+        title: "Apprenticeship",
+        date: "June 2020 - October 2020",
+        description: "Learned video editing basics, including cutting, transitions, and audio syncing using Adobe Premiere Pro and After Effects."
+      }
+    ]
+    },
+    {
+      heading: "Breejoz Baby & Mums Shop and Danek Baby Shop",
+      entries: [{
+        title: "Designer and Marketer (Contract)",
+        date: "Dec. 2021 - March 2022",
+        description: 
+                      "Created social media campaign banners, videos, and copy for marketing campaigns."
+        
+      }
+    ]
+    },
+    {
+      heading: " Moi University (Eldoret, Kenya)",
+      entries: [{
+        title: "Intern (Public Relations Office)",
+        date: "June 2021 - Oct. 2021",
+        description: 
+                      ["Created banners, posters, and edited videos for the 40th Moi University Graduation.",
+                        "Served as a graphic designer, translator, and editor under the Corporate Affairs and Protocol Office.",
+                        "Led a team to collect and sort student data for the creation of student IDs."
+                      ]
+        
+      }
+    ]
     }
+    
   ];
+
+  // UPDATED: New skills array
+  const skills = ["UI/UX Design", "Graphic Design", "Motion Graphics", "Adobe Photoshop", "Adobe Illustrator", "Adobe After Effects", "Adobe Premier Pro", "Canva", "Adobe InDesign", "Adobe Audition", "Figma", "Microsoft Powerpoint", "Google Slides", "Data Visualization", "HTML", "CSS", "Davinci Resolve", "Github", "AI"];
 
   const showcases: Showcase[] = [
     {
@@ -288,7 +393,7 @@ export default function PortfolioPage() {
         <motion.h1 initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-5xl font-bold mb-4">
           Brian Maina Nyawira
         </motion.h1>
-        <p className="text-lg mb-6">Visual Designer | Aspiring IT Professional</p>
+        <p className="text-lg mb-6">Visual Designer</p>
         <Button onClick={() => scrollToSection("portfolio")}>Explore My Work</Button>
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-gray-500 animate-bounce select-none">↓</div>
       </section>
@@ -298,15 +403,16 @@ export default function PortfolioPage() {
         <div className="mb-10">
           <h3 className="text-2xl font-semibold mb-4">About Me</h3>
           <p className="mb-4 text-gray-700">
-            As a Visual Designer with a passion for creating user-centric solutions, I blend creativity with technical expertise. Originally from Kenya,
-            I graduated with a B.A. in Kiswahili and am now pursuing a B.Sc. in Computer Science in Germany. My work reflects a commitment to solving real-world
-            problems through design and technology.
+            Results-oriented Visual Designer and AFRIKA KOMMT! alumni with experience creating compelling visual solutions for global brands like SAP. Skilled in designing UI components , multimedia assets , and marketing collateral for diverse campaigns. Complemented by a foundational year of Computer Science study at DHBW Mosbach, which enhances the creation of practical, buildable designs and collaboration with development teams.
           </p>
           <ul className="space-y-2 text-gray-700">
             <li>Address: Walldorf, Germany</li>
             <li>Email: brianmaina.nyawira@gmail.com</li>
-            <li>LinkedIn: linkedin.com/in/brianmaina</li>
-            <li>Phone: +49 123 456 789</li>
+            <li>
+              LinkedIn: <a href="https://www.linkedin.com/in/brian-maina-nyawira" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">linkedin.com/in/brian-maina-nyawira</a>
+            </li>
+            <li>Phone: +49 15172371222</li>
+            <li>Nationality: Kenyan</li>
           </ul>
         </div>
         <div className="grid md:grid-cols-2 gap-10">
@@ -319,11 +425,24 @@ export default function PortfolioPage() {
             <Timeline sections={experienceData} />
           </div>
         </div>
+         {/* UPDATED: Skills Section with Tooltip for AI */}
         <div className="mt-10">
-          <h3 className="text-2xl font-semibold mb-4">Skills</h3>
+          <h3 className="text-2xl font-semibold mb-4">Skills and Technologies</h3>
           <ul className="flex flex-wrap gap-3">
-            {["Adobe Creative Suite", "Figma", "UI/UX Design", "Java", "Machine Learning Basics", "React", "Pandas", "Matplotlib"].map((skill) => (
-              <li key={skill} className="px-4 py-2 bg-gray-200 rounded-full text-sm">{skill}</li>
+            {skills.map((skill) => (
+              skill === "AI" ? (
+                <li key={skill} className="relative group px-4 py-2 bg-teal-100 text-teal-800 rounded-full text-sm cursor-pointer font-semibold">
+                  AI
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 p-3 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                    My take on AI is that it is a powerful tool to enhance creativity and productivity, but it cannot replace the human touch in design. I use AI tools to generate ideas and automate tasks, but always ensure my designs are original and aligned with the client&apos;s goals.
+                    <svg className="absolute text-gray-800 h-2 w-full left-0 top-full" x="0px" y="0px" viewBox="0 0 255 255">
+                        <polygon className="fill-current" points="0,0 127.5,127.5 255,0"/>
+                    </svg>
+                  </div>
+                </li>
+              ) : (
+                <li key={skill} className="px-4 py-2 bg-gray-200 rounded-full text-sm">{skill}</li>
+              )
             ))}
           </ul>
         </div>
@@ -355,9 +474,11 @@ export default function PortfolioPage() {
           <>
             <p className="text-gray-600 mb-6">Contact details are now visible. Thank you for verifying.</p>
             <ul className="space-y-6">
-              <li><h4 className="font-medium">Oliver Gutezeit – SAP SE</h4><p className="text-sm text-gray-600">Email: oliver.gutezeit@sap.com | Phone: +49 123 456 789</p></li>
-              <li><h4 className="font-medium">Supervisor – Aspira</h4><p className="text-sm text-gray-600">Email: supervisor@aspira.com | Phone: +254 700 123 456</p></li>
-              <li><h4 className="font-medium">AFRIKA KOMMT! Program Manager</h4><p className="text-sm text-gray-600">Email: manager@afrikakommt.de | Phone: +49 987 654 321</p></li>
+              <li><h4 className="font-medium">Oliver Gutezeit - Manager at SAP SE</h4><p className="text-sm text-gray-600">Email: oliver.gutezeit@sap.com | Phone: +49 622 774 2260</p></li>
+              <li><h4 className="font-medium">Ilka Wiskemann - Global HR Business Partner SAP SE</h4><p className="text-sm text-gray-600">Email: ilka.Wiskemann@sap.com | Phone: +49 622 776 2638</p></li>
+              <li><h4 className="font-medium">Irshad Muttar - Head of Operations & IT Letshego Kenya </h4><p className="text-sm text-gray-600">Email: Irshadm@letshego.com | Phone: +254 795 359 049</p></li>
+              <li><h4 className="font-medium">Arnold Muthama - Manager at Aspira</h4><p className="text-sm text-gray-600">Email: arnoldmutisya@gmail.com | Phone: +254 726 176 272</p></li>
+              
             </ul>
           </>
         )}
@@ -397,7 +518,7 @@ export default function PortfolioPage() {
       </section>
 
       <section id="corporate-work" className="relative max-w-6xl mx-auto py-20 px-6">
-        <h2 className="text-3xl font-semibold mb-8 text-center">Client & Corporate Work</h2>
+        <h2 className="text-3xl font-semibold mb-8 text-center">Corporate Work</h2>
         <p className="text-gray-600 mb-8 max-w-3xl mx-auto text-center">This section contains confidential work created for specific companies. Access is granted for portfolio review purposes only after acknowledging the respective disclaimer.</p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {companyProjects.map((project, idx) => (
@@ -450,11 +571,11 @@ export default function PortfolioPage() {
         <h2 className="text-3xl font-semibold mb-6">Get In Touch</h2>
         <p className="mb-6">Feel free to reach out for collaborations or opportunities.</p>
         <div className="flex justify-center space-x-6 mb-6">
-          <a href="https://linkedin.com/in/brianmaina" target="_blank" rel="noopener noreferrer" className="hover:text-[#0077B5] transition-transform transform hover:scale-110" aria-label="LinkedIn"><SiLinkedin size={20} /></a>
-          <a href="https://github.com/Obrianmaina-Mosbach" target="_blank" rel="noopener noreferrer" className="hover:text-[#C06EFF] transition-transform transform hover:scale-110" aria-label="GitHub"><SiGithub size={20} /></a>
-          <a href="https://twitter.com/brianmaina" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 transition-transform transform hover:scale-110" aria-label="X (formerly Twitter)"><SiX size={20} /></a>
-          <a href="https://instagram.com/brianmaina_design" target="_blank" rel="noopener noreferrer" className="hover:text-pink-400 transition-transform transform hover:scale-110" aria-label="Instagram"><SiInstagram size={20} /></a>
-          <a href="https://behance.net/brianmaina" target="_blank" rel="noopener noreferrer" className="hover:text-[#1769FF] transition-transform transform hover:scale-110" aria-label="Behance"><SiBehance size={20} /></a>
+          <a href="https://www.linkedin.com/in/brian-maina-nyawira" target="_blank" rel="noopener noreferrer" className="hover:text-[#0077B5] transition-transform transform hover:scale-110" aria-label="LinkedIn"><SiLinkedin size={20} /></a>
+          <a href="https://github.com/Obrienmaina-Mosbach" target="_blank" rel="noopener noreferrer" className="hover:text-[#C06EFF] transition-transform transform hover:scale-110" aria-label="GitHub"><SiGithub size={20} /></a>
+          {/* <a href="https://twitter.com/brianmaina" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 transition-transform transform hover:scale-110" aria-label="X (formerly Twitter)"><SiX size={20} /></a> */}
+          {/* <a href="https://instagram.com/brianmaina_design" target="_blank" rel="noopener noreferrer" className="hover:text-pink-400 transition-transform transform hover:scale-110" aria-label="Instagram"><SiInstagram size={20} /></a> */}
+          <a href="https://www.behance.net/brianmaina3" target="_blank" rel="noopener noreferrer" className="hover:text-[#1769FF] transition-transform transform hover:scale-110" aria-label="Behance"><SiBehance size={20} /></a>
         </div>
         <Button className="bg-teal-500 hover:bg-teal-600 text-lg px-6 py-3 rounded-2xl" onClick={() => (window.location.href = "mailto:brianmaina.nyawira@gmail.com")}>Contact Me</Button>
       </footer>

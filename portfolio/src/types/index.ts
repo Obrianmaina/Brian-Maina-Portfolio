@@ -23,10 +23,11 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   children: React.ReactNode;
 }
 
+// UPDATED: Changed 'description' to support string arrays for bullet points
 export interface TimelineEntry {
   title: string;
   date: string;
-  description: string;
+  description: string | string[];
 }
 
 export interface TimelineSection {
