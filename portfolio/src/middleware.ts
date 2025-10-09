@@ -16,7 +16,7 @@ export const config = {
 export default async function middleware(request: NextRequest) {
   // You can retrieve the IP address from the request headers.
   const ip = request.ip ?? '127.0.0.1';
-  const { success, pending, limit, reset, remaining } = await ratelimit.limit(ip);
+  const { success, limit, reset, remaining } = await ratelimit.limit(ip);
 
   // If the request is blocked, return a "Too Many Requests" response.
   if (!success) {
@@ -33,3 +33,4 @@ export default async function middleware(request: NextRequest) {
   // If the request is allowed, continue to the API route.
   return NextResponse.next();
 }
+
