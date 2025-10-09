@@ -8,8 +8,8 @@ import { SiLinkedin, SiGithub, SiX, SiInstagram, SiBehance } from "react-icons/s
 
 import { Showcase, CompanyProject, TimelineSection } from "@/types";
 
-import Button from "@/components/ui/Button";
-import { Card, CardContent } from "@/components/ui/Card";
+import Button from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import Timeline from "@/components/Timeline";
 import MediaDisplay from "@/components/MediaDisplay";
 import ThumbnailPreview from "@/components/ThumbnailPreview";
