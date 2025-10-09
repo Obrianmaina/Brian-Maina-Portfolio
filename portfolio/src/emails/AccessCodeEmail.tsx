@@ -13,7 +13,7 @@ export default function AccessCodeEmail({ validationCode }: AccessCodeEmailProps
         <Container style={{ margin: 'auto', padding: '20px', backgroundColor: 'white', width: '480px', borderRadius: '8px', border: '1px solid #e5e7eb' }}>
           <Heading style={{ fontSize: '24px', color: '#111827' }}>Access to Portfolio References</Heading>
           <Text style={{ fontSize: '16px', lineHeight: '1.5' }}>Hello,</Text>
-          <Text style={{ fontSize: '16px', lineHeight: '1.5' }}>Thank you for your interest in my portfolio. As of today, Wednesday, October 8, 2025, from my location in Walldorf, I'm providing you with a temporary code to view my references' contact details. This code is valid for 15 minutes.</Text>
+          <Text style={{ fontSize: '16px', lineHeight: '1.5' }}>Thank you for your interest in my portfolio. I'm providing you with a temporary code to view my references' contact details. This code is valid for 15 minutes.</Text>
           <Section style={{ textAlign: 'center', backgroundColor: '#f3f4f6', padding: '20px', borderRadius: '8px', margin: '20px 0' }}>
             <Text style={{ fontSize: '32px', letterSpacing: '8px', margin: '0', fontWeight: 'bold' }}>
               {validationCode}
