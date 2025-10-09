@@ -911,19 +911,19 @@ export default function Portfolio() {
         <p className="mb-6">Feel free to reach out for collaborations or opportunities.</p>
         <div className="flex justify-center space-x-6 mb-6">
           <a href="https://linkedin.com/in/brianmaina" target="_blank" rel="noopener noreferrer" className="hover:text-[#0077B5] transition-transform transform hover:scale-110" aria-label="LinkedIn">
-            <SiLinkedin size={30} />
+            <SiLinkedin size={20} />
           </a>
           <a href="https://github.com/Obrienmaina-Mosbach" target="_blank" rel="noopener noreferrer" className="hover:text-[#C06EFF] transition-transform transform hover:scale-110" aria-label="GitHub">
-            <SiGithub size={30} />
+            <SiGithub size={20} />
           </a>
           <a href="https://twitter.com/brianmaina" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 transition-transform transform hover:scale-110" aria-label="X (formerly Twitter)">
-            <SiX size={30} />
+            <SiX size={20} />
           </a>
           <a href="https://instagram.com/brianmaina_design" target="_blank" rel="noopener noreferrer" className="hover:text-pink-400 transition-transform transform hover:scale-110" aria-label="Instagram">
-            <SiInstagram size={30} />
+            <SiInstagram size={20} />
           </a>
           <a href="https://behance.net/brianmaina" target="_blank" rel="noopener noreferrer" className="hover:text-[#1769FF] transition-transform transform hover:scale-110" aria-label="Behance">
-            <SiBehance size={30} />
+            <SiBehance size={20} />
           </a>
         </div>
         <Button
