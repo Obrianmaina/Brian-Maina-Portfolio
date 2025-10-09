@@ -1,39 +1,42 @@
-// portfolio/src/app/api/verify-code/route.ts
+import clientPromise from '@/lib/mongodb';
+import { ObjectId } from 'mongodb';
+
+const DB_NAME = "portfolio_db";
+const COLLECTION_NAME = "access_requests";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    const { code } = body;
+    const { code } = await request.json();
 
-    // Get the access code from environment variable
-    const correctCode = process.env.ACCESS_CODE;
-
-    // Validate that the environment variable is set
-    if (!correctCode) {
-      console.error("ACCESS_CODE environment variable not set");
-      return Response.json(
-        { success: false, message: "Server configuration error" },
-        { status: 500 }
-      );
+    if (typeof code !== 'string' || code.length === 0) {
+      return Response.json({ success: false, message: 'Invalid code format.' }, { status: 400 });
     }
 
-    // Compare the provided code with the correct code
-    if (code === correctCode) {
-      return Response.json(
-        { success: true, message: "Access granted" },
-        { status: 200 }
-      );
-    } else {
-      return Response.json(
-        { success: false, message: "Incorrect code. Please try again." },
-        { status: 401 }
-      );
+    const mongoClient = await clientPromise;
+    const db = mongoClient.db(DB_NAME);
+    const collection = db.collection(COLLECTION_NAME);
+
+    // Find a matching, un-used, and non-expired code
+    const requestLog = await collection.findOne({
+      code: code,
+      used_at: { $eq: null },
+      expires_at: { $gt: new Date() }
+    });
+
+    if (!requestLog) {
+      return Response.json({ success: false, message: 'Invalid or expired code.' }, { status: 401 });
     }
-  } catch (error) {
-    console.error("Error verifying code:", error);
-    return Response.json(
-      { success: false, message: "An error occurred. Please try again later." },
-      { status: 500 }
+
+    // Mark the code as used to prevent re-use
+    await collection.updateOne(
+      { _id: new ObjectId(requestLog._id) },
+      { $set: { used_at: new Date() } }
     );
+    
+    return Response.json({ success: true, message: 'Access granted' }, { status: 200 });
+
+  } catch (error) {
+    console.error('Error verifying code:', error);
+    return Response.json({ success: false, message: 'An internal error occurred.' }, { status: 500 });
   }
 }

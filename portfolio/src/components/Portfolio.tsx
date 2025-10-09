@@ -1,90 +1,16 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useEffect } from "react";
+import Image from 'next/image';
 import { motion } from "framer-motion";
-import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Info } from "lucide-react";
+import { SiLinkedin, SiGithub, SiX, SiInstagram, SiBehance } from "react-icons/si";
 
-// --- SVG Icon Components ---
-const LinkedInIcon = ({ size = 30, className = "" }) => (
-  <svg
-    stroke="currentColor"
-    fill="currentColor"
-    strokeWidth="0"
-    viewBox="0 0 24 24"
-    height={size}
-    width={size}
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM6 9H2V21h4V9zM4 6.47c-1.12 0-2-.9-2-2s.88-2 2-2 2 .9 2 2-.88 2-2 2z"></path>
-  </svg>
-);
-
-const GitHubIcon = ({ size = 30, className = "" }) => (
-  <svg
-    stroke="currentColor"
-    fill="currentColor"
-    strokeWidth="0"
-    viewBox="0 0 24 24"
-    height={size}
-    width={size}
-    xmlns="http://www.w3.org/2000/svg"
-    className={className}
-  >
-    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"></path>
-  </svg>
-);
-
-const TwitterIcon = ({ size = 30, className = "" }) => (
-    <svg 
-        stroke="currentColor" 
-        fill="currentColor" 
-        strokeWidth="0" 
-        viewBox="0 0 24 24" 
-        height={size} 
-        width={size} 
-        xmlns="http://www.w3.org/2000/svg"
-        className={className}
-    >
-        <path d="M22.46 6c-.77.35-1.6.58-2.46.67.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.22-1.95-.55v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21c7.34 0 11.35-6.08 11.35-11.35 0-.17 0-.34-.01-.51.78-.57 1.45-1.28 1.98-2.08"></path>
-    </svg>
-);
-
-const InstagramIcon = ({ size = 30, className = "" }) => (
-    <svg 
-        stroke="currentColor" 
-        fill="currentColor" 
-        strokeWidth="0" 
-        viewBox="0 0 24 24" 
-        height={size} 
-        width={size} 
-        xmlns="http://www.w3.org/2000/svg"
-        className={className}
-    >
-        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.584-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.584.069-4.85c.149-3.225 1.664-4.771 4.919-4.919C8.416 2.175 8.796 2.163 12 2.163zm0 1.802c-3.252 0-3.623.012-4.895.07-2.618.12-3.795 1.3-3.917 3.917-.058 1.272-.07 1.648-.07 4.908s.012 3.636.07 4.908c.122 2.618 1.3 3.795 3.917 3.917 1.272.058 1.643.07 4.895.07 3.252 0 3.623-.012 4.895-.07 2.618-.12 3.795-1.3 3.917-3.917.058-1.272.07-1.648.07-4.908s-.012-3.636-.07-4.908c-.122-2.618-1.3-3.795-3.917-3.917-1.272-.058-1.643-.07-4.895-.07zm0 4.25c-2.482 0-4.482 2.001-4.482 4.482s2.000 4.482 4.482 4.482 4.482-2.001 4.482-4.482-2.000-4.482-4.482-4.482zm0 7.164c-1.479 0-2.682-1.203-2.682-2.682s1.203-2.682 2.682-2.682 2.682 1.203 2.682 2.682-1.203 2.682-2.682 2.682zm4.194-8.067c-.66 0-1.194.534-1.194 1.194s.534 1.194 1.194 1.194 1.194-.534 1.194-1.194-.534-1.194-1.194-1.194z"></path>
-    </svg>
-);
-
-const BehanceIcon = ({ size = 30, className = "" }) => (
-    <svg 
-        stroke="currentColor" 
-        fill="currentColor" 
-        strokeWidth="0" 
-        viewBox="0 0 24 24" 
-        height={size} 
-        width={size} 
-        xmlns="http://www.w3.org/2000/svg"
-        className={className}
-    >
-        <path d="M22 6.5h-5.5v2h5.5c.28 0 .5.22.5.5s-.22.5-.5.5h-5.5v2h5.5c.28 0 .5.22.5.5s-.22.5-.5.5h-5.5v2H22c1.1 0 2-.9 2-2v-5c0-1.1-.9-2-2-2zM4 6.5h4c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-4v2h4c1.93 0 3.5-1.57 3.5-3.5S9.93 4.5 8 4.5H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-5c0-1.1-.9-2-2-2H4V6.5zm8 4h-4v2h4c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-4v2h4c1.93 0 3.5-1.57 3.5-3.5S13.93 10.5 12 10.5z"></path>
-    </svg>
-);
-// -------------------------
-
-// Types
+// --- Types ---
 interface Showcase {
   title: string;
   category: string;
   description: string;
   tag: string;
+  coverImage?: string;
   mediaType: "image" | "video" | "figma" | "presentation" | "googleslides" | "powerpoint";
   media: string | string[];
   challenge: string;
@@ -92,11 +18,32 @@ interface Showcase {
   outcome: string;
 }
 
+interface CompanyProject {
+  companyName: string;
+  companyLogo: string;
+  disclaimer: string;
+  projects: Showcase[];
+}
+
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "default" | "outline";
   children: React.ReactNode;
 }
 
+// --- UPDATED: Generic types for a reusable timeline ---
+interface TimelineEntry {
+  title: string;
+  date: string;
+  description: string;
+}
+
+interface TimelineSection {
+  heading: string;
+  entries: TimelineEntry[];
+}
+// -------------------------
+
+// --- UI Components ---
 const Button: React.FC<ButtonProps> = ({ children, variant = "default", className = "", ...props }) => {
   const baseStyles = "px-4 py-2 rounded-full font-medium transition disabled:opacity-50";
   const variants = {
@@ -127,7 +74,31 @@ const CardContent: React.FC<{ children: React.ReactNode }> = ({ children }) => (
   <div className="flex flex-col gap-2">{children}</div>
 );
 
-// Media Display Component
+// --- UPDATED: Generic Timeline Component ---
+const Timeline: React.FC<{ sections: TimelineSection[] }> = ({ sections }) => {
+  return (
+    <div className="space-y-8">
+      {sections.map((section, sectionIdx) => (
+        <div key={sectionIdx}>
+          <h4 className="text-xl font-semibold mb-4">{section.heading}</h4>
+          <div className="relative pl-6 border-l-2 border-gray-200">
+            {section.entries.map((entry, entryIdx) => (
+              <div key={entryIdx} className="mb-8 last:mb-0">
+                <div className="absolute -left-[11px] top-1 h-5 w-5 bg-teal-500 rounded-full border-4 border-white"></div>
+                <p className="text-sm text-gray-500">{entry.date}</p>
+                <h5 className="font-medium mt-1">{entry.title}</h5>
+                <p className="text-sm text-gray-700 mt-1">{entry.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+};
+// -------------------------
+
+// --- Media Display Components ---
 const MediaDisplay: React.FC<{ project: Showcase }> = ({ project }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -136,10 +107,13 @@ const MediaDisplay: React.FC<{ project: Showcase }> = ({ project }) => {
     const media = Array.isArray(project.media) ? project.media : [project.media];
     return (
       <div className="relative">
-        <img
+        <Image
           src={media[currentSlide]}
           alt={`${project.title} slide ${currentSlide + 1}`}
+          width={1200}
+          height={800}
           className="w-full h-auto rounded-xl"
+          priority
         />
         {media.length > 1 && (
           <div className="flex justify-between mt-4">
@@ -255,10 +229,13 @@ const MediaDisplay: React.FC<{ project: Showcase }> = ({ project }) => {
     return (
       <div className="relative">
         <div className="bg-gray-900 rounded-xl overflow-hidden">
-          <img
+          <Image
             src={slides[currentSlide]}
             alt={`${project.title} slide ${currentSlide + 1}`}
+            width={1200}
+            height={800}
             className="w-full h-auto"
+            priority
           />
         </div>
         {slides.length > 1 && (
@@ -319,11 +296,14 @@ const MediaDisplay: React.FC<{ project: Showcase }> = ({ project }) => {
   return null;
 };
 
-// Thumbnail Preview Component
 const ThumbnailPreview: React.FC<{ project: Showcase }> = ({ project }) => {
-  if (project.mediaType === "image") {
+  if (project.coverImage) {
+    return <Image src={project.coverImage} alt={project.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />;
+  }
+
+  if (project.mediaType === "image" || project.mediaType === "presentation") {
     const media = Array.isArray(project.media) ? project.media[0] : project.media;
-    return <img src={media as string} alt={project.title} className="w-full h-full object-cover" />;
+    return <Image src={media as string} alt={project.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />;
   }
 
   if (project.mediaType === "video") {
@@ -342,13 +322,6 @@ const ThumbnailPreview: React.FC<{ project: Showcase }> = ({ project }) => {
     );
   }
 
-  if (project.mediaType === "presentation") {
-    const slides = Array.isArray(project.media) ? project.media : [project.media];
-    return (
-      <img src={slides[0] as string} alt={project.title} className="w-full h-full object-cover" />
-    );
-  }
-
   if (project.mediaType === "powerpoint") {
     return (
       <div className="w-full h-full bg-gradient-to-br from-red-400 to-red-600 flex items-center justify-center">
@@ -359,57 +332,84 @@ const ThumbnailPreview: React.FC<{ project: Showcase }> = ({ project }) => {
 
   return null;
 };
+// -------------------------
 
+// --- Main Portfolio Component ---
 export default function Portfolio() {
   const categories = ["All", "UI/UX", "Presentation", "Branding", "Graphics"] as const;
   
   const [activeCategory, setActiveCategory] = useState<typeof categories[number]>("All");
   const [lightbox, setLightbox] = useState<Showcase | null>(null);
-  const [code, setCode] = useState("");
   const [unlocked, setUnlocked] = useState(false);
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [disclaimerProject, setDisclaimerProject] = useState<CompanyProject | null>(null);
+  
+  const [email, setEmail] = useState("");
+  const [code, setCode] = useState("");
+  const [requestState, setRequestState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [requestMessage, setRequestMessage] = useState("");
+  const [unlockLoading, setUnlockLoading] = useState(false);
+  const [unlockError, setUnlockError] = useState("");
 
-  const handleUnlock = async () => {
-    setError("");
-    setIsLoading(true);
-    try {
-      const response = await fetch('/api/verify-code', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ code }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok && data.success) {
-        setUnlocked(true);
-        setError("");
-      } else {
-        setError(data.message || "Incorrect code. Please try again.");
-      }
-    } catch (err) {
-      setError("An error occurred. Please try again later.");
-    } finally {
-      setIsLoading(false);
+  const educationData: TimelineSection[] = [
+    {
+      heading: "University of Nairobi",
+      entries: [
+        {
+          title: "B.A. Kiswahili",
+          date: "Graduated 2021",
+          description: "Focused on linguistics and literature, developing strong analytical and communication skills."
+        }
+      ]
+    },
+    {
+      heading: "Dual Study Program, Germany",
+      entries: [
+        {
+          title: "B.Sc. Computer Science",
+          date: "2024 – Present",
+          description: "Currently enrolled in a dual study program combining academic learning with practical experience in the tech industry."
+        }
+      ]
     }
-  };
+  ];
 
-  const scrollToSection = (id: string) => {
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    if (!lightbox) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setLightbox(null);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [lightbox]);
+  const experienceData: TimelineSection[] = [
+    {
+      heading: "SAP SE",
+      entries: [
+        {
+          title: "Visual Designer",
+          date: "2023 – 2024",
+          description: "Led visual design for enterprise dashboards, creating UI mockups and iterating based on user feedback to enhance usability for thousands of daily users."
+        },
+        {
+          title: "Design Intern",
+          date: "Summer 2022",
+          description: "Assisted the senior design team with asset creation, wireframing, and participated in user research sessions for upcoming product features."
+        }
+      ]
+    },
+    {
+      heading: "Aspira",
+      entries: [
+        {
+          title: "Graphic Designer",
+          date: "2021 – 2023",
+          description: "Designed marketing and brand materials for a fintech startup, including social media visuals, pitch decks, and event branding."
+        }
+      ]
+    },
+    {
+      heading: "AFRIKA KOMMT! Fellowship",
+      entries: [
+        {
+          title: "Fellow",
+          date: "2023 – 2024",
+          description: "Completed an intensive program focused on leadership, cross-cultural exchange, and management training in Germany."
+        }
+      ]
+    }
+  ];
 
   const showcases: Showcase[] = [
     {
@@ -417,6 +417,7 @@ export default function Portfolio() {
       category: "UI/UX",
       description: "Interactive Figma prototype for enterprise dashboard.",
       tag: "UI/UX",
+      coverImage: "/images/covers/dashboard-cover.jpg",
       mediaType: "figma",
       media: "https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/1R5mVhiFrzl9WwTtC3txpd/JasiriCup?page-id=176%3A3&node-id=458-164&starting-point-node-id=458%3A6",
       challenge: "Create an intuitive dashboard for enterprise users to monitor real-time data.",
@@ -467,7 +468,7 @@ export default function Portfolio() {
       tag: "Graphics",
       mediaType: "image",
       media: [
-        "/images/campaign-1.png",
+        "https://scontent-fra3-2.xx.fbcdn.net/v/t39.30808-6/481246712_1085756750246538_8658201038425115753_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=127cfc&_nc_ohc=sUL3_VpDyFsQ7kNvwF0V0lz&_nc_oc=AdnrZ8Rkewsxdikt_MgUk-mnHnEKrdTS9NB8iXAt15-fI_83jQg1NMDpjGsL3ZmWJ30&_nc_zt=23&_nc_ht=scontent-fra3-2.xx&_nc_gid=EzoEmLW6Fen8cyJr5mGr5Q&oh=00_Afe8hrSFcmNftU-6oBkDH4N0CF7TkksDdyD-0GxRFW741w&oe=68EC0D8B",
         "/images/campaign-2.png",
         "/images/campaign-3.png",
       ],
@@ -492,7 +493,7 @@ export default function Portfolio() {
       description: "Strategic business presentation with animations.",
       tag: "Slide Decks",
       mediaType: "powerpoint",
-      media: "/presentations/Circle reveal.pptx", // Direct file path
+      media: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/Circle%20reveal.pptx",
       challenge: "Present quarterly strategy to executives.",
       process: "Created comprehensive deck with transition animations.",
       outcome: "Approved budget increase of 25%.",
@@ -502,6 +503,7 @@ export default function Portfolio() {
       category: "Graphics",
       description: "Product demo video.",
       tag: "Video",
+      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/brand-identity/Motor%20Marvels_1.jpg",
       mediaType: "video",
       media: "/videos/product-demo.mp4",
       challenge: "Create a compelling product demonstration video.",
@@ -510,14 +512,115 @@ export default function Portfolio() {
     },
   ];
 
-  const filteredShowcases =
-    activeCategory === "All"
-      ? showcases
-      : showcases.filter((item) => item.category === activeCategory);
+  const companyProjects: CompanyProject[] = [
+    {
+      companyName: "SAP SE",
+      companyLogo: "/images/logos/sap-logo.svg",
+      disclaimer: "The following work was created during my tenure at SAP SE. It is shared with permission for portfolio purposes only and remains the intellectual property of SAP SE. The content is confidential and should not be distributed, copied, or disclosed.",
+      projects: [
+        {
+          title: "Internal Dashboard Redesign (SAP)",
+          category: "UI/UX",
+          description: "A complete redesign of an internal enterprise dashboard.",
+          tag: "Corporate UI/UX",
+          mediaType: "figma",
+          media: "https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/1R5mVhiFrzl9WwTtC3txpd/JasiriCup?page-id=176%3A3&node-id=458-164&starting-point-node-id=458%3A6",
+          challenge: "Redesign a legacy internal tool to improve usability and data visualization for over 5,000 daily users.",
+          process: "Collaborated with product managers and engineers, conducted stakeholder interviews, created high-fidelity prototypes in Figma, and performed usability testing sessions.",
+          outcome: "The new design led to a 40% reduction in reported user errors and a 30% increase in task efficiency. Received positive feedback for its modern and intuitive interface."
+        }
+      ]
+    },
+    {
+      companyName: "Aspira",
+      companyLogo: "/images/logos/aspira-logo.svg",
+      disclaimer: "This work was created for Aspira and is showcased here with their explicit permission. All rights and intellectual property belong to Aspira. This content is for portfolio display only.",
+      projects: [
+        {
+          title: "Fintech Marketing Campaign (Aspira)",
+          category: "Graphics",
+          description: "Visual assets for a major fintech marketing campaign.",
+          tag: "Branding",
+          mediaType: "image",
+          media: [
+            "https://scontent-fra3-2.xx.fbcdn.net/v/t39.30808-6/481246712_1085756750246538_8658201038425115753_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=127cfc&_nc_ohc=sUL3_VpDyFsQ7kNvwF0V0lz&_nc_oc=AdnrZ8Rkewsxdikt_MgUk-mnHnEKrdTS9NB8iXAt15-fI_83jQg1NMDpjGsL3ZmWJ30&_nc_zt=23&_nc_ht=scontent-fra3-2.xx&_nc_gid=EzoEmLW6Fen8cyJr5mGr5Q&oh=00_Afe8hrSFcmNftU-6oBkDH4N0CF7TkksDdyD-0GxRFW741w&oe=68EC0D8B",
+            "/images/campaign-2.png",
+          ],
+          challenge: "To create a visually striking and cohesive set of graphics for a multi-platform digital marketing campaign aimed at increasing user acquisition.",
+          process: "Developed a creative concept based on market research, designed visuals using Adobe Photoshop and Illustrator, and created templates for various social media formats.",
+          outcome: "The campaign exceeded targets, contributing to a 25% increase in app downloads and a significant boost in social media engagement during the campaign period."
+        }
+      ]
+    }
+  ];
+
+  const filteredShowcases = activeCategory === "All" ? showcases : showcases.filter((item) => item.category === activeCategory);
+
+  const handleRequestCode = async () => {
+    setRequestState('loading');
+    setRequestMessage('');
+    try {
+      const response = await fetch('/api/request-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || 'Failed to send code.');
+      }
+      setRequestState('success');
+      setRequestMessage('Success! Please check your email for the access code.');
+    } catch (err: any) {
+      setRequestState('error');
+      setRequestMessage(err.message || 'An error occurred. Please try again.');
+    }
+  };
+
+  const handleUnlock = async () => {
+    setUnlockError("");
+    setUnlockLoading(true);
+    try {
+      const response = await fetch('/api/verify-code', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code }),
+      });
+      const data = await response.json();
+      if (response.ok && data.success) {
+        setUnlocked(true);
+        setUnlockError("");
+      } else {
+        setUnlockError(data.message || "Incorrect code. Please try again.");
+      }
+    } catch (err) {
+      setUnlockError("An error occurred. Please try again later.");
+    } finally {
+      setUnlockLoading(false);
+    }
+  };
+  
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (lightbox) {
+          setLightbox(null);
+        } else if (disclaimerProject) {
+          setDisclaimerProject(null);
+        }
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [lightbox, disclaimerProject]);
 
   return (
     <main className="relative bg-gray-50 text-gray-900 min-h-screen">
-      {/* Hero Section */}
       <section className="relative flex flex-col items-center justify-center h-screen text-center px-6">
         <motion.h1
           initial={{ opacity: 0, y: -50 }}
@@ -534,11 +637,8 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* CV Section */}
       <section id="cv" className="relative max-w-5xl mx-auto py-20 px-6">
         <h2 className="text-3xl font-semibold mb-6">Curriculum Vitae</h2>
-
-        {/* About Me */}
         <div className="mb-10">
           <h3 className="text-2xl font-semibold mb-4">About Me</h3>
           <p className="mb-4 text-gray-700">
@@ -553,47 +653,16 @@ export default function Portfolio() {
             <li>Phone: +49 123 456 789</li>
           </ul>
         </div>
-
         <div className="grid md:grid-cols-2 gap-10">
-          {/* Education */}
           <div>
             <h3 className="text-2xl font-semibold mb-4">Education</h3>
-            <ul className="space-y-4">
-              <li>
-                <h4 className="font-medium">B.A. Kiswahili – University of Nairobi</h4>
-                <p className="text-sm text-gray-600">Graduated 2021</p>
-              </li>
-              <li>
-                <h4 className="font-medium">B.Sc. Computer Science – Dual Study Program, Germany</h4>
-                <p className="text-sm text-gray-600">Enrolled 2024 – Present</p>
-              </li>
-            </ul>
+            <Timeline sections={educationData} />
           </div>
-
-          {/* Experience */}
           <div>
             <h3 className="text-2xl font-semibold mb-4">Experience</h3>
-            <ul className="space-y-4">
-              <li>
-                <h4 className="font-medium">Visual Designer – SAP SE</h4>
-                <p className="text-sm text-gray-600">2023 – 2024</p>
-                <p className="text-sm">Led visual design for enterprise dashboards, creating UI mockups and iterating based on user feedback.</p>
-              </li>
-              <li>
-                <h4 className="font-medium">Graphic Designer – Aspira</h4>
-                <p className="text-sm text-gray-600">2021 – 2023</p>
-                <p className="text-sm">Designed marketing and brand materials for a fintech startup, including social media visuals and pitch decks.</p>
-              </li>
-              <li>
-                <h4 className="font-medium">AFRIKA KOMMT! Fellow</h4>
-                <p className="text-sm text-gray-600">2023 – 2024</p>
-                <p className="text-sm">Completed leadership training, cross-cultural exchange, and management training in Germany.</p>
-              </li>
-            </ul>
+            <Timeline sections={experienceData} />
           </div>
         </div>
-
-        {/* Skills */}
         <div className="mt-10">
           <h3 className="text-2xl font-semibold mb-4">Skills</h3>
           <ul className="flex flex-wrap gap-3">
@@ -604,71 +673,80 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* References Section */}
-      <section className="relative max-w-5xl mx-auto py-20 px-6">
+      <section id="references" className="relative max-w-5xl mx-auto py-20 px-6">
         <h2 className="text-3xl font-semibold mb-8">References</h2>
-        <p className="text-gray-600 mb-6">Names are visible. Contact details require an access code.</p>
+        
+        {!unlocked ? (
+          <>
+            <p className="text-gray-600 mb-6">
+              To protect my references' privacy, please enter your email address to receive a temporary access code.
+            </p>
+            <div className="space-y-4 mb-8 max-w-lg">
+              <div className="flex flex-col sm:flex-row gap-4">
+                <input
+                  id="email"
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email address"
+                  className="border border-gray-300 rounded-full p-3 w-full"
+                  disabled={requestState === 'loading'}
+                />
+                <Button onClick={handleRequestCode} disabled={requestState === 'loading' || !email} className="whitespace-nowrap">
+                  {requestState === 'loading' ? 'Sending...' : 'Request Code'}
+                </Button>
+              </div>
 
-        {!unlocked && (
-          <div className="space-y-4 mb-8">
-            <label htmlFor="refCode" className="sr-only">
-              Access code
-            </label>
-            <input
-              id="refCode"
-              type="password"
-              value={code}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCode(e.target.value)}
-              placeholder="Enter access code"
-              className="border border-gray-300 rounded-full p-3 w-full md:w-1/2"
-              aria-invalid={!!error}
-              aria-describedby={error ? "refError" : undefined}
-              onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => e.key === 'Enter' && handleUnlock()}
-            />
-            <Button onClick={handleUnlock} disabled={isLoading}>
-              {isLoading ? 'Verifying...' : 'Unlock'}
-            </Button>
-            {error && (
-              <p id="refError" className="text-red-500 text-sm" role="alert">
-                {error}
-              </p>
-            )}
-          </div>
+              {requestMessage && (
+                <p className={`text-sm ${requestState === 'error' ? 'text-red-500' : 'text-green-600'}`}>
+                  {requestMessage}
+                </p>
+              )}
+
+              {requestState === 'success' && (
+                <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t mt-6">
+                  <input
+                    id="refCode"
+                    type="text"
+                    value={code}
+                    onChange={(e) => setCode(e.target.value)}
+                    placeholder="Enter 6-digit code from email"
+                    className="border border-gray-300 rounded-full p-3 w-full"
+                    onKeyDown={(e) => e.key === 'Enter' && handleUnlock()}
+                  />
+                  <Button onClick={handleUnlock} disabled={unlockLoading || !code}>
+                    {unlockLoading ? 'Verifying...' : 'Unlock'}
+                  </Button>
+                </div>
+              )}
+              {unlockError && (
+                <p className="text-red-500 text-sm" role="alert">{unlockError}</p>
+              )}
+            </div>
+          </>
+        ) : (
+          <>
+            <p className="text-gray-600 mb-6">Contact details are now visible. Thank you for verifying.</p>
+            <ul className="space-y-6">
+              <li>
+                <h4 className="font-medium">Oliver Gutezeit – SAP SE</h4>
+                <p className="text-sm text-gray-600">Email: oliver.gutezeit@sap.com | Phone: +49 123 456 789</p>
+              </li>
+              <li>
+                <h4 className="font-medium">Supervisor – Aspira</h4>
+                <p className="text-sm text-gray-600">Email: supervisor@aspira.com | Phone: +254 700 123 456</p>
+              </li>
+              <li>
+                <h4 className="font-medium">AFRIKA KOMMT! Program Manager</h4>
+                <p className="text-sm text-gray-600">Email: manager@afrikakommt.de | Phone: +49 987 654 321</p>
+              </li>
+            </ul>
+          </>
         )}
-
-        <ul className="space-y-6">
-          <li>
-            <h4 className="font-medium">Oliver Gutezeit – SAP SE</h4>
-            {unlocked ? (
-              <p className="text-sm text-gray-600">Email: oliver.gutezeit@sap.com | Phone: +49 123 456 789</p>
-            ) : (
-              <p className="text-sm text-gray-400 italic">Contact details hidden</p>
-            )}
-          </li>
-          <li>
-            <h4 className="font-medium">Supervisor – Aspira</h4>
-            {unlocked ? (
-              <p className="text-sm text-gray-600">Email: supervisor@aspira.com | Phone: +254 700 123 456</p>
-            ) : (
-              <p className="text-sm text-gray-400 italic">Contact details hidden</p>
-            )}
-          </li>
-          <li>
-            <h4 className="font-medium">AFRIKA KOMMT! Program Manager</h4>
-            {unlocked ? (
-              <p className="text-sm text-gray-600">Email: manager@afrikakommt.de | Phone: +49 987 654 321</p>
-            ) : (
-              <p className="text-sm text-gray-400 italic">Contact details hidden</p>
-            )}
-          </li>
-        </ul>
       </section>
-
-      {/* Portfolio Section */}
+      
       <section id="portfolio" className="relative max-w-6xl mx-auto py-20 px-6">
-        <h2 className="text-3xl font-semibold mb-8">Design Showcase</h2>
-
-        {/* Category Filter */}
+        <h2 className="text-3xl font-semibold mb-8 text-center">Design Showcase</h2>
         <div className="flex flex-wrap gap-4 mb-8 justify-center">
           {categories.map((cat) => (
             <Button
@@ -680,7 +758,6 @@ export default function Portfolio() {
             </Button>
           ))}
         </div>
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {filteredShowcases.map((project, idx) => (
             <motion.div
@@ -713,99 +790,140 @@ export default function Portfolio() {
             </motion.div>
           ))}
         </div>
+      </section>
 
-        {/* Lightbox */}
-        {lightbox && (
-          <div
-            className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
-            role="dialog"
-            aria-modal="true"
-            aria-label={`${lightbox.title} details`}
-            onClick={() => setLightbox(null)}
-          >
-            <div
-              className="bg-white rounded-2xl p-6 max-w-4xl w-full relative overflow-y-auto max-h-[90vh]"
-              onClick={(e) => e.stopPropagation()}
+      <section id="corporate-work" className="relative max-w-6xl mx-auto py-20 px-6">
+        <h2 className="text-3xl font-semibold mb-8 text-center">Client & Corporate Work</h2>
+        <p className="text-gray-600 mb-8 max-w-3xl mx-auto text-center">
+          This section contains confidential work created for specific companies. Access is granted for portfolio review purposes only after acknowledging the respective disclaimer.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {companyProjects.map((project, idx) => (
+            <motion.div
+              key={project.companyName}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: idx * 0.08 }}
             >
-              <button
-                className="absolute top-2 right-2 text-gray-600 hover:text-black"
-                onClick={() => setLightbox(null)}
-                aria-label="Close dialog"
+              <Card
+                className="shadow-lg rounded-2xl group relative overflow-hidden cursor-pointer h-full flex flex-col items-center justify-center p-8 bg-gray-100 hover:bg-white transition-colors"
+                onClick={() => setDisclaimerProject(project)}
               >
-                <X size={24} />
-              </button>
-              <h3 className="text-2xl font-semibold mb-4">{lightbox.title}</h3>
-              <div className="mb-6">
-                <MediaDisplay project={lightbox} />
+                <img src={project.companyLogo} alt={`${project.companyName} logo`} className="h-16 w-auto mb-4 grayscale group-hover:grayscale-0 transition-all" />
+                <h3 className="text-xl font-medium text-gray-800">{project.companyName}</h3>
+                <p className="text-sm text-teal-600 font-semibold mt-4">View Projects</p>
+              </Card>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {lightbox && (
+        <div
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`${lightbox.title} details`}
+          onClick={() => setLightbox(null)}
+        >
+          <div
+            className="bg-white rounded-2xl p-6 max-w-4xl w-full relative overflow-y-auto max-h-[90vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="absolute top-2 right-2 text-gray-600 hover:text-black"
+              onClick={() => setLightbox(null)}
+              aria-label="Close dialog"
+            >
+              <X size={24} />
+            </button>
+            <h3 className="text-2xl font-semibold mb-4">{lightbox.title}</h3>
+            <div className="mb-6">
+              <MediaDisplay project={lightbox} />
+            </div>
+            <div className="space-y-4">
+              <div>
+                <h4 className="font-medium text-lg">Challenge</h4>
+                <p className="text-sm text-gray-700">{lightbox.challenge}</p>
               </div>
-              <div className="space-y-4">
-                <div>
-                  <h4 className="font-medium text-lg">Challenge</h4>
-                  <p className="text-sm text-gray-700">{lightbox.challenge}</p>
-                </div>
-                <div>
-                  <h4 className="font-medium text-lg">Process</h4>
-                  <p className="text-sm text-gray-700">{lightbox.process}</p>
-                </div>
-                <div>
-                  <h4 className="font-medium text-lg">Outcome</h4>
-                  <p className="text-sm text-gray-700">{lightbox.outcome}</p>
+              <div>
+                <h4 className="font-medium text-lg">Process</h4>
+                <p className="text-sm text-gray-700">{lightbox.process}</p>
+              </div>
+              <div>
+                <h4 className="font-medium text-lg">Outcome</h4>
+                <p className="text-sm text-gray-700">{lightbox.outcome}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {disclaimerProject && (
+        <div
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="disclaimer-title"
+          onClick={() => setDisclaimerProject(null)}
+        >
+          <div
+            className="bg-white rounded-2xl p-6 max-w-2xl w-full relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              className="absolute top-2 right-2 text-gray-600 hover:text-black"
+              onClick={() => setDisclaimerProject(null)}
+              aria-label="Close dialog"
+            >
+              <X size={24} />
+            </button>
+            <div className="flex items-start gap-4">
+              <div className="flex-shrink-0 bg-teal-100 text-teal-600 rounded-full p-3 mt-1">
+                <Info size={24} />
+              </div>
+              <div>
+                <h3 id="disclaimer-title" className="text-2xl font-semibold mb-2">Notice of Confidentiality</h3>
+                <p className="text-sm text-gray-700 mb-6">{disclaimerProject.disclaimer}</p>
+                <div className="flex justify-end gap-4">
+                  <Button variant="outline" onClick={() => setDisclaimerProject(null)}>
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      if (disclaimerProject.projects.length > 0) {
+                        setLightbox(disclaimerProject.projects[0]);
+                      }
+                      setDisclaimerProject(null);
+                    }}
+                  >
+                    Acknowledge & Proceed
+                  </Button>
                 </div>
               </div>
             </div>
           </div>
-        )}
-      </section>
+        </div>
+      )}
 
-      {/* Contact Section */}
       <footer className="relative bg-gray-900 text-white py-20 px-6 text-center">
         <h2 className="text-3xl font-semibold mb-6">Get In Touch</h2>
         <p className="mb-6">Feel free to reach out for collaborations or opportunities.</p>
         <div className="flex justify-center space-x-6 mb-6">
-          <a
-            href="https://linkedin.com/in/brianmaina"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[#0077B5] transition-transform transform hover:scale-110"
-            aria-label="LinkedIn"
-          >
-            <LinkedInIcon />
+          <a href="https://linkedin.com/in/brianmaina" target="_blank" rel="noopener noreferrer" className="hover:text-[#0077B5] transition-transform transform hover:scale-110" aria-label="LinkedIn">
+            <SiLinkedin size={20} />
           </a>
-          <a
-            href="https://github.com/Obrienmaina-Mosbach"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[#C06EFF] transition-transform transform hover:scale-110"
-            aria-label="GitHub"
-          >
-            <GitHubIcon />
+          <a href="https://github.com/Obrienmaina-Mosbach" target="_blank" rel="noopener noreferrer" className="hover:text-[#C06EFF] transition-transform transform hover:scale-110" aria-label="GitHub">
+            <SiGithub size={20} />
           </a>
-          <a
-            href="https://twitter.com/brianmaina"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[#1DA1F2] transition-transform transform hover:scale-110"
-            aria-label="Twitter"
-          >
-            <TwitterIcon />
+          <a href="https://twitter.com/brianmaina" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 transition-transform transform hover:scale-110" aria-label="X (formerly Twitter)">
+            <SiX size={20} />
           </a>
-          <a
-            href="https://instagram.com/brianmaina_design"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-pink-400 transition-transform transform hover:scale-110"
-            aria-label="Instagram"
-          >
-            <InstagramIcon />
+          <a href="https://instagram.com/brianmaina_design" target="_blank" rel="noopener noreferrer" className="hover:text-pink-400 transition-transform transform hover:scale-110" aria-label="Instagram">
+            <SiInstagram size={20} />
           </a>
-          <a
-            href="https://behance.net/brianmaina"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-[#1769FF] transition-transform transform hover:scale-110"
-            aria-label="Behance"
-          >
-            <BehanceIcon />
+          <a href="https://behance.net/brianmaina" target="_blank" rel="noopener noreferrer" className="hover:text-[#1769FF] transition-transform transform hover:scale-110" aria-label="Behance">
+            <SiBehance size={20} />
           </a>
         </div>
         <Button
@@ -819,3 +937,4 @@ export default function Portfolio() {
     </main>
   );
 }
+

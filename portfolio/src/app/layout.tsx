@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Brian Maina",
-  description: "Portfolio and Resume",
+  title: 'Brian Maina Nyawira | Visual Designer & IT Professional',
+  description: 'The professional portfolio of Brian Maina Nyawira, showcasing work in UI/UX, presentation design, branding, and graphics.'
 };
 
 export default function RootLayout({
