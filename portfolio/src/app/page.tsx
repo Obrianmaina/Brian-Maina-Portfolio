@@ -271,7 +271,7 @@ export default function PortfolioPage() {
       mediaType: "powerpoint",
       media: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/Circle%20reveal.pptx",
       challenge: "Present quarterly strategy to executives.",
-      process: "Created comprehensive deck with transition animations.",
+      process: "Created comprehenive deck with transition animations.",
       outcome: "Approved budget increase of 25%.",
     },
     {
