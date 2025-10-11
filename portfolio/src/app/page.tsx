@@ -188,57 +188,7 @@ export default function PortfolioPage() {
   const skills = ["UI/UX Design", "Graphic Design", "Motion Graphics", "Adobe Photoshop", "Adobe Illustrator", "Adobe After Effects", "Adobe Premier Pro", "Canva", "Adobe InDesign", "Adobe Audition", "Figma", "Microsoft Powerpoint", "Google Slides", "Data Visualization", "HTML", "CSS", "Davinci Resolve", "Github", "AI"];
 
   const showcases: Showcase[] = [
-    {
-      title: "JasiriCup Website UI",
-      category: "UI/UX",
-      description: "Interactive Figma prototype for JasiriCup Website UI.",
-      tag: "UI/UX",
-      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/ui-dashboard/Jasiri.png",
-      mediaType: "figma",
-      media: "https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/1R5mVhiFrzl9WwTtC3txpd/JasiriCup?page-id=176%3A3&node-id=458-164&starting-point-node-id=458%3A6",
-      challenge: "Create an intuitive dashboard for enterprise users to monitor real-time data.",
-      process: "Conducted user interviews, created wireframes in Figma, and iterated based on feedback.",
-      outcome: "Reduced user task completion time by 20%, as validated by user testing.",
-    },
-    /*{
-      title: "Product Launch Presentation",
-      category: "Presentation",
-      description: "Brand presentation for product launch.",
-      tag: "Slide Decks",
-      mediaType: "presentation",
-      media: [
-        "/images/presentation-slide-1.png",
-        "/images/presentation-slide-2.png",
-        "/images/presentation-slide-3.png",
-      ],
-      challenge: "Communicate product vision and strategy to stakeholders.",
-      process: "Designed cohesive slide deck with data visualizations and brand guidelines.",
-      outcome: "Secured buy-in from 95% of stakeholders.",
-    },,*/
-    {
-      title: "Mobile App Prototype Troubleshooters",
-      category: "UI/UX",
-      description: "Interactive mobile prototype for IT Support App.",
-      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/ui-dashboard/Trouble%20Shooters.png",
-      tag: "UI/UX",
-      mediaType: "figma",
-      media: "https://embed.figma.com/proto/RYhQMvRdbgh89KQFbCVJQ6/Troubleshooters?page-id=0%3A1&node-id=17-825&viewport=315%2C330%2C0.13&scaling=scale-down&content-scaling=fixed&starting-point-node-id=12%3A421&embed-host=share",
-      challenge: "Design a user-friendly mobile app interface for a fitness tracking platform.",
-      process: "Developed wireframes and prototypes in Figma, tested with users, and refined UX.",
-      outcome: "Received 90% positive feedback in usability testing.",
-    },
-    {
-      title: "Mobile App Prototype DUCR",
-      category: "UI/UX",
-      description: "Interactive mobile prototype for car spare parts shop app.",
-      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/ui-dashboard/Ducr.png",
-      tag: "UI/UX",
-      mediaType: "figma",
-      media: "https://embed.figma.com/proto/kAq63P1dS8XZpn6y2KDROt/Ducr?page-id=0%3A1&node-id=17-12&embed-host=share",
-      challenge: "Design a user-friendly mobile app interface for a fitness tracking platform.",
-      process: "Developed wireframes and prototypes in Figma, tested with users, and refined UX.",
-      outcome: "Received 90% positive feedback in usability testing.",
-    },
+    
     {
       title: "Design Services Awareness Project",
       category: "Branding",
@@ -255,19 +205,7 @@ export default function PortfolioPage() {
       process: "Created mood boards, designed logos in Adobe Illustrator, and developed brand guidelines.",
       outcome: "Increased brand recognition by 30% within three months.",
     },
-    {
-      title: "Logo Design",
-      category: "Graphics",
-      description: "Logo for Authentic Vessels.",
-      tag: "Graphics",
-      mediaType: "image",
-      media: [
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Authentic/authentic%20vessels%201.jpg",
-      ],
-      challenge: "Creating a unique logo for a worship team of young people.",
-      process: "Designed graphics in Adobe Illustrator.",
-      outcome: "Client loved the design.",
-    },
+    
     {
       title: "Breejoz Marketing Campaign Graphics",
       category: "Graphics",
@@ -343,6 +281,59 @@ export default function PortfolioPage() {
       process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
       outcome: "Boosted brand awareness in the local market.",
     },
+
+    {
+      title: "JasiriCup Website UI",
+      category: "UI/UX",
+      description: "Interactive Figma prototype for JasiriCup Website UI.",
+      tag: "UI/UX",
+      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/ui-dashboard/Jasiri.png",
+      mediaType: "figma",
+      media: "https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/1R5mVhiFrzl9WwTtC3txpd/JasiriCup?page-id=176%3A3&node-id=458-164&starting-point-node-id=458%3A6",
+      challenge: "Create an intuitive dashboard for enterprise users to monitor real-time data.",
+      process: "Conducted user interviews, created wireframes in Figma, and iterated based on feedback.",
+      outcome: "Reduced user task completion time by 20%, as validated by user testing.",
+    },
+    /*{
+      title: "Product Launch Presentation",
+      category: "Presentation",
+      description: "Brand presentation for product launch.",
+      tag: "Slide Decks",
+      mediaType: "presentation",
+      media: [
+        "/images/presentation-slide-1.png",
+        "/images/presentation-slide-2.png",
+        "/images/presentation-slide-3.png",
+      ],
+      challenge: "Communicate product vision and strategy to stakeholders.",
+      process: "Designed cohesive slide deck with data visualizations and brand guidelines.",
+      outcome: "Secured buy-in from 95% of stakeholders.",
+    },,*/
+    {
+      title: "Mobile App Prototype Troubleshooters",
+      category: "UI/UX",
+      description: "Interactive mobile prototype for IT Support App.",
+      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/ui-dashboard/Trouble%20Shooters.png",
+      tag: "UI/UX",
+      mediaType: "figma",
+      media: "https://embed.figma.com/proto/RYhQMvRdbgh89KQFbCVJQ6/Troubleshooters?page-id=0%3A1&node-id=17-825&viewport=315%2C330%2C0.13&scaling=scale-down&content-scaling=fixed&starting-point-node-id=12%3A421&embed-host=share",
+      challenge: "Design a user-friendly mobile app interface for a fitness tracking platform.",
+      process: "Developed wireframes and prototypes in Figma, tested with users, and refined UX.",
+      outcome: "Received 90% positive feedback in usability testing.",
+    },
+    {
+      title: "Mobile App Prototype DUCR",
+      category: "UI/UX",
+      description: "Interactive mobile prototype for car spare parts shop app.",
+      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/ui-dashboard/Ducr.png",
+      tag: "UI/UX",
+      mediaType: "figma",
+      media: "https://embed.figma.com/proto/kAq63P1dS8XZpn6y2KDROt/Ducr?page-id=0%3A1&node-id=17-12&embed-host=share",
+      challenge: "Design a user-friendly mobile app interface for a fitness tracking platform.",
+      process: "Developed wireframes and prototypes in Figma, tested with users, and refined UX.",
+      outcome: "Received 90% positive feedback in usability testing.",
+    },
+
     {
       title: "P.C.E.A Musa Gitau Youth Christmas Events Posters",
       category: "Graphics",
@@ -453,6 +444,7 @@ export default function PortfolioPage() {
       process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
       outcome: "Boosted brand awareness in the local market.",
     },
+    
     {
       title: "P.C.E.A Musa Gitau Youth Valentines Dinner 2nd Edition Poster",
       category: "Graphics",
@@ -492,6 +484,19 @@ export default function PortfolioPage() {
       challenge: "Create engaging visuals for a social media campaign.",
       process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
       outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "Authentic Vessels Logo Design",
+      category: "Graphics",
+      description: "Logo for Authentic Vessels.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: [
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Authentic/authentic%20vessels%201.jpg",
+      ],
+      challenge: "Creating a unique logo for a worship team of young people.",
+      process: "Designed graphics in Adobe Illustrator.",
+      outcome: "Client loved the design.",
     },
     {
       title: "Sally Cyclist Logo",
