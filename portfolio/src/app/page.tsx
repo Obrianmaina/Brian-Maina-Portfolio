@@ -200,7 +200,7 @@ export default function PortfolioPage() {
       process: "Conducted user interviews, created wireframes in Figma, and iterated based on feedback.",
       outcome: "Reduced user task completion time by 20%, as validated by user testing.",
     },
-    {
+    /*{
       title: "Product Launch Presentation",
       category: "Presentation",
       description: "Brand presentation for product launch.",
@@ -214,7 +214,7 @@ export default function PortfolioPage() {
       challenge: "Communicate product vision and strategy to stakeholders.",
       process: "Designed cohesive slide deck with data visualizations and brand guidelines.",
       outcome: "Secured buy-in from 95% of stakeholders.",
-    },
+    },,*/
     {
       title: "Mobile App Prototype Troubleshooters",
       category: "UI/UX",
@@ -240,12 +240,17 @@ export default function PortfolioPage() {
       outcome: "Received 90% positive feedback in usability testing.",
     },
     {
-      title: "Brand Identity Project",
+      title: "Design Services Awareness Project",
       category: "Branding",
-      description: "Logo and identity system showcase.",
+      description: "Campagn assets.",
       tag: "Branding",
       mediaType: "image",
-      media: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/brand-identity/Motor%20Marvels_1.jpg",
+      media: ["https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Peacha%20Studio%20Campaign/Spark.jpg",
+      "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Peacha%20Studio%20Campaign/Social%20media%20freak.jpg",
+      "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Peacha%20Studio%20Campaign/Peacha%20Studio%20Promo.jpg",
+      "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Peacha%20Studio%20Campaign/Heavy%20Lifting.jpg",
+
+      ],
       challenge: "Develop a cohesive brand identity for a fintech startup.",
       process: "Created mood boards, designed logos in Adobe Illustrator, and developed brand guidelines.",
       outcome: "Increased brand recognition by 30% within three months.",
@@ -353,14 +358,55 @@ export default function PortfolioPage() {
       outcome: "Boosted brand awareness in the local market.",
     },
     {
-      title: "P.C.E.A Musa Gitau Youth Games Events Posters",
+      title: "P.C.E.A Musa Gitau Youth Events Posters",
       category: "Graphics",
-      description: "A social media poster for P.C.E.A Musa Gitau church youth for a games day.",
+      description: "A social media poster for P.C.E.A Musa Gitau church youth.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: [
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Youth%20Fellowship/P.C.E.A-Rev.-Musa-Gitau-Youth-Friday-Fellowship.png",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Roadtrip/roadtrip.jpg",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Games/Games.jpg",
+      ],
+      
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "A.C.K ST Christopher's Karuga Church",
+      category: "Graphics",
+      description: "A social media poster for A.C.K ST Christopher's Karuga Church.",
       tag: "Graphics",
       mediaType: "image",
       media: 
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Games/Games.jpg",
-        
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Worship%20Experience/Woship%20Experience.jpg",
+      
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "Youtube Thumbnails for Evolve with Esther",
+      category: "Graphics",
+      description: "Youtube Thhumbnails for Evolve with Esther",
+      tag: "Graphics",
+      mediaType: "image",
+      media: 
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Youtube%20Thumbnail/Thumbnails.png",
+      
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "Social Media artwork",
+      category: "Graphics",
+      description: "Social Media artwork",
+      tag: "Graphics",
+      mediaType: "image",
+      media: 
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/social/londonLM.jpg",
       
       challenge: "Create engaging visuals for a social media campaign.",
       process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
@@ -394,6 +440,48 @@ export default function PortfolioPage() {
       outcome: "Boosted brand awareness in the local market.",
     },
     {
+      title: "P.C.E.A Musa Gitau Youth Valentines Dinner Poster",
+      category: "Graphics",
+      description: "A series of social media poster for P.C.E.A Musa Gitau Youth Valentines Dinner Poster.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: [
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Valentines%20Dinner/Valentines%20Dinner%202.jpg",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Valentines%20Dinner/Valentines%20Dinner.jpg",
+      ],
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "P.C.E.A Musa Gitau Youth Valentines Dinner 2nd Edition Poster",
+      category: "Graphics",
+      description: "A series of social media poster for P.C.E.A Musa Gitau Youth Valentines Dinner Poster.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: [
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/valentines%20dinner%202/474816741_916344564002197_7749855537292904508_n.jpg",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/valentines%20dinner%202/474655422_916400617329925_8099537377500473090_n.jpg",
+      ],
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "Stanic Sneakers Poster",
+      category: "Graphics",
+      description: "A series of social media poster for Sneakers Poster.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: [
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Stanik%20Sneakers/Stanic%20Sneaakers.jpg",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Stanik%20Sneakers/Stanic%20Sneaakers.png",
+      ],
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
       title: "HUWA Brands Logo",
       category: "Graphics",
       description: "A logo for HUWA Brands.",
@@ -401,6 +489,18 @@ export default function PortfolioPage() {
       mediaType: "image",
       media: 
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Huwa/Huwa%20Brands%20White%20Sample%201.jpg",
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "Sally Cyclist Logo",
+      category: "Graphics",
+      description: "A logo for Sally Cyclist .",
+      tag: "Graphics",
+      mediaType: "image",
+      media: 
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Sally%20Cyclist/Sally%20Cyclist%20on%20white%20.jpg",
       challenge: "Create engaging visuals for a social media campaign.",
       process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
       outcome: "Boosted brand awareness in the local market.",
@@ -472,9 +572,9 @@ export default function PortfolioPage() {
       outcome: "Boosted brand awareness in the local market.",
     },
     {
-      title: "Product Strategy Deck",
+      title: "Car Prices Prediction Model Presentation",
       category: "Presentation",
-      description: "Q4 strategy presentation in Google Slides.",
+      description: "Presentation of Machine Learning Prediction Results.",
       tag: "Slide Decks",
       mediaType: "googleslides",
       media: "https://docs.google.com/presentation/d/e/2PACX-1vTIYm5lReqSuqb2KM_6YqYkm2kDyDh6U4YuDIKGxzSiDfc-wF8eZgvJkN12eysdCiV49AST7nYTIDr-/pubembed?start=false&loop=false&delayms=3000",
@@ -482,28 +582,28 @@ export default function PortfolioPage() {
       process: "...",
       outcome: "..."
     },
-    {
-      title: "Q4 Business Plan",
+    /*{
+      title: "Presentation with Animations",
       category: "Presentation",
       description: "Strategic business presentation with animations.",
       tag: "Slide Decks",
       mediaType: "powerpoint",
       media: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/Circle%20reveal.pptx",
-      challenge: "Present quarterly strategy to executives.",
+      challenge: "Presentation animations.",
       process: "Created comprehenive deck with transition animations.",
-      outcome: "Approved budget increase of 25%.",
-    },
+      outcome: "Engaged audience effectively.",
+    },*/
     {
-      title: "Demo Video",
+      title: "Peacha Studio Promo Video",
       category: "Graphics",
-      description: "Product demo video.",
+      description: "Peacha Studio Promo Video.",
       tag: "Video",
-      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/brand-identity/Motor%20Marvels_1.jpg",
+      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Peacha%20Studio%20Campaign/peacha%202.png",
       mediaType: "video",
       media: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Peacha%20Studio%20Campaign/Advert.mp4",
       challenge: "Create a compelling product demonstration video.",
-      process: "Filmed, edited with professional transitions and effects.",
-      outcome: "Achieved 50k+ views and 15% conversion rate.",
+      process: "Edited with professional transitions and effects.",
+      outcome: "Achieved brand visibility.",
     },
   ];
 
