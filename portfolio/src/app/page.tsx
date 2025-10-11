@@ -300,6 +300,7 @@ export default function PortfolioPage() {
       tag: "Graphics",
       mediaType: "image",
       media: [
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Musa%20Gitau%20Youth/Worship%20Experience.jpg",
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Career%20Talk/472914574_1133714768370441_8232531068171796553_n.jpg",
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Family%20week/Family%20Week.jpg",
 
@@ -315,6 +316,7 @@ export default function PortfolioPage() {
       tag: "Graphics",
       mediaType: "image",
       media: [
+        
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Catering/Maggie's%20Catering%20Services.jpg",
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Catering/Maggie's%20Catering%20Service%20Business%20Card.jpg",
 
@@ -404,6 +406,18 @@ export default function PortfolioPage() {
       outcome: "Boosted brand awareness in the local market.",
     },
     {
+      title: "Njema Logo",
+      category: "Graphics",
+      description: "A logo for Njema.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: 
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Njema/Njema%20concept%202.jpg",
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
       title: "JasiriCup Logo",
       category: "Graphics",
       description: "A logo for jasiriCup.",
@@ -486,7 +500,7 @@ export default function PortfolioPage() {
       tag: "Video",
       coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/brand-identity/Motor%20Marvels_1.jpg",
       mediaType: "video",
-      media: "/videos/product-demo.mp4",
+      media: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Peacha%20Studio%20Campaign/Advert.mp4",
       challenge: "Create a compelling product demonstration video.",
       process: "Filmed, edited with professional transitions and effects.",
       outcome: "Achieved 50k+ views and 15% conversion rate.",
