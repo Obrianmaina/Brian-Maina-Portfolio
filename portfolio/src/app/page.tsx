@@ -218,8 +218,8 @@ export default function PortfolioPage() {
     {
       title: "Mobile App Prototype Troubleshooters",
       category: "UI/UX",
-      description: "Interactive mobile prototype for fitness tracking.",
-      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/ui-dashboard/Ducr.png",
+      description: "Interactive mobile prototype for IT Support App.",
+      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/ui-dashboard/Trouble%20Shooters.png",
       tag: "UI/UX",
       mediaType: "figma",
       media: "https://embed.figma.com/proto/RYhQMvRdbgh89KQFbCVJQ6/Troubleshooters?page-id=0%3A1&node-id=17-825&viewport=315%2C330%2C0.13&scaling=scale-down&content-scaling=fixed&starting-point-node-id=12%3A421&embed-host=share",
@@ -275,6 +275,142 @@ export default function PortfolioPage() {
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Breejoz/Dungia%20Krisi.jpg",
 
       ],
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "Brendas Bracelet Marketing Poater",
+      category: "Graphics",
+      description: "A social media poster for Brenda's Bracelet.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: [
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Brendas%20Bracelet/Artboard%201BRENDAhdpi.png",
+
+      ],
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "P.C.E.A Musa Gitau Posters",
+      category: "Graphics",
+      description: "A series of social media poster for P.C.E.A Musa Gitau church.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: [
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Career%20Talk/472914574_1133714768370441_8232531068171796553_n.jpg",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Family%20week/Family%20Week.jpg",
+
+      ],
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "Maggie's Catering Posters",
+      category: "Graphics",
+      description: "A series of social media poster for a catering service.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: [
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Catering/Maggie's%20Catering%20Services.jpg",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Catering/Maggie's%20Catering%20Service%20Business%20Card.jpg",
+
+      ],
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "Kongamano la CHAWAKAMA Posters",
+      category: "Graphics",
+      description: "A social media poster for  CHAWAKAMA.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: [
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Chawakama/CHAWAKAMA%2024%3B4%3B2021%20.jpg",
+      ],
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "P.C.E.A Musa Gitau Youth Christmas Events Posters",
+      category: "Graphics",
+      description: "A series of social media poster for P.C.E.A Musa Gitau church youth Christmas events.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: [
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Christmas%20Csntata/474595016_915777410725579_9012517728664662188_n.jpg",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Christmas%20Csntata/Sherehesha%20Krisii.jpg",
+      ],
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "P.C.E.A Musa Gitau Youth Games Events Posters",
+      category: "Graphics",
+      description: "A social media poster for P.C.E.A Musa Gitau church youth for a games day.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: 
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Games/Games.jpg",
+        
+      
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "P.C.E.A Musa Gitau Health Board Poster",
+      category: "Graphics",
+      description: "A series of social media poster for COVID-19 Vaccination Drive.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: 
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Covid%2019%20awareness/Covid%2019%20JAB.jpg",
+      
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "Graced Family Hangout Poster",
+      category: "Graphics",
+      description: "A series of social media poster for Graced Family hangout event.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: [
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Graced%20Family/Hangout/graced%20retreat.jpg",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Graced%20Family/Hangout/KIM%202.jpg",
+      ],
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "HUWA Brands Logo",
+      category: "Graphics",
+      description: "A logo for HUWA Brands.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: 
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Huwa/Huwa%20Brands%20White%20Sample%201.jpg",
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "JasiriCup Logo",
+      category: "Graphics",
+      description: "A logo for jasiriCup.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: 
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Jasiricup/JasiriCup%20logo.png",
       challenge: "Create engaging visuals for a social media campaign.",
       process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
       outcome: "Boosted brand awareness in the local market.",
