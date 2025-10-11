@@ -485,6 +485,19 @@ export default function PortfolioPage() {
       process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
       outcome: "Boosted brand awareness in the local market.",
     },
+    
+    {
+      title: "Sally Cyclist Logo",
+      category: "Graphics",
+      description: "A logo for Sally Cyclist .",
+      tag: "Graphics",
+      mediaType: "image",
+      media: 
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Sally%20Cyclist/Sally%20Cyclist%20on%20white%20.jpg",
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
     {
       title: "Authentic Vessels Logo Design",
       category: "Graphics",
@@ -497,18 +510,6 @@ export default function PortfolioPage() {
       challenge: "Creating a unique logo for a worship team of young people.",
       process: "Designed graphics in Adobe Illustrator.",
       outcome: "Client loved the design.",
-    },
-    {
-      title: "Sally Cyclist Logo",
-      category: "Graphics",
-      description: "A logo for Sally Cyclist .",
-      tag: "Graphics",
-      mediaType: "image",
-      media: 
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Sally%20Cyclist/Sally%20Cyclist%20on%20white%20.jpg",
-      challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
-      outcome: "Boosted brand awareness in the local market.",
     },
     {
       title: "Njema Logo",
