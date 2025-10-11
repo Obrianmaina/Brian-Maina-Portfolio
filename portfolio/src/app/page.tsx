@@ -290,35 +290,35 @@ export default function PortfolioPage() {
 
   const companyProjects: CompanyProject[] = [
     {
-      companyName: "SAP SE",
+      companyName: "Company I worked for",
       companyLogo: "/images/logos/sap-logo.svg",
-      disclaimer: "The following work was created during my tenure at SAP SE. It is shared with permission for portfolio purposes only and remains the intellectual property of SAP SE. The content is confidential and should not be distributed, copied, or disclosed.",
+      disclaimer: "The following work was created during my tenure at Company. It is shared with permission for portfolio purposes only and remains the intellectual property of Company. The content is confidential and should not be distributed, copied, or disclosed.",
       projects: [ {
-          title: "Internal Dashboard Redesign (SAP)",
-          category: "UI/UX",
-          description: "A complete redesign of an internal enterprise dashboard.",
-          tag: "Corporate UI/UX",
-          mediaType: "figma",
-          media: "https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/1R5mVhiFrzl9WwTtC3txpd/JasiriCup?page-id=176%3A3&node-id=458-164&starting-point-node-id=458%3A6",
-          challenge: "Redesign a legacy internal tool to improve usability and data visualization for over 5,000 daily users.",
-          process: "Collaborated with product managers and engineers, conducted stakeholder interviews, created high-fidelity prototypes in Figma, and performed usability testing sessions.",
-          outcome: "The new design led to a 40% reduction in reported user errors and a 30% increase in task efficiency. Received positive feedback for its modern and intuitive interface."
+          title: "Confidential Project",
+          category: "Graphics",
+          description: "Still awaiting permission to showcase this projects.",
+          tag: "Corporate Work",
+          mediaType: "image",
+          media: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Approval/Awaiting%20Consent.png",
+          challenge: "Will update upon receiving permission.",
+          process: "Will update upon receiving permission.",
+          outcome: "Will update upon receiving permission."
       } ]
     },
     {
-      companyName: "Aspira",
-      companyLogo: "/images/logos/aspira-logo.svg",
-      disclaimer: "This work was created for Aspira and is showcased here with their explicit permission. All rights and intellectual property belong to Aspira. This content is for portfolio display only.",
+      companyName: "Company I worked for",
+      companyLogo: "/images/logos/sap-logo.svg",
+      disclaimer: "The following work was created during my tenure at Company. It is shared with permission for portfolio purposes only and remains the intellectual property of Company. The content is confidential and should not be distributed, copied, or disclosed.",
       projects: [ {
-          title: "Fintech Marketing Campaign (Aspira)",
+          title: "Confidential Project",
           category: "Graphics",
-          description: "Visual assets for a major fintech marketing campaign.",
-          tag: "Branding",
+          description: "Still awaiting permission to showcase this projects.",
+          tag: "Corporate Work",
           mediaType: "image",
-          media: [ "https://scontent-fra3-2.xx.fbcdn.net/v/t39.30808-6/481246712_1085756750246538_8658201038425115753_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=127cfc&_nc_ohc=sUL3_VpDyFsQ7kNvwF0V0lz&_nc_oc=AdnrZ8Rkewsxdikt_MgUk-mnHnEKrdTS9NB8iXAt15-fI_83jQg1NMDpjGsL3ZmWJ30&_nc_zt=23&_nc_ht=scontent-fra3-2.xx&_nc_gid=EzoEmLW6Fen8cyJr5mGr5Q&oh=00_Afe8hrSFcmNftU-6oBkDH4N0CF7TkksDdyD-0GxRFW741w&oe=68EC0D8B", "/images/campaign-2.png" ],
-          challenge: "To create a visually striking and cohesive set of graphics for a multi-platform digital marketing campaign aimed at increasing user acquisition.",
-          process: "Developed a creative concept based on market research, designed visuals using Adobe Photoshop and Illustrator, and created templates for various social media formats.",
-          outcome: "The campaign exceeded targets, contributing to a 25% increase in app downloads and a significant boost in social media engagement during the campaign period."
+          media: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Approval/Awaiting%20Consent.png",
+          challenge: "Will update upon receiving permission.",
+          process: "Will update upon receiving permission.",
+          outcome: "Will update upon receiving permission."
       } ]
     }
   ];
