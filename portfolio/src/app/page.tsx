@@ -304,22 +304,6 @@ export default function PortfolioPage() {
           process: "Will update upon receiving permission.",
           outcome: "Will update upon receiving permission."
       } ]
-    },
-    {
-      companyName: "Company I worked for",
-      companyLogo: "/images/logos/sap-logo.svg",
-      disclaimer: "The following work was created during my tenure at Company. It is shared with permission for portfolio purposes only and remains the intellectual property of Company. The content is confidential and should not be distributed, copied, or disclosed.",
-      projects: [ {
-          title: "Confidential Project",
-          category: "Graphics",
-          description: "Still awaiting permission to showcase this projects.",
-          tag: "Corporate Work",
-          mediaType: "image",
-          media: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Approval/Awaiting%20Consent.png",
-          challenge: "Will update upon receiving permission.",
-          process: "Will update upon receiving permission.",
-          outcome: "Will update upon receiving permission."
-      } ]
     }
   ];
 
