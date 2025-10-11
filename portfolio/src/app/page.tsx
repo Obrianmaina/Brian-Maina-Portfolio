@@ -189,11 +189,11 @@ export default function PortfolioPage() {
 
   const showcases: Showcase[] = [
     {
-      title: "Enterprise Dashboard UI",
+      title: "JasiriCup Website UI",
       category: "UI/UX",
-      description: "Interactive Figma prototype for enterprise dashboard.",
+      description: "Interactive Figma prototype for JasiriCup Website UI.",
       tag: "UI/UX",
-      coverImage: "/images/covers/dashboard-cover.jpg",
+      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/ui-dashboard/Jasiri.png",
       mediaType: "figma",
       media: "https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/1R5mVhiFrzl9WwTtC3txpd/JasiriCup?page-id=176%3A3&node-id=458-164&starting-point-node-id=458%3A6",
       challenge: "Create an intuitive dashboard for enterprise users to monitor real-time data.",
@@ -413,6 +413,48 @@ export default function PortfolioPage() {
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Jasiricup/JasiriCup%20logo.png",
       challenge: "Create engaging visuals for a social media campaign.",
       process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "Kanyakwar Logo",
+      category: "Graphics",
+      description: "A logo for Kanyakwar.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: 
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Kanyakwar/Blue%20Concept_2.jpg",
+      challenge: "Create a logo for a football club.",
+      process: "Designed graphics in Adobe Illustrator.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "Mizizi Therapies Logo",
+      category: "Graphics",
+      description: "A logo for Mizizi Therapies.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: 
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Mizizi/MIZIZI%20THERAPIES%20upright%20jpeg.jpg",
+      challenge: "Create a logo for a child therapy consultant.",
+      process: "Designed graphics in Adobe Illustrator.",
+      outcome: "Boosted brand awareness in the local market.",
+    },
+    {
+      title: "Morning Inspiration Artwork for Social Media",
+      category: "Graphics",
+      description: "  Bible Verse artwork for P.C.E.A Musa Gitau Facebook Page during the COVID-19 pandemic.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: [
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Morning%20Inspiration/1%20Thessalonians%205%3B17.jpg",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Morning%20Inspiration/1%20John%204%3B18%20.jpg",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Morning%20Inspiration/105305137_126869325721662_523079190142161469_n.png",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Morning%20Inspiration/105359956_126872652387996_2375115218194050620_n.png",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Morning%20Inspiration/114119488_141708297571098_6968834607494226061_n.jpg",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Morning%20Inspiration/115439063_141711704237424_5525665149631524814_n.jpg",
+      ],
+      challenge: "Create a logo for a child therapy consultant.",
+      process: "Designed graphics in Adobe Illustrator.",
       outcome: "Boosted brand awareness in the local market.",
     },
     {
