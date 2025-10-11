@@ -219,7 +219,7 @@ export default function PortfolioPage() {
       title: "Mobile App Prototype Troubleshooters",
       category: "UI/UX",
       description: "Interactive mobile prototype for fitness tracking.",
-      coverImage: "/images/covers/dashboard-cover.jpg",
+      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/ui-dashboard/Ducr.png",
       tag: "UI/UX",
       mediaType: "figma",
       media: "https://embed.figma.com/proto/RYhQMvRdbgh89KQFbCVJQ6/Troubleshooters?page-id=0%3A1&node-id=17-825&viewport=315%2C330%2C0.13&scaling=scale-down&content-scaling=fixed&starting-point-node-id=12%3A421&embed-host=share",
@@ -230,7 +230,8 @@ export default function PortfolioPage() {
     {
       title: "Mobile App Prototype DUCR",
       category: "UI/UX",
-      description: "Interactive mobile prototype for fitness tracking.",
+      description: "Interactive mobile prototype for car spare parts shop app.",
+      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/ui-dashboard/Ducr.png",
       tag: "UI/UX",
       mediaType: "figma",
       media: "https://embed.figma.com/proto/kAq63P1dS8XZpn6y2KDROt/Ducr?page-id=0%3A1&node-id=17-12&embed-host=share",
