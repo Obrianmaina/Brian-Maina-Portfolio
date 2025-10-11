@@ -35,7 +35,7 @@ export default function PortfolioPage() {
       heading: "Dual Study Program, Germany",
       entries: [{
         title: "B.Sc. Computer Science",
-        date: "2024 Septemebr - 2025 October",
+        date: "2024 September - 2025 October",
         description: "Undertook one year of computer science studies to bridge the gap between design and technical implementation. Gained foundational knowledge in software development, data visualization, and UI/UX principles through a combination of academic learning and practical application."
       }]
     },
@@ -97,7 +97,7 @@ export default function PortfolioPage() {
       entries: [
         {
           title: "VT Student",
-          date: "2024 Septemebr - 2025 October",
+          date: "2024 September - 2025 October",
           description: "Worked on real-world projects, learning from mentors on the implementation of UI5 Framework in SAP Systems and in my final rotation delivered a Web Components API Viewer for the SAP UI5 Core Framework team."
         },
         {
@@ -125,7 +125,7 @@ export default function PortfolioPage() {
       heading: "Aspira",
       entries: [{
         title: "Junior Marketing Officer",
-        date: "December 2022 - Sept. 2023",
+        date: "December 2022 - September 2023",
         description: [
                       "Created digital and print marketing materials, including social media and web banners, catalogues, brochures, posters, and office branding for over 50 partner retailers.",
                       "Created marketing copy and designed Google Ads.",
@@ -160,7 +160,7 @@ export default function PortfolioPage() {
       heading: "Breejoz Baby & Mums Shop and Danek Baby Shop",
       entries: [{
         title: "Designer and Marketer (Contract)",
-        date: "Dec. 2021 - March 2022",
+        date: "December 2021 - March 2022",
         description: 
                       "Created social media campaign banners, videos, and copy for marketing campaigns."
         
@@ -171,7 +171,7 @@ export default function PortfolioPage() {
       heading: " Moi University (Eldoret, Kenya)",
       entries: [{
         title: "Intern (Public Relations Office)",
-        date: "June 2021 - Oct. 2021",
+        date: "June 2021 - October 2021",
         description: 
                       ["Created banners, posters, and edited videos for the 40th Moi University Graduation.",
                         "Served as a graphic designer, translator, and editor under the Corporate Affairs and Protocol Office.",
