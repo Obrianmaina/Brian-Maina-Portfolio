@@ -43,7 +43,7 @@ export default function PortfolioPage() {
       heading: "Moi University, Kenya",
       entries: [{
         title: "B.A. Kiswahili",
-        date: "Graduated 2021 (Seecond Class Honours, Upper Division)",
+        date: "Graduated 2021 (Second Class Honours, Upper Division)",
         description: "Focused on Communication, Marketing, Translation, and Swahili literature and linguistics."
       }]
     },
