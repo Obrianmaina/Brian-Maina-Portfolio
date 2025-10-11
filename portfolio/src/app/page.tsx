@@ -576,6 +576,7 @@ export default function PortfolioPage() {
       category: "Presentation",
       description: "Presentation of Machine Learning Prediction Results.",
       tag: "Slide Decks",
+      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Algorithms%20FoIS.jpg",
       mediaType: "googleslides",
       media: "https://docs.google.com/presentation/d/e/2PACX-1vTIYm5lReqSuqb2KM_6YqYkm2kDyDh6U4YuDIKGxzSiDfc-wF8eZgvJkN12eysdCiV49AST7nYTIDr-/pubembed?start=false&loop=false&delayms=3000",
       challenge: "...",
