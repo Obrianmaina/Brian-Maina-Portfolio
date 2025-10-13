@@ -328,7 +328,7 @@ export default function PortfolioPage() {
       coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/ui-dashboard/Ducr.png",
       tag: "UI/UX",
       mediaType: "figma",
-      media: "https://embed.figma.com/proto/kAq63P1dS8XZpn6y2KDROt/Ducr?page-id=0%3A1&node-id=17-12&embed-host=share",
+      media: "https://embed.figma.com/proto/kAq63P1dS8XZpn6y2KDROt/Ducr?page-id=0%3A1&node-id=5-57&viewport=920%2C350%2C0.39&scaling=scale-down&content-scaling=fixed&starting-point-node-id=5%3A57&embed-host=share",
       challenge: "Design a user-friendly mobile app interface for a fitness tracking platform.",
       process: "Developed wireframes and prototypes in Figma, tested with users, and refined UX.",
       outcome: "Received 90% positive feedback in usability testing.",
