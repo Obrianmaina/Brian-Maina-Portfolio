@@ -25,6 +25,7 @@
     "pdfjs-dist": "^5.4.54",
     "pptx-preview": "^1.0.6",
     "react": "19.1.0",
+    "react-cookie-consent": "^9.0.0",
     "react-dom": "19.1.0",
     "react-focus-lock": "^2.13.6",
     "react-hot-toast": "^2.6.0",
