@@ -201,9 +201,9 @@ export default function PortfolioPage() {
       "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Peacha%20Studio%20Campaign/Heavy%20Lifting.jpg",
 
       ],
-      challenge: "Develop a cohesive brand identity for a fintech startup.",
-      process: "Created mood boards, designed logos in Adobe Illustrator, and developed brand guidelines.",
-      outcome: "Increased brand recognition by 30% within three months.",
+      challenge: "Develop design awareness services campaign.",
+      process: "Created artwork in Adobe Photoshop and Illustrator.",
+      outcome: "Increased awareness of services offered, sparking interest.",
     },
     
     {
@@ -219,7 +219,7 @@ export default function PortfolioPage() {
 
       ],
       challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      process: "Designed graphics in Adobe Photoshop, and Illustrator tailored for Instagram and Facebook.",
       outcome: "Boosted brand awareness in the local market.",
     },
     {
@@ -233,7 +233,7 @@ export default function PortfolioPage() {
 
       ],
       challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      process: "Designed graphics in Adobe Illustrator, tailored for Whatsapp, Instagram and Facebook.",
       outcome: "Boosted brand awareness in the local market.",
     },
     {
@@ -249,7 +249,7 @@ export default function PortfolioPage() {
 
       ],
       challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      process: "Designed graphics in Adobe Photoshop and Illustrator, tailored for Facebook.",
       outcome: "Boosted brand awareness in the local market.",
     },
     {
@@ -265,7 +265,7 @@ export default function PortfolioPage() {
 
       ],
       challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      process: "Designed graphics in Adobe Photoshop and Illustrator, tailored for Whatsapp and Facebook.",
       outcome: "Boosted brand awareness in the local market.",
     },
     {
@@ -278,7 +278,7 @@ export default function PortfolioPage() {
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Chawakama/CHAWAKAMA%2024%3B4%3B2021%20.jpg",
       ],
       challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      process: "Designed graphics in Adobe Illustrator, tailored for Whatsapp.",
       outcome: "Boosted brand awareness in the local market.",
     },
 
@@ -290,9 +290,9 @@ export default function PortfolioPage() {
       coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/ui-dashboard/Jasiri.png",
       mediaType: "figma",
       media: "https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/1R5mVhiFrzl9WwTtC3txpd/JasiriCup?page-id=176%3A3&node-id=458-164&starting-point-node-id=458%3A6",
-      challenge: "Create an intuitive dashboard for enterprise users to monitor real-time data.",
-      process: "Conducted user interviews, created wireframes in Figma, and iterated based on feedback.",
-      outcome: "Reduced user task completion time by 20%, as validated by user testing.",
+      challenge: "Create an intuitive dashboard for a social impact website.",
+      process: "Conducted online research on audience, and created wireframes in Figma.",
+      outcome: "Informed the development of the website for the client.",
     },
     /*{
       title: "Product Launch Presentation",
@@ -317,9 +317,9 @@ export default function PortfolioPage() {
       tag: "UI/UX",
       mediaType: "figma",
       media: "https://embed.figma.com/proto/RYhQMvRdbgh89KQFbCVJQ6/Troubleshooters?page-id=0%3A1&node-id=17-825&viewport=315%2C330%2C0.13&scaling=scale-down&content-scaling=fixed&starting-point-node-id=12%3A421&embed-host=share",
-      challenge: "Design a user-friendly mobile app interface for a fitness tracking platform.",
-      process: "Developed wireframes and prototypes in Figma, tested with users, and refined UX.",
-      outcome: "Received 90% positive feedback in usability testing.",
+      challenge: "Design a user-friendly mobile app interface for an IT Support Application.",
+      process: "Developed wireframes and prototypes in Figma.",
+      outcome: "Helped me learn fundamentals of prototyping."
     },
     {
       title: "Mobile App Prototype DUCR",
@@ -329,9 +329,9 @@ export default function PortfolioPage() {
       tag: "UI/UX",
       mediaType: "figma",
       media: "https://embed.figma.com/proto/kAq63P1dS8XZpn6y2KDROt/Ducr?page-id=0%3A1&node-id=5-57&viewport=920%2C350%2C0.39&scaling=scale-down&content-scaling=fixed&starting-point-node-id=5%3A57&embed-host=share",
-      challenge: "Design a user-friendly mobile app interface for a fitness tracking platform.",
-      process: "Developed wireframes and prototypes in Figma, tested with users, and refined UX.",
-      outcome: "Received 90% positive feedback in usability testing.",
+      challenge: "Design a user-friendly mobile app interface for spare parts shop app.",
+      process: "Developed wireframes and prototypes in Figma.",
+      outcome: "Helped me learn fundamentals of prototyping",
     },
 
     {
@@ -346,7 +346,7 @@ export default function PortfolioPage() {
       ],
       challenge: "Create engaging visuals for a social media campaign.",
       process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
-      outcome: "Boosted brand awareness in the local market.",
+      outcome: "Boosted event marketing to the local community.",
     },
     {
       title: "P.C.E.A Musa Gitau Youth Events Posters",
@@ -362,7 +362,7 @@ export default function PortfolioPage() {
       
       challenge: "Create engaging visuals for a social media campaign.",
       process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
-      outcome: "Boosted brand awareness in the local market.",
+      outcome: "Boosted event marketing to the local community.",
     },
     {
       title: "A.C.K ST Christopher's Karuga Church",
@@ -375,7 +375,7 @@ export default function PortfolioPage() {
       
       challenge: "Create engaging visuals for a social media campaign.",
       process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
-      outcome: "Boosted brand awareness in the local market.",
+      outcome: "Boosted event marketing to the local community.",
     },
     {
       title: "Youtube Thumbnails for Evolve with Esther",
@@ -387,8 +387,8 @@ export default function PortfolioPage() {
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Youtube%20Thumbnail/Thumbnails.png",
       
       challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
-      outcome: "Boosted brand awareness in the local market.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Youtube.",
+      outcome: "Enhance video outlook and engagement.",
     },
     {
       title: "Social Media artwork",
@@ -400,8 +400,8 @@ export default function PortfolioPage() {
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/social/londonLM.jpg",
       
       challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
-      outcome: "Boosted brand awareness in the local market.",
+      process: "Designed graphics in Adobe Photoshop, tailored for Telegram.",
+      outcome: "Boosted brand awareness in clients online community.",
     },
     {
       title: "P.C.E.A Musa Gitau Health Board Poster",
@@ -413,8 +413,8 @@ export default function PortfolioPage() {
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Covid%2019%20awareness/Covid%2019%20JAB.jpg",
       
       challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
-      outcome: "Boosted brand awareness in the local market.",
+      process: "Designed graphics in Adobe Photoshop and Illustrator, tailored for Whatapp and Facebook.",
+      outcome: "Helped in creating awareness on COVID-19 vaccination.",
     },
     {
       title: "Graced Family Hangout Poster",
@@ -427,8 +427,8 @@ export default function PortfolioPage() {
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Graced%20Family/Hangout/KIM%202.jpg",
       ],
       challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
-      outcome: "Boosted brand awareness in the local market.",
+      process: "Designed graphics in Adobe Photoshop, tailored for WhatsApp.",
+      outcome: "Boosted event marketing to local community.",
     },
     {
       title: "P.C.E.A Musa Gitau Youth Valentines Dinner Poster",
@@ -441,8 +441,8 @@ export default function PortfolioPage() {
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Valentines%20Dinner/Valentines%20Dinner.jpg",
       ],
       challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
-      outcome: "Boosted brand awareness in the local market.",
+      process: "Designed graphics in Adobe Photoshop and Illustrator, tailored for Facebook and WhatsApp.",
+      outcome: "Boosted event marketing to local community and online.",
     },
     
     {
@@ -456,8 +456,8 @@ export default function PortfolioPage() {
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/valentines%20dinner%202/474655422_916400617329925_8099537377500473090_n.jpg",
       ],
       challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
-      outcome: "Boosted brand awareness in the local market.",
+      process: "Designed graphics in Adobe Photoshop and Illustrator, tailored for Facebook and WhatsApp.",
+      outcome: "Boosted event marketing to local community and online.",
     },
     {
       title: "Stanic Sneakers Poster",
@@ -470,7 +470,7 @@ export default function PortfolioPage() {
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Stanik%20Sneakers/Stanic%20Sneaakers.png",
       ],
       challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      process: "Designed graphics in Adobe Photoshop, tailored for WhatsApp, Instagram and Facebook.",
       outcome: "Boosted brand awareness in the local market.",
     },
     {
@@ -481,9 +481,9 @@ export default function PortfolioPage() {
       mediaType: "image",
       media: 
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Huwa/Huwa%20Brands%20White%20Sample%201.jpg",
-      challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
-      outcome: "Boosted brand awareness in the local market.",
+      challenge: "Create a logo for Huwa Brands.",
+      process: "Designed logo in Adobe Illustrator",
+      outcome: "Created a modern and versatile logo that effectively represents the brand's identity.",
     },
     
     {
@@ -494,9 +494,9 @@ export default function PortfolioPage() {
       mediaType: "image",
       media: 
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Sally%20Cyclist/Sally%20Cyclist%20on%20white%20.jpg",
-      challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
-      outcome: "Boosted brand awareness in the local market.",
+      challenge: "Create a logo for Sally Cyclist.",
+      process: "Designed logo in Adobe Illustrator",
+      outcome: "Created a modern and versatile logo that effectively represents the brand's identity.",
     },
     {
       title: "Authentic Vessels Logo Design",
@@ -508,8 +508,8 @@ export default function PortfolioPage() {
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Authentic/authentic%20vessels%201.jpg",
       ],
       challenge: "Creating a unique logo for a worship team of young people.",
-      process: "Designed graphics in Adobe Illustrator.",
-      outcome: "Client loved the design.",
+      process: "Designed logo in Adobe Illustrator.",
+      outcome: "Created a modern and versatile logo that effectively represents the brand's identity.",
     },
     {
       title: "Njema Logo",
@@ -519,9 +519,9 @@ export default function PortfolioPage() {
       mediaType: "image",
       media: 
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Njema/Njema%20concept%202.jpg",
-      challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
-      outcome: "Boosted brand awareness in the local market.",
+      challenge: "Create a logo for Njema Publishers.",
+      process: "Designed logo in Adobe Illustrator.",
+      outcome: "Created a modern and versatile logo that effectively represents the brand's identity.",
     },
     {
       title: "JasiriCup Logo",
@@ -531,9 +531,9 @@ export default function PortfolioPage() {
       mediaType: "image",
       media: 
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Jasiricup/JasiriCup%20logo.png",
-      challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
-      outcome: "Boosted brand awareness in the local market.",
+      challenge: "Create a logo for JasiriCup.",
+      process: "Designed the logo in Adobe Illustrator.",
+      outcome: "Created a modern and versatile logo that effectively represents the brand's identity.",
     },
     {
       title: "Kanyakwar Logo",
@@ -544,8 +544,8 @@ export default function PortfolioPage() {
       media: 
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Kanyakwar/Blue%20Concept_2.jpg",
       challenge: "Create a logo for a football club.",
-      process: "Designed graphics in Adobe Illustrator.",
-      outcome: "Boosted brand awareness in the local market.",
+      process: "Designed logo in Adobe Illustrator.",
+      outcome: "Created a modern and versatile logo that effectively represents the brand's identity.",
     },
     {
       title: "Mizizi Therapies Logo",
@@ -556,8 +556,8 @@ export default function PortfolioPage() {
       media: 
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Mizizi/MIZIZI%20THERAPIES%20upright%20jpeg.jpg",
       challenge: "Create a logo for a child therapy consultant.",
-      process: "Designed graphics in Adobe Illustrator.",
-      outcome: "Boosted brand awareness in the local market.",
+      process: "Designed logo in Adobe Illustrator.",
+      outcome: "Created an audience-appropriate logo that effectively represents the brand's identity.",
     },
     {
       title: "Morning Inspiration Artwork for Social Media",
@@ -573,9 +573,9 @@ export default function PortfolioPage() {
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Morning%20Inspiration/114119488_141708297571098_6968834607494226061_n.jpg",
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Morning%20Inspiration/115439063_141711704237424_5525665149631524814_n.jpg",
       ],
-      challenge: "Create a logo for a child therapy consultant.",
-      process: "Designed graphics in Adobe Illustrator.",
-      outcome: "Boosted brand awareness in the local market.",
+      challenge: "Create a social media artwork for morning devotion.",
+      process: "Designed graphics in Adobe Illustrator and Photoshop.",
+      outcome: "Kept the online community engaged during the pandemic.",
     },
     {
       title: "Car Prices Prediction Model Presentation",
@@ -585,9 +585,9 @@ export default function PortfolioPage() {
       coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Algorithms%20FoIS.jpg",
       mediaType: "googleslides",
       media: "https://docs.google.com/presentation/d/e/2PACX-1vTIYm5lReqSuqb2KM_6YqYkm2kDyDh6U4YuDIKGxzSiDfc-wF8eZgvJkN12eysdCiV49AST7nYTIDr-/pubembed?start=false&loop=false&delayms=3000",
-      challenge: "...",
-      process: "...",
-      outcome: "..."
+      challenge: "Create a presentation to communicate machine learning model results.",
+      process: "Designed slides in Google Slides with data visualizations.",
+      outcome: "Effectively communicated complex data to a technical audience.",
     },
     /*{
       title: "Presentation with Animations",
