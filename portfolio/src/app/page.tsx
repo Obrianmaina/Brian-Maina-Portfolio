@@ -223,7 +223,7 @@ export default function PortfolioPage() {
       outcome: "Boosted brand awareness in the local market.",
     },
     {
-      title: "Brendas Bracelet Marketing Poater",
+      title: "Brendas Bracelet Marketing Poster",
       category: "Graphics",
       description: "A social media poster for Brenda's Bracelet.",
       tag: "Graphics",
@@ -233,7 +233,7 @@ export default function PortfolioPage() {
 
       ],
       challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Illustrator, tailored for Whatsapp, Instagram and Facebook.",
+      process: "Designed graphics in Adobe Illustrator, tailored for Whatsapp.",
       outcome: "Boosted brand awareness in the local market.",
     },
     {
@@ -374,7 +374,7 @@ export default function PortfolioPage() {
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Worship%20Experience/Woship%20Experience.jpg",
       
       challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
+      process: "Designed graphics in Adobe Photoshop, tailored for WhatsApp.",
       outcome: "Boosted event marketing to the local community.",
     },
     {
@@ -386,7 +386,7 @@ export default function PortfolioPage() {
       media: 
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Youtube%20Thumbnail/Thumbnails.png",
       
-      challenge: "Create engaging visuals for a social media campaign.",
+      challenge: "Create engaging thumbnails for youtube video series.",
       process: "Designed graphics in Adobe Photoshop, tailored for Youtube.",
       outcome: "Enhance video outlook and engagement.",
     },
