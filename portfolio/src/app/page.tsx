@@ -788,6 +788,7 @@ export default function PortfolioPage() {
               <li><h4 className="font-medium">Ilka Wiskemann - Global HR Business Partner SAP SE</h4><p className="text-sm text-gray-600">Email: ilka.wiskemann@sap.com | Phone: +49 622 776 2638</p></li>
               <li><h4 className="font-medium">Britta Lehn - Manager at SAP SE</h4><p className="text-sm text-gray-600">Email: britta.lehn@sap.com | Phone: +49 622 775 4546</p></li>
               <li><h4 className="font-medium">Maria Belov - UI/UX Designer at SAP SE</h4><p className="text-sm text-gray-600">Email: maria.belov@sap.com | Phone: +49 622 776 7055</p></li>
+              <li><h4 className="font-medium">Muhammed Maral - Software Engineer at FairUp</h4><p className="text-sm text-gray-600">Email: mami.maral@icloud.com</p></li>
               <li><h4 className="font-medium">Irshad Muttar - Head of Operations & IT Letshego Kenya </h4><p className="text-sm text-gray-600">Email: Irshadm@letshego.com | Phone: +254 795 359 049</p></li>
               <li><h4 className="font-medium">Arnold Muthama - Manager at Aspira</h4><p className="text-sm text-gray-600">Email: arnoldmutisya@gmail.com | Phone: +254 726 176 272</p></li>
               
