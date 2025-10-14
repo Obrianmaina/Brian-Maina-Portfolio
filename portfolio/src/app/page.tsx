@@ -784,7 +784,7 @@ export default function PortfolioPage() {
           <>
             <p className="text-gray-600 mb-6">Contact details are now visible. Thank you for verifying.</p>
             <ul className="space-y-6">
-              <li><h4 className="font-medium">Oliver Gutezeit - Manager at SAP SE</h4><p className="text-sm text-gray-600">Email: oliver.gutezeit@sap.com | Phone: +49 622 774 2260</p></li>
+              <li><h4 className="font-medium">Oliver Gutzeit - Manager at SAP SE</h4><p className="text-sm text-gray-600">Email: oliver.gutzeit@sap.com | Phone: +49 622 774 2260</p></li>
               <li><h4 className="font-medium">Ilka Wiskemann - Global HR Business Partner SAP SE</h4><p className="text-sm text-gray-600">Email: ilka.wiskemann@sap.com | Phone: +49 622 776 2638</p></li>
               <li><h4 className="font-medium">Britta Lehn - Manager at SAP SE</h4><p className="text-sm text-gray-600">Email: britta.lehn@sap.com | Phone: +49 622 775 4546</p></li>
               <li><h4 className="font-medium">Maria Belov - UI/UX Designer at SAP SE</h4><p className="text-sm text-gray-600">Email: maria.belov@sap.com | Phone: +49 622 776 7055</p></li>
