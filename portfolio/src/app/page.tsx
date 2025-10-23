@@ -629,7 +629,19 @@ export default function PortfolioPage() {
           challenge: "Will update upon receiving permission.",
           process: "Will update upon receiving permission.",
           outcome: "Will update upon receiving permission."
-      } ]
+      },
+      {
+          title: "Confidential Project",
+          category: "Graphics",
+          description: "Still awaiting permission to showcase this projects.",
+          tag: "Corporate Work",
+          mediaType: "image",
+          media: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Approval/Awaiting%20Consent.png",
+          challenge: "Will update upon receiving permission.",
+          process: "Will update upon receiving permission.",
+          outcome: "Will update upon receiving permission."
+      }
+     ]
     }
   ];
 
