@@ -427,7 +427,7 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: 
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Covid%2019%20awareness/Covid%2019%20JAB.jpg",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Musa%20Gitau%20Youth/Night%20of%20Prayer.jpg",
       
       challenge: "Create an engaging visual tailored for WhatsApp to invite youths to a Prayer Night.",
       process: "Designed graphics in Adobe Photoshop and Illustrator, tailored for Whatapp.",
