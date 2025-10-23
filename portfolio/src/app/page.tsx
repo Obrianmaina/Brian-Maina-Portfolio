@@ -67,10 +67,10 @@ const experienceData: TimelineSection[] = [
         title: "Junior Marketing Officer",
         date: "December 2022 - September 2023",
         description: [
-                        "Created digital and print marketing materials, including social media and web banners, catalogues, brochures, posters, and office branding for over 50 partner retailers.",
-                        "Created marketing copy and designed Google Ads.",
-                        "Liaised with partner companies to get current offers and promotions.",
-                        "Conducted web and social media audits."
+                            "Created digital and print marketing materials, including social media and web banners, catalogues, brochures, posters, and office branding for over 50 partner retailers.",
+                            "Created marketing copy and designed Google Ads.",
+                            "Liaised with partner companies to get current offers and promotions.",
+                            "Conducted web and social media audits."
         ]
       },
       {
@@ -86,7 +86,7 @@ const experienceData: TimelineSection[] = [
         title: "Apprenticeship (Video Editor)",
         date: "April 2022 - May 2022",
         description: 
-                        "Learned and applied essentials in video editing, audio design, set management, and camera usage."
+                            "Learned and applied essentials in video editing, audio design, set management, and camera usage."
         
       },
       {
@@ -102,7 +102,7 @@ const experienceData: TimelineSection[] = [
         title: "Designer and Marketer (Contract)",
         date: "December 2021 - March 2022",
         description: 
-                        "Created social media campaign banners, videos, and copy for marketing campaigns."
+                            "Created social media campaign banners, videos, and copy for marketing campaigns."
         
       }
     ]
@@ -113,10 +113,10 @@ const experienceData: TimelineSection[] = [
         title: "Intern (Public Relations Office)",
         date: "June 2021 - October 2021",
         description: 
-                        ["Created banners, posters, and edited videos for the 40th Moi University Graduation.",
-                          "Served as a graphic designer, translator, and editor under the Corporate Affairs and Protocol Office.",
-                          "Led a team to collect and sort student data for the creation of student IDs."
-                        ]
+                            ["Created banners, posters, and edited videos for the 40th Moi University Graduation.",
+                              "Served as a graphic designer, translator, and editor under the Corporate Affairs and Protocol Office.",
+                              "Led a team to collect and sort student data for the creation of student IDs."
+                            ]
         
       }
     ]
@@ -142,7 +142,7 @@ const experienceData: TimelineSection[] = [
         description: "Focused on Communication, Marketing, Translation, and Swahili literature and linguistics."
       }]
     },
-     // START: New Courses & Certifications Section
+      // START: New Courses & Certifications Section
     {
       heading: "Courses & Certifications",
       entries: [
@@ -275,7 +275,7 @@ const experienceData: TimelineSection[] = [
     {
       title: "Kongamano la CHAWAKAMA Posters",
       category: "Graphics",
-      description: "A social media poster for  CHAWAKAMA.",
+      description: "A social media poster for  CHAWAKAMA.",
       tag: "Graphics",
       mediaType: "image",
       media: [
@@ -566,7 +566,7 @@ const experienceData: TimelineSection[] = [
     {
       title: "Morning Inspiration Artwork for Social Media",
       category: "Graphics",
-      description: "  Bible Verse artwork for P.C.E.A Musa Gitau Facebook Page during the COVID-19 pandemic.",
+      description: "  Bible Verse artwork for P.C.E.A Musa Gitau Facebook Page during the COVID-19 pandemic.",
       tag: "Graphics",
       mediaType: "image",
       media: [
@@ -737,9 +737,10 @@ const experienceData: TimelineSection[] = [
   }, []);
 
   return (
-    <main className="relative bg-gray-50 text-gray-900 min-h-screen">
+    <main className="relative bg-gray-50 text-gray-900 min-h-screen overflow-x-hidden">
       <section className="relative flex flex-col items-center justify-center h-screen text-center px-6">
-        <motion.h1 initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-5xl font-bold mb-4">
+        {/* --- RESPONSIVENESS FIX: Adjusted font size for small screens --- */}
+        <motion.h1 initial={{ opacity: 0, y: -50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="text-4xl sm:text-5xl font-bold mb-4">
           Brian Maina Nyawira
         </motion.h1>
         <p className="text-lg mb-6">Visual Designer</p>
@@ -765,7 +766,7 @@ const experienceData: TimelineSection[] = [
           </ul>
         </div>
         <div className="grid md:grid-cols-2 gap-10">
-                    <div>
+                      <div>
             <h3 className="text-2xl font-semibold mb-4">Experience</h3>
             <Timeline sections={experienceData} />
           </div>
@@ -847,10 +848,11 @@ const experienceData: TimelineSection[] = [
             </Button>
           ))}
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* --- RESPONSIVENESS FIX: Added sm:grid-cols-2 for tablet view --- */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredShowcases.map((project, idx) => (
             <motion.div key={project.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.08 }}>
-              <Card className="shadow-lg rounded-2xl group relative overflow-hidden cursor-pointer h-full" onClick={() => setLightbox(project)}>
+              <Card className="w-full shadow-lg rounded-2xl group relative overflow-hidden cursor-pointer h-full" onClick={() => setLightbox(project)}>
                 <CardContent>
                   <div className="h-40 flex items-center justify-center relative bg-gray-100 rounded-lg overflow-hidden">
                     <ThumbnailPreview project={project} />
@@ -874,10 +876,16 @@ const experienceData: TimelineSection[] = [
       <section id="corporate-work" className="relative max-w-6xl mx-auto py-20 px-6">
         <h2 className="text-3xl font-semibold mb-8 text-center">Corporate Work</h2>
         <p className="text-gray-600 mb-8 max-w-3xl mx-auto text-center">This section contains confidential work created for specific companies. Access is granted for portfolio review purposes only after acknowledging the respective disclaimer.</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* --- 
+          RESPONSIVENESS FIX: 
+          Changed breakpoints from "md:grid-cols-2 lg:grid-cols-3" 
+          to "sm:grid-cols-2 md:grid-cols-3" to match the "Design Showcase" section above.
+          This fixes layout inconsistencies on iPad Mini and Galaxy Z Fold 5.
+        --- */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
           {companyProjects.map((project, idx) => (
             <motion.div key={project.companyName} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.08 }}>
-              <Card className="shadow-lg rounded-2xl group relative overflow-hidden cursor-pointer h-full flex flex-col items-center justify-center p-8 bg-gray-100 hover:bg-white transition-colors" onClick={() => setDisclaimerProject(project)}>
+              <Card className="w-full shadow-lg rounded-2xl group relative overflow-hidden cursor-pointer h-full flex flex-col items-center justify-center p-8 bg-gray-100 hover:bg-white transition-colors" onClick={() => setDisclaimerProject(project)}>
                 <Image src={project.companyLogo} alt={`${project.companyName} logo`} width={128} height={64} className="h-16 w-auto mb-4" />
                 <h3 className="text-xl font-medium text-gray-800">{project.companyName}</h3>
                 <p className="text-sm text-teal-600 font-semibold mt-4">View Projects</p>
@@ -889,7 +897,8 @@ const experienceData: TimelineSection[] = [
 
       {lightbox && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4" onClick={() => setLightbox(null)}>
-          <div role="dialog" aria-modal="true" aria-labelledby="lightbox-title" className="bg-white rounded-2xl p-6 max-w-4xl w-full relative overflow-y-auto max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
+          {/* --- RESPONSIVENESS FIX: Reduced padding on small screens (p-4) --- */}
+          <div role="dialog" aria-modal="true" aria-labelledby="lightbox-title" className="bg-white rounded-2xl p-4 sm:p-6 max-w-4xl w-full relative overflow-y-auto max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
             <button className="absolute top-2 right-2 text-gray-600 hover:text-black" onClick={() => setLightbox(null)} aria-label="Close dialog"><X size={24} /></button>
             <h3 id="lightbox-title" className="text-2xl font-semibold mb-4">{lightbox.title}</h3>
             <div className="mb-6"><MediaDisplay project={lightbox} /></div>
@@ -904,14 +913,16 @@ const experienceData: TimelineSection[] = [
 
       {disclaimerProject && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4" onClick={() => setDisclaimerProject(null)}>
-          <div role="dialog" aria-modal="true" aria-labelledby="disclaimer-title" className="bg-white rounded-2xl p-6 max-w-2xl w-full relative" onClick={(e) => e.stopPropagation()}>
+          {/* --- RESPONSIVENESS FIX: Reduced padding on small screens (p-4) --- */}
+          <div role="dialog" aria-modal="true" aria-labelledby="disclaimer-title" className="bg-white rounded-2xl p-4 sm:p-6 max-w-2xl w-full relative" onClick={(e) => e.stopPropagation()}>
             <button className="absolute top-2 right-2 text-gray-600 hover:text-black" onClick={() => setDisclaimerProject(null)} aria-label="Close dialog"><X size={24} /></button>
             <div className="flex items-start gap-4">
               <div className="flex-shrink-0 bg-teal-100 text-teal-600 rounded-full p-3 mt-1"><Info size={24} /></div>
               <div>
                 <h3 id="disclaimer-title" className="text-2xl font-semibold mb-2">Notice of Confidentiality</h3>
                 <p className="text-sm text-gray-700 mb-6">{disclaimerProject.disclaimer}</p>
-                <div className="flex justify-end gap-4">
+                {/* --- RESPONSIVENESS FIX: Stacked buttons vertically on mobile --- */}
+                <div className="flex flex-col sm:flex-row sm:justify-end gap-4">
                   <Button variant="outline" onClick={() => setDisclaimerProject(null)}>Cancel</Button>
                   {/* --- UPDATED ONCLICK LOGIC --- */}
                   <Button onClick={() => {
@@ -933,7 +944,8 @@ const experienceData: TimelineSection[] = [
       {/* --- ADDED NEW MODAL FOR COMPANY PROJECT GALLERY --- */}
       {companyProjectsToShow && (
       <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4" onClick={() => setCompanyProjectsToShow(null)}>
-        <div role="dialog" aria-modal="true" aria-labelledby="gallery-title" className="bg-white rounded-2xl p-6 max-w-4xl w-full relative overflow-y-auto max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
+        {/* --- RESPONSIVENESS FIX: Reduced padding on small screens (p-4) --- */}
+        <div role="dialog" aria-modal="true" aria-labelledby="gallery-title" className="bg-white rounded-2xl p-4 sm:p-6 max-w-4xl w-full relative overflow-y-auto max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
           <button className="absolute top-2 right-2 text-gray-600 hover:text-black" onClick={() => setCompanyProjectsToShow(null)} aria-label="Close dialog"><X size={24} /></button>
           
           <h3 id="gallery-title" className="text-2xl font-semibold mb-2">Corporate Projects</h3>
