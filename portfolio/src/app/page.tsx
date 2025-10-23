@@ -421,6 +421,19 @@ const experienceData: TimelineSection[] = [
       outcome: "Helped in creating awareness on COVID-19 vaccination.",
     },
     {
+      title: "P.C.E.A Emmanuel Church Prayer Night Poster",
+      category: "Graphics",
+      description: "A social media poster for P.C.E.A Emmanuel Church Prayer Night.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: 
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Covid%2019%20awareness/Covid%2019%20JAB.jpg",
+      
+      challenge: "Create an engaging visual tailored for WhatsApp to invite youths to a Prayer Night.",
+      process: "Designed graphics in Adobe Photoshop and Illustrator, tailored for Whatapp.",
+      outcome: "Spreading the word to youth in the community about the prayer night.",
+    },
+    {
       title: "Graced Family Hangout Poster",
       category: "Graphics",
       description: "A series of social media poster for Graced Family hangout event.",
