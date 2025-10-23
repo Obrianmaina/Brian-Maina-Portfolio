@@ -826,6 +826,7 @@ const experienceData: TimelineSection[] = [
             <ul className="space-y-6">
               <li><h4 className="font-medium">Oliver Gutzeit - Manager at SAP SE</h4><p className="text-sm text-gray-600">Email: oliver.gutzeit@sap.com | Phone: +49 622 774 2260</p></li>
               <li><h4 className="font-medium">Ilka Wiskemann - Global HR Business Partner SAP SE</h4><p className="text-sm text-gray-600">Email: ilka.wiskemann@sap.com | Phone: +49 622 776 2638</p></li>
+              <li><h4 className="font-medium">Milena Schmidt - Corporate Learning Senior Specialist SAP SE</h4><p className="text-sm text-gray-600">Email: milena.schmidt@sap.com | Phone: +49 622 776 2119</p></li>
               <li><h4 className="font-medium">Britta Lehn - Manager at SAP SE</h4><p className="text-sm text-gray-600">Email: britta.lehn@sap.com | Phone: +49 622 775 4546</p></li>
               <li><h4 className="font-medium">Kim Champion - UI/UX Designer at SAP SE</h4><p className="text-sm text-gray-600">Email: kimchampion.work@gmail.com | Phone: +1 925 413 3896</p></li>
               <li><h4 className="font-medium">Maria Belov - UI/UX Designer at SAP SE</h4><p className="text-sm text-gray-600">Email: maria.belov@sap.com | Phone: +49 622 776 7055</p></li>
