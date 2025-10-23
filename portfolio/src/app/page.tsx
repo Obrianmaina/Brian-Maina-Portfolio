@@ -833,6 +833,7 @@ const experienceData: TimelineSection[] = [
               <li><h4 className="font-medium">Anja Rosker - SAP Community Advocate</h4><p className="text-sm text-gray-600">Email: anja.rosker@sap.com | Phone: +49 622 777 1743</p></li>
               <li><h4 className="font-medium">Muhammed Maral - Software Engineer at FairUp</h4><p className="text-sm text-gray-600">Email: mami.maral@icloud.com</p></li>
               <li><h4 className="font-medium">Irshad Muttar - Head of Operations & IT Letshego Kenya </h4><p className="text-sm text-gray-600">Email: Irshadm@letshego.com | Phone: +254 795 359 049</p></li>
+              <li><h4 className="font-medium">Madam Patricia E. Cheramboss - Corporate Affairs and Protocal Officer Moi University</h4><p className="text-sm text-gray-600">Email: pcheramboss@mu.ac.ke | Phone: +254 720 836 060</p></li>
               <li><h4 className="font-medium">Arnold Muthama - Manager at Aspira</h4><p className="text-sm text-gray-600">Email: arnoldmutisya@gmail.com | Phone: +254 726 176 272</p></li>
               
             </ul>
