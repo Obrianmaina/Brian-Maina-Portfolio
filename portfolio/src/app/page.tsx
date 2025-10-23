@@ -293,7 +293,7 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: [
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Chawakama/CHAWAKAMA%2024%3B4%3B2021%20.jpg",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Podcast/Breaking%20Jemimah.jpg",
       ],
       challenge: "Create a podcast cover image for Breaking Jemimah.",
       process: "Designed graphics in Adobe Photoshop",
