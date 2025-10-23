@@ -272,19 +272,6 @@ const experienceData: TimelineSection[] = [
       process: "Designed graphics in Adobe Photoshop and Illustrator, tailored for Whatsapp and Facebook.",
       outcome: "Boosted brand awareness in the local market.",
     },
-    {
-      title: "Kongamano la CHAWAKAMA Posters",
-      category: "Graphics",
-      description: "A social media poster for  CHAWAKAMA.",
-      tag: "Graphics",
-      mediaType: "image",
-      media: [
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Chawakama/CHAWAKAMA%2024%3B4%3B2021%20.jpg",
-      ],
-      challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Illustrator, tailored for Whatsapp.",
-      outcome: "Boosted brand awareness in the local market.",
-    },
 
     {
       title: "Podcast artwork for Breaking Jemimah",
@@ -365,6 +352,19 @@ const experienceData: TimelineSection[] = [
       challenge: "Create engaging visuals for a social media campaign.",
       process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
       outcome: "Boosted event marketing to the local community.",
+    },
+    {
+      title: "Kongamano la CHAWAKAMA Posters",
+      category: "Graphics",
+      description: "A social media poster for  CHAWAKAMA.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: [
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Chawakama/CHAWAKAMA%2024%3B4%3B2021%20.jpg",
+      ],
+      challenge: "Create engaging visuals for a social media campaign.",
+      process: "Designed graphics in Adobe Illustrator, tailored for Whatsapp.",
+      outcome: "Boosted brand awareness in the local market.",
     },
     {
       title: "P.C.E.A Musa Gitau Youth Events Posters",
