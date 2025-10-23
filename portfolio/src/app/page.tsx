@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from 'next/image';
 import { motion } from "framer-motion";
-import { X, Info } from "lucide-react";
+import { X, Info, ChevronLeft, ChevronRight } from "lucide-react"; // Import Chevron icons if not already in ui/button
 import { SiLinkedin, SiGithub, SiX, SiInstagram, SiBehance } from "react-icons/si";
 
 import { Showcase, CompanyProject, TimelineSection } from "@/types";
@@ -21,6 +21,8 @@ export default function PortfolioPage() {
   const [lightbox, setLightbox] = useState<Showcase | null>(null);
   const [unlocked, setUnlocked] = useState(false);
   const [disclaimerProject, setDisclaimerProject] = useState<CompanyProject | null>(null);
+  // --- ADDED STATE ---
+  const [companyProjectsToShow, setCompanyProjectsToShow] = useState<Showcase[] | null>(null);
   
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
@@ -28,6 +30,99 @@ export default function PortfolioPage() {
   const [requestMessage, setRequestMessage] = useState("");
   const [unlockLoading, setUnlockLoading] = useState(false);
   const [unlockError, setUnlockError] = useState("");
+
+const experienceData: TimelineSection[] = [
+    {
+      heading: "SAP SE",
+      entries: [
+        {
+          title: "VT Student",
+          date: "2024 September - 2025 October",
+          description: "Worked on real-world projects, learning from mentors on the implementation of UI5 Framework in SAP Systems and in my final rotation delivered a Web Components API Viewer for the SAP UI5 Core Framework team."
+        },
+        {
+          title: "Visual Designer",
+          date: "February 2024 - September 2024",
+          description: [
+              "Designed banners, corporate slide decks, and edited images and videos for the Experience Technology team.",
+              "Created User Interface designs and updated existing components for the Discovery Showroom.",
+              "Assisted in the design of the Experience Technology team and Afrika Kommt! Workzone pages."
+            ]
+        }
+      ]
+    },
+    {
+      heading: "AFRIKA KOMMT! Fellowship",
+      entries: [{
+        title: "Fellow",
+        date: "November 2023 - November 2024",
+        description: ["Completed an intensive program focused on leadership, cross-cultural exchange, and management training in Germany.",
+                      "Selected as one of 42 fellows from over 5,000 applicants for the 12th Afrika Kommt! Fellowship."
+        ]
+      }]
+    },
+    {
+      heading: "Aspira",
+      entries: [{
+        title: "Junior Marketing Officer",
+        date: "December 2022 - September 2023",
+        description: [
+                        "Created digital and print marketing materials, including social media and web banners, catalogues, brochures, posters, and office branding for over 50 partner retailers.",
+                        "Created marketing copy and designed Google Ads.",
+                        "Liaised with partner companies to get current offers and promotions.",
+                        "Conducted web and social media audits."
+        ]
+      },
+      {
+        title: "Marketing and Design Associate",
+        date: "June 2022 - November 2022",
+        description: "Designed marketing and brand materials for a fintech startup, including social media visuals, pitch decks, and event branding."
+      }
+    ]
+    },
+    {
+      heading: "Unicorn Stable",
+      entries: [{
+        title: "Apprenticeship (Video Editor)",
+        date: "April 2022 - May 2022",
+        description: 
+                        "Learned and applied essentials in video editing, audio design, set management, and camera usage."
+        
+      },
+      {
+        title: "Apprenticeship",
+        date: "June 2020 - October 2020",
+        description: "Learned video editing basics, including cutting, transitions, and audio syncing using Adobe Premiere Pro and After Effects."
+      }
+    ]
+    },
+    {
+      heading: "Breejoz Baby & Mums Shop and Danek Baby Shop",
+      entries: [{
+        title: "Designer and Marketer (Contract)",
+        date: "December 2021 - March 2022",
+        description: 
+                        "Created social media campaign banners, videos, and copy for marketing campaigns."
+        
+      }
+    ]
+    },
+    {
+      heading: " Moi University (Eldoret, Kenya)",
+      entries: [{
+        title: "Intern (Public Relations Office)",
+        date: "June 2021 - October 2021",
+        description: 
+                        ["Created banners, posters, and edited videos for the 40th Moi University Graduation.",
+                          "Served as a graphic designer, translator, and editor under the Corporate Affairs and Protocol Office.",
+                          "Led a team to collect and sort student data for the creation of student IDs."
+                        ]
+        
+      }
+    ]
+    }
+    
+  ];
 
   const educationData: TimelineSection[] = [
     
@@ -91,101 +186,10 @@ export default function PortfolioPage() {
     }
   ];
 
-  const experienceData: TimelineSection[] = [
-    {
-      heading: "SAP SE",
-      entries: [
-        {
-          title: "VT Student",
-          date: "2024 September - 2025 October",
-          description: "Worked on real-world projects, learning from mentors on the implementation of UI5 Framework in SAP Systems and in my final rotation delivered a Web Components API Viewer for the SAP UI5 Core Framework team."
-        },
-        {
-          title: "Visual Designer",
-          date: "February 2024 - September 2024",
-          description: [
-                "Designed banners, corporate slide decks, and edited images and videos for the Experience Technology team.",
-                "Created User Interface designs and updated existing components for the Discovery Showroom.",
-                "Assisted in the design of the Experience Technology team and Afrika Kommt! Workzone pages."
-              ]
-        }
-      ]
-    },
-    {
-      heading: "AFRIKA KOMMT! Fellowship",
-      entries: [{
-        title: "Fellow",
-        date: "November 2023 - November 2024",
-        description: ["Completed an intensive program focused on leadership, cross-cultural exchange, and management training in Germany.",
-                      "Selected as one of 42 fellows from over 5,000 applicants for the 12th Afrika Kommt! Fellowship."
-        ]
-      }]
-    },
-    {
-      heading: "Aspira",
-      entries: [{
-        title: "Junior Marketing Officer",
-        date: "December 2022 - September 2023",
-        description: [
-                      "Created digital and print marketing materials, including social media and web banners, catalogues, brochures, posters, and office branding for over 50 partner retailers.",
-                      "Created marketing copy and designed Google Ads.",
-                      "Liaised with partner companies to get current offers and promotions.",
-                      "Conducted web and social media audits."
-        ]
-      },
-      {
-        title: "Marketing and Design Associate",
-        date: "June 2022 - November 2022",
-        description: "Designed marketing and brand materials for a fintech startup, including social media visuals, pitch decks, and event branding."
-      }
-    ]
-    },
-    {
-      heading: "Unicorn Stable",
-      entries: [{
-        title: "Apprenticeship (Video Editor)",
-        date: "April 2022 - May 2022",
-        description: 
-                      "Learned and applied essentials in video editing, audio design, set management, and camera usage."
-        
-      },
-      {
-        title: "Apprenticeship",
-        date: "June 2020 - October 2020",
-        description: "Learned video editing basics, including cutting, transitions, and audio syncing using Adobe Premiere Pro and After Effects."
-      }
-    ]
-    },
-    {
-      heading: "Breejoz Baby & Mums Shop and Danek Baby Shop",
-      entries: [{
-        title: "Designer and Marketer (Contract)",
-        date: "December 2021 - March 2022",
-        description: 
-                      "Created social media campaign banners, videos, and copy for marketing campaigns."
-        
-      }
-    ]
-    },
-    {
-      heading: " Moi University (Eldoret, Kenya)",
-      entries: [{
-        title: "Intern (Public Relations Office)",
-        date: "June 2021 - October 2021",
-        description: 
-                      ["Created banners, posters, and edited videos for the 40th Moi University Graduation.",
-                        "Served as a graphic designer, translator, and editor under the Corporate Affairs and Protocol Office.",
-                        "Led a team to collect and sort student data for the creation of student IDs."
-                      ]
-        
-      }
-    ]
-    }
-    
-  ];
 
-  // UPDATED: New skills array
-  const skills = ["UI/UX Design", "Graphic Design", "Motion Graphics", "Email Marketing", "Copy Writing", "Adobe Photoshop", "Adobe Illustrator", "Adobe After Effects", "Adobe Premier Pro", "Canva", "Adobe InDesign", "Adobe Audition", "Figma", "Microsoft Powerpoint", "Google Slides", "Data Visualization", "Mailchimp", "Mural", "Figjam", "Miro", "Google Slides", "HTML", "CSS", "Davinci Resolve", "Github", "VS Code", "Pycharm", "IntelliJ IDEA", "Corel Draw", "AI"];
+
+  // UPDATED: New skills array (removed duplicate "Google Slides")
+  const skills = ["UI/UX Design", "Graphic Design", "Motion Graphics", "Email Marketing", "Copy Writing", "Adobe Photoshop", "Adobe Illustrator", "Adobe After Effects", "Adobe Premier Pro", "Canva", "Adobe InDesign", "Adobe Audition", "Figma", "Microsoft Powerpoint", "Data Visualization", "Mailchimp", "Mural", "Figjam", "Miro", "Google Slides", "HTML", "CSS", "Davinci Resolve", "Github", "VS Code", "Pycharm", "IntelliJ IDEA", "Corel Draw", "AI"];
 
   const showcases: Showcase[] = [
     
@@ -649,7 +653,7 @@ export default function PortfolioPage() {
     },
     {
       companyName: "Company I worked for",
-      companyLogo: "/images/logos/sap-logo.svg",
+      companyLogo: "/images/logos/company-logo.svg",
       disclaimer: "The following work was created during my tenure at Company. It is shared with permission for portfolio purposes only and remains the intellectual property of Company. The content is confidential and should not be distributed, copied, or disclosed.",
       projects: [ {
           title: "Confidential Project",
@@ -719,11 +723,13 @@ export default function PortfolioPage() {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
   };
 
+  // --- UPDATED USEEFFECT ---
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         setLightbox(null);
         setDisclaimerProject(null);
+        setCompanyProjectsToShow(null); // <-- ADDED THIS LINE
       }
     };
     window.addEventListener("keydown", onKey);
@@ -759,13 +765,13 @@ export default function PortfolioPage() {
           </ul>
         </div>
         <div className="grid md:grid-cols-2 gap-10">
+                    <div>
+            <h3 className="text-2xl font-semibold mb-4">Experience</h3>
+            <Timeline sections={experienceData} />
+          </div>
           <div>
             <h3 className="text-2xl font-semibold mb-4">Education</h3>
             <Timeline sections={educationData} />
-          </div>
-          <div>
-            <h3 className="text-2xl font-semibold mb-4">Experience</h3>
-            <Timeline sections={experienceData} />
           </div>
         </div>
          {/* UPDATED: Skills Section with Tooltip for AI */}
@@ -872,7 +878,7 @@ export default function PortfolioPage() {
           {companyProjects.map((project, idx) => (
             <motion.div key={project.companyName} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.08 }}>
               <Card className="shadow-lg rounded-2xl group relative overflow-hidden cursor-pointer h-full flex flex-col items-center justify-center p-8 bg-gray-100 hover:bg-white transition-colors" onClick={() => setDisclaimerProject(project)}>
-                <Image src={project.companyLogo} alt={`${project.companyName} logo`} width={128} height={64} className="h-16 w-auto mb-4 grayscale group-hover:grayscale-0 transition-all" />
+                <Image src={project.companyLogo} alt={`${project.companyName} logo`} width={128} height={64} className="h-16 w-auto mb-4" />
                 <h3 className="text-xl font-medium text-gray-800">{project.companyName}</h3>
                 <p className="text-sm text-teal-600 font-semibold mt-4">View Projects</p>
               </Card>
@@ -883,9 +889,9 @@ export default function PortfolioPage() {
 
       {lightbox && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4" onClick={() => setLightbox(null)}>
-          <div className="bg-white rounded-2xl p-6 max-w-4xl w-full relative overflow-y-auto max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
+          <div role="dialog" aria-modal="true" aria-labelledby="lightbox-title" className="bg-white rounded-2xl p-6 max-w-4xl w-full relative overflow-y-auto max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
             <button className="absolute top-2 right-2 text-gray-600 hover:text-black" onClick={() => setLightbox(null)} aria-label="Close dialog"><X size={24} /></button>
-            <h3 className="text-2xl font-semibold mb-4">{lightbox.title}</h3>
+            <h3 id="lightbox-title" className="text-2xl font-semibold mb-4">{lightbox.title}</h3>
             <div className="mb-6"><MediaDisplay project={lightbox} /></div>
             <div className="space-y-4">
               <div><h4 className="font-medium text-lg">Challenge</h4><p className="text-sm text-gray-700">{lightbox.challenge}</p></div>
@@ -898,7 +904,7 @@ export default function PortfolioPage() {
 
       {disclaimerProject && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4" onClick={() => setDisclaimerProject(null)}>
-          <div className="bg-white rounded-2xl p-6 max-w-2xl w-full relative" onClick={(e) => e.stopPropagation()}>
+          <div role="dialog" aria-modal="true" aria-labelledby="disclaimer-title" className="bg-white rounded-2xl p-6 max-w-2xl w-full relative" onClick={(e) => e.stopPropagation()}>
             <button className="absolute top-2 right-2 text-gray-600 hover:text-black" onClick={() => setDisclaimerProject(null)} aria-label="Close dialog"><X size={24} /></button>
             <div className="flex items-start gap-4">
               <div className="flex-shrink-0 bg-teal-100 text-teal-600 rounded-full p-3 mt-1"><Info size={24} /></div>
@@ -907,13 +913,61 @@ export default function PortfolioPage() {
                 <p className="text-sm text-gray-700 mb-6">{disclaimerProject.disclaimer}</p>
                 <div className="flex justify-end gap-4">
                   <Button variant="outline" onClick={() => setDisclaimerProject(null)}>Cancel</Button>
-                  <Button onClick={() => { if (disclaimerProject.projects.length > 0) setLightbox(disclaimerProject.projects[0]); setDisclaimerProject(null); }}>Acknowledge & Proceed</Button>
+                  {/* --- UPDATED ONCLICK LOGIC --- */}
+                  <Button onClick={() => {
+                    if (!disclaimerProject) return;
+                    if (disclaimerProject.projects.length === 1) {
+                      setLightbox(disclaimerProject.projects[0]);
+                    } else if (disclaimerProject.projects.length > 1) {
+                      setCompanyProjectsToShow(disclaimerProject.projects);
+                    }
+                    setDisclaimerProject(null);
+                  }}>Acknowledge & Proceed</Button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       )}
+
+      {/* --- ADDED NEW MODAL FOR COMPANY PROJECT GALLERY --- */}
+      {companyProjectsToShow && (
+      <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4" onClick={() => setCompanyProjectsToShow(null)}>
+        <div role="dialog" aria-modal="true" aria-labelledby="gallery-title" className="bg-white rounded-2xl p-6 max-w-4xl w-full relative overflow-y-auto max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
+          <button className="absolute top-2 right-2 text-gray-600 hover:text-black" onClick={() => setCompanyProjectsToShow(null)} aria-label="Close dialog"><X size={24} /></button>
+          
+          <h3 id="gallery-title" className="text-2xl font-semibold mb-2">Corporate Projects</h3>
+          <p className="text-gray-600 mb-6">Please select a project to view its details.</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {companyProjectsToShow.map((project, idx) => (
+              <motion.div key={project.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.08 }}>
+                <Card className="shadow-lg rounded-2xl group relative overflow-hidden cursor-pointer h-full" onClick={() => {
+                  setLightbox(project); // Open the selected project
+                  setCompanyProjectsToShow(null); // Close this modal
+                }}>
+                  <CardContent>
+                    <div className="h-40 flex items-center justify-center relative bg-gray-100 rounded-lg overflow-hidden">
+                      <ThumbnailPreview project={project} />
+                      <span className="absolute top-2 left-2 bg-teal-500 text-white text-xs px-2 py-1 rounded-full">{project.tag}</span>
+                      <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <p className="text-white text-sm mb-2 px-4 text-center">{project.description}</p>
+                        <Button className="bg-teal-500 hover:bg-teal-600">View Project</Button>
+                      </div>
+                    </div>
+                    <div className="p-4">
+                      <h3 className="text-xl font-medium">{project.title}</h3>
+                      <p className="text-sm text-gray-600">Category: {project.category}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )}
+    {/* --- END OF NEW MODAL --- */}
 
       <footer className="relative bg-gray-900 text-white py-20 px-6 text-center">
         <h2 className="text-3xl font-semibold mb-6">Get In Touch</h2>
@@ -930,4 +984,3 @@ export default function PortfolioPage() {
     </main>
   );
 }
-
