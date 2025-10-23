@@ -287,6 +287,20 @@ const experienceData: TimelineSection[] = [
     },
 
     {
+      title: "Podcast artwork for Breaking Jemimah",
+      category: "Graphics",
+      description: "A poscast cover art for Breaking Jemimah.",
+      tag: "Graphics",
+      mediaType: "image",
+      media: [
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Chawakama/CHAWAKAMA%2024%3B4%3B2021%20.jpg",
+      ],
+      challenge: "Create a podcast cover image for Breaking Jemimah.",
+      process: "Designed graphics in Adobe Photoshop",
+      outcome: "Graphic that showcases a breaking of glass, symbolic to the shattering story.",
+    },
+
+    {
       title: "JasiriCup Website UI",
       category: "UI/UX",
       description: "Interactive Figma prototype for JasiriCup Website UI.",
