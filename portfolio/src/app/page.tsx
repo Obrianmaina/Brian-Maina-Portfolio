@@ -86,7 +86,7 @@ const experienceData: TimelineSection[] = [
         title: "Apprenticeship (Video Editor)",
         date: "April 2022 - May 2022",
         description: 
-                            "Learned and applied essentials in video editing, audio design, set management, and camera usage."
+                            "Learned and applied essentials in video editing, audio design, set management, and camera operation."
         
       },
       {
@@ -183,13 +183,25 @@ const experienceData: TimelineSection[] = [
           ]
         }
       ]
+    },
+    {
+      heading: "Volunteer Experience",
+      entries: [
+        {
+          title: "jaSiriCup Visual and Web Designer",
+          date: "2024 October - Present",
+          description: "Spearheaded the visual design strategy for a 3-person team, securing a first-place win in the AFRIKA KOMMT\! Change Initiative competition against 6 other teams; now leading the development of the initiative's official visual brand identity and public-facing website."
+        }
+      ]
     }
   ];
+
+  
 
 
 
   // UPDATED: New skills array (removed duplicate "Google Slides")
-  const skills = ["UI/UX Design", "Graphic Design", "Motion Graphics", "Email Marketing", "Copy Writing", "Adobe Photoshop", "Adobe Illustrator", "Adobe After Effects", "Adobe Premier Pro", "Canva", "Adobe InDesign", "Adobe Audition", "Figma", "Microsoft Powerpoint", "Data Visualization", "Mailchimp", "Mural", "Figjam", "Miro", "Google Slides", "HTML", "CSS", "Davinci Resolve", "Github", "VS Code", "Pycharm", "IntelliJ IDEA", "Corel Draw", "AI"];
+  const skills = ["UI/UX Design", "Graphic Design", "Motion Graphics", "Email Marketing", "Copy Writing", "Adobe Photoshop", "Adobe Illustrator", "Adobe After Effects", "Adobe Premier Pro", "Canva", "Adobe InDesign", "Adobe Audition", "Figma", "Microsoft Powerpoint", "Data Visualization", "Mailchimp", "Inkscape", "Mural", "Figjam", "Miro", "Google Slides", "HTML", "CSS", "Davinci Resolve", "Github", "Python", "Corel Draw", "AI"];
 
   const showcases: Showcase[] = [
     
