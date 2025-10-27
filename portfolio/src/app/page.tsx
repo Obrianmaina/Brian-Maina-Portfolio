@@ -651,18 +651,18 @@ const experienceData: TimelineSection[] = [
       process: "Created comprehenive deck with transition animations.",
       outcome: "Engaged audience effectively.",
     },*/
-    /*{
-      title: "Edge Computing Presentation",
+    {
+      title: "MedTech Presentation",
       category: "Presentation",
-      description: "Strategic business presentation with animations.",
+      description: "Medicine Technology presentation with animations.",
       tag: "Slide Decks",
       coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Slide.png",
       mediaType: "powerpoint",
-      media: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/Edge.pptx",
+      media: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/MedTech.pptx",
       challenge: "Presentation animations.",
       process: "Created comprehenive deck with transition animations.",
       outcome: "Engaged audience effectively.",
-    },*/
+    },
     {
       title: "Peacha Studio Promo Video",
       category: "Graphics",
