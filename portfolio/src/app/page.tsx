@@ -640,7 +640,7 @@ const experienceData: TimelineSection[] = [
       process: "Designed slides in Google Slides with data visualizations.",
       outcome: "Effectively communicated complex data to a technical audience.",
     },
-    {
+    /*{
       title: "Presentation with Animations",
       category: "Presentation",
       description: "Strategic business presentation with animations.",
@@ -650,7 +650,7 @@ const experienceData: TimelineSection[] = [
       challenge: "Presentation animations.",
       process: "Created comprehenive deck with transition animations.",
       outcome: "Engaged audience effectively.",
-    },
+    },*/
     /*{
       title: "Edge Computing Presentation",
       category: "Presentation",
