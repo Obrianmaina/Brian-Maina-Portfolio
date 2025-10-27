@@ -656,7 +656,7 @@ const experienceData: TimelineSection[] = [
       category: "Presentation",
       description: "Medicine Technology presentation with animations.",
       tag: "Slide Decks",
-      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Slide2.png",
+      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Slide3.png",
       mediaType: "powerpoint",
       media: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/MedTech.pptx",
       challenge: "Presentation animations.",
