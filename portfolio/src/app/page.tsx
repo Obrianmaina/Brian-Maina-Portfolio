@@ -316,6 +316,7 @@ const experienceData: TimelineSection[] = [
       category: "Presentation",
       description: "Brand presentation for product launch.",
       tag: "Slide Decks",
+      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Slide.png",
       mediaType: "presentation",
       media: [
         "/images/presentation-slide-1.png",
@@ -643,7 +644,7 @@ const experienceData: TimelineSection[] = [
       process: "Created comprehenive deck with transition animations.",
       outcome: "Engaged audience effectively.",
     },*/
-    {
+    /*{
       title: "Edge Computing Presentation",
       category: "Presentation",
       description: "Strategic business presentation with animations.",
@@ -654,7 +655,7 @@ const experienceData: TimelineSection[] = [
       challenge: "Presentation animations.",
       process: "Created comprehenive deck with transition animations.",
       outcome: "Engaged audience effectively.",
-    },
+    },*/
     {
       title: "Peacha Studio Promo Video",
       category: "Graphics",
