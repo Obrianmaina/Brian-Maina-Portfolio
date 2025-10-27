@@ -648,6 +648,7 @@ const experienceData: TimelineSection[] = [
       category: "Presentation",
       description: "Strategic business presentation with animations.",
       tag: "Slide Decks",
+      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Slide.png",
       mediaType: "powerpoint",
       media: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/Edge.pptx",
       challenge: "Presentation animations.",
