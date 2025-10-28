@@ -67,16 +67,16 @@ const experienceData: TimelineSection[] = [
         title: "Junior Marketing Officer",
         date: "December 2022 - September 2023",
         description: [
-                            "Created digital and print marketing materials, including social media and web banners, catalogues, brochures, posters, and office branding for over 50 partner retailers.",
+                            "Created digital and print marketing materials, including social media and web banners, catalogues, posters, in-store branding and Aspira office branding for Aspira Kenya.",
                             "Created marketing copy and designed Google Ads.",
-                            "Liaised with partner companies to get current offers and promotions.",
+                            "Liaised with over 50 partner retailers to get current offers and promotions used in Marketing Assets.",
                             "Conducted web and social media audits."
         ]
       },
       {
         title: "Marketing and Design Associate",
         date: "June 2022 - November 2022",
-        description: "Designed marketing and brand materials for a fintech startup, including social media visuals, pitch decks, and event branding."
+        description: "Designed marketing and brand materials for a Aspira Kenya, including social media visuals, and event branding."
       }
     ]
     },
@@ -310,29 +310,6 @@ const experienceData: TimelineSection[] = [
       challenge: "Create an intuitive dashboard for a social impact website.",
       process: "Conducted online research on audience, and created wireframes in Figma.",
       outcome: "Informed the development of the website for the client.",
-    },
-    {
-      title: "Edge Presentation",
-      category: "Presentation",
-      description: "Edge Computing presentation.",
-      tag: "Slide Decks",
-      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Slide.png",
-      mediaType: "presentation",
-      media: [
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide1.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide2.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide3.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide4.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide7.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide8.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide9.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide11.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide10.JPG",
-      
-      ],
-      challenge: "Communicate Edge computing to stakeholders.",
-      process: "Designed cohesive slide deck.",
-      outcome: "Informed the stakeholders about edge Computing.",
     },
     {
       title: "Mobile App Prototype Troubleshooters",
@@ -651,6 +628,30 @@ const experienceData: TimelineSection[] = [
       process: "Created comprehenive deck with transition animations.",
       outcome: "Engaged audience effectively.",
     },*/
+    
+    {
+      title: "Edge Presentation",
+      category: "Presentation",
+      description: "Edge Computing presentation.",
+      tag: "Slide Decks",
+      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Slide.png",
+      mediaType: "presentation",
+      media: [
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide1.JPG",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide2.JPG",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide3.JPG",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide4.JPG",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide7.JPG",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide8.JPG",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide9.JPG",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide11.JPG",
+        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide10.JPG",
+      
+      ],
+      challenge: "Communicate Edge computing to stakeholders.",
+      process: "Designed cohesive slide deck.",
+      outcome: "Informed the stakeholders about edge Computing.",
+    },
     {
       title: "MedTech Presentation",
       category: "Presentation",
