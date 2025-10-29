@@ -201,7 +201,7 @@ const experienceData: TimelineSection[] = [
 
 
   // UPDATED: New skills array (removed duplicate "Google Slides")
-  const skills = ["UI/UX Design", "Graphic Design", "Motion Graphics", "Email Marketing", "Copy Writing", "Adobe Photoshop", "Adobe Illustrator", "Adobe After Effects", "Adobe Premier Pro", "Figma", "Canva", "Adobe InDesign", "Adobe Audition", "Microsoft Powerpoint", "Data Visualization", "Mailchimp", "Inkscape", "Mural", "Figjam", "Miro", "Google Slides", "HTML", "CSS", "Davinci Resolve", "Github", "Python", "Corel Draw", "AI"];
+  const skills = ["UI/UX Design", "Graphic Design", "Motion Graphics", "Email Marketing", "Copy Writing", "Adobe Photoshop", "Adobe Illustrator", "Adobe After Effects", "Adobe Premier Pro", "Figma", "Canva", "Adobe InDesign", "Adobe Audition", "Microsoft Powerpoint", "Data Visualization", "Mailchimp", "Inkscape", "Mural", "Figjam", "Miro", "Google Slides", "HTML", "CSS", "Davinci Resolve", "Github", "Corel Draw", "AI"];
 
   const showcases: Showcase[] = [
     
