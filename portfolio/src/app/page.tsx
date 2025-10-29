@@ -659,7 +659,7 @@ const experienceData: TimelineSection[] = [
       tag: "Slide Decks",
       coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Slide3.png",
       mediaType: "powerpoint",
-      media: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/MedTech.pptx",
+      media: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/MedTech 2.pptx",
       challenge: "Presentation animations.",
       process: "Created comprehenive deck with transition animations.",
       outcome: "Engaged audience effectively.",
