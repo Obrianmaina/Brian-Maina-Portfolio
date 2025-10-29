@@ -658,7 +658,7 @@ const experienceData: TimelineSection[] = [
       description: "Medicine Technology presentation",
       tag: "Slide Decks",
       coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Slide3.png",
-      mediaType: "powerpoint",
+      mediaType: "presentation",
       media: [
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/Tomorrow%20Medicine/Slide/Slide1.JPG",
         "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/Tomorrow%20Medicine/Slide/Slide2.JPG",
