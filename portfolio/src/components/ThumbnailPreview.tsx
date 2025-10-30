@@ -3,12 +3,26 @@ import { Showcase } from "@/types";
 
 const ThumbnailPreview: React.FC<{ project: Showcase }> = ({ project }) => {
   if (project.coverImage) {
-    return <Image src={project.coverImage} alt={project.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />;
+    return <Image 
+      src={project.coverImage} 
+      alt={project.title} 
+      fill 
+      className="object-cover" 
+      sizes="(max-width: 768px) 100vw, 33vw" 
+      unoptimized={true} // <-- Fix added here
+    />;
   }
 
   if (project.mediaType === "image" || project.mediaType === "presentation") {
     const media = Array.isArray(project.media) ? project.media[0] : project.media;
-    return <Image src={media as string} alt={project.title} fill className="object-cover" sizes="(max-width: 768px) 100vw, 33vw" />;
+    return <Image 
+      src={media as string} 
+      alt={project.title} 
+      fill 
+      className="object-cover" 
+      sizes="(max-width: 768px) 100vw, 33vw" 
+      unoptimized={true} // <-- Fix added here
+    />;
   }
 
   if (project.mediaType === "video") {
@@ -39,4 +53,3 @@ const ThumbnailPreview: React.FC<{ project: Showcase }> = ({ project }) => {
 };
 
 export default ThumbnailPreview;
-

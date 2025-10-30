@@ -14,8 +14,15 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com', // <-- This is the fix
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };
 
 module.exports = nextConfig;
+

@@ -211,10 +211,11 @@ const experienceData: TimelineSection[] = [
       description: "Campagn assets.",
       tag: "Branding",
       mediaType: "image",
-      media: ["https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Peacha%20Studio%20Campaign/Spark.jpg",
-      "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Peacha%20Studio%20Campaign/Social%20media%20freak.jpg",
-      "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Peacha%20Studio%20Campaign/Peacha%20Studio%20Promo.jpg",
-      "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Peacha%20Studio%20Campaign/Heavy%20Lifting.jpg",
+      media: ["https://res.cloudinary.com/dsvexizbx/image/upload/v1761823632/Spark_yastzr.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823655/Social_media_freak_bcm6c9.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823670/Custome_swzwyz.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823653/Peacha_Studio_Promo_bktrge.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823642/Heavy_Lifting_ck0w0r.jpg"
 
       ],
       challenge: "Develop design awareness services campaign.",
@@ -229,9 +230,9 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: [
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Breejoz/Danek.jpg",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Breejoz/Danek%20(2).jpg",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Breejoz/Dungia%20Krisi.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823646/Danek_joemai.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823668/Danek_2_cxcccb.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823647/Dungia_Krisi_cznrvb.jpg",
 
       ],
       challenge: "Create engaging visuals for a social media campaign.",
@@ -245,7 +246,7 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: [
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Brendas%20Bracelet/Artboard%201BRENDAhdpi.png",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823631/Artboard_1BRENDAhdpi_kl3rvl.png",
 
       ],
       challenge: "Create engaging visuals for a social media campaign.",
@@ -259,9 +260,9 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: [
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Musa%20Gitau%20Youth/Worship%20Experience.jpg",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Career%20Talk/472914574_1133714768370441_8232531068171796553_n.jpg",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Family%20week/Family%20Week.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823680/Worship_Experience_pl6fpv.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823623/472914574_1133714768370441_8232531068171796553_n_g25bsr.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823748/Family_Week_ot2nkp.jpg",
 
       ],
       challenge: "Create engaging visuals for a social media campaign.",
@@ -271,17 +272,17 @@ const experienceData: TimelineSection[] = [
     {
       title: "Maggie's Catering Posters",
       category: "Graphics",
-      description: "A series of social media poster for a catering service.",
+      description: "A social media poster and business card for a catering service.",
       tag: "Graphics",
       mediaType: "image",
       media: [
         
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Catering/Maggie's%20Catering%20Services.jpg",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Catering/Maggie's%20Catering%20Service%20Business%20Card.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823625/Maggie_s_Catering_Services_zkpn6h.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823618/Maggie_s_Catering_Service_Business_Card_kckg2b.jpg",
 
       ],
       challenge: "Create engaging visuals for a social media campaign.",
-      process: "Designed graphics in Adobe Photoshop and Illustrator, tailored for Whatsapp and Facebook.",
+      process: "Designed graphics in Adobe Photoshop and Illustrator, tailored for Whatsapp, Facebook and personal handout.",
       outcome: "Boosted brand awareness in the local market.",
     },
 
@@ -292,7 +293,7 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: [
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Podcast/Breaking%20Jemimah.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823631/Breaking_Jemimah_rfbajw.jpg",
       ],
       challenge: "Create a podcast cover image for Breaking Jemimah.",
       process: "Designed graphics in Adobe Photoshop",
@@ -304,7 +305,7 @@ const experienceData: TimelineSection[] = [
       category: "UI/UX",
       description: "Interactive Figma prototype for JasiriCup Website UI.",
       tag: "UI/UX",
-      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/ui-dashboard/Jasiri.png",
+      coverImage: "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823649/Jasiri_arpb2t.png",
       mediaType: "figma",
       media: "https://www.figma.com/embed?embed_host=share&url=https://www.figma.com/proto/1R5mVhiFrzl9WwTtC3txpd/JasiriCup?page-id=176%3A3&node-id=458-164&starting-point-node-id=458%3A6",
       challenge: "Create an intuitive dashboard for a social impact website.",
@@ -312,10 +313,10 @@ const experienceData: TimelineSection[] = [
       outcome: "Informed the development of the website for the client.",
     },
     {
-      title: "Mobile App Prototype Troubleshooters",
+      title: "Troubleshooters Mobile App Prototype",
       category: "UI/UX",
       description: "Interactive mobile prototype for IT Support App.",
-      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/ui-dashboard/Trouble%20Shooters.png",
+      coverImage: "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823640/Trouble_Shooters_fwpmnv.png",
       tag: "UI/UX",
       mediaType: "figma",
       media: "https://embed.figma.com/proto/RYhQMvRdbgh89KQFbCVJQ6/Troubleshooters?page-id=0%3A1&node-id=17-825&viewport=315%2C330%2C0.13&scaling=scale-down&content-scaling=fixed&starting-point-node-id=12%3A421&embed-host=share",
@@ -324,10 +325,10 @@ const experienceData: TimelineSection[] = [
       outcome: "Helped me learn fundamentals of prototyping."
     },
     {
-      title: "Mobile App Prototype DUCR",
+      title: "DUCR Mobile App Prototype",
       category: "UI/UX",
       description: "Interactive mobile prototype for car spare parts shop app.",
-      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/ui-dashboard/Ducr.png",
+      coverImage: "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823649/Ducr_dgypgm.png",
       tag: "UI/UX",
       mediaType: "figma",
       media: "https://embed.figma.com/proto/kAq63P1dS8XZpn6y2KDROt/Ducr?page-id=0%3A1&node-id=5-57&viewport=920%2C350%2C0.39&scaling=scale-down&content-scaling=fixed&starting-point-node-id=5%3A57&embed-host=share",
@@ -343,8 +344,8 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: [
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Christmas%20Csntata/474595016_915777410725579_9012517728664662188_n.jpg",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Christmas%20Csntata/Sherehesha%20Krisii.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823622/474595016_915777410725579_9012517728664662188_n_wkcdcu.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823689/Sherehesha_Krisii_lx2dzj.jpg",
       ],
       challenge: "Create engaging visuals for a social media campaign.",
       process: "Designed graphics in Adobe Photoshop, tailored for Instagram and Facebook.",
@@ -357,7 +358,7 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: [
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Chawakama/CHAWAKAMA%2024%3B4%3B2021%20.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823706/CHAWAKAMA_24_4_2021_oiioyp.jpg",
       ],
       challenge: "Create engaging visuals for a social media campaign.",
       process: "Designed graphics in Adobe Illustrator, tailored for Whatsapp.",
@@ -370,9 +371,9 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: [
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Youth%20Fellowship/P.C.E.A-Rev.-Musa-Gitau-Youth-Friday-Fellowship.png",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Roadtrip/roadtrip.jpg",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Games/Games.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823647/P.C.E.A-Rev.-Musa-Gitau-Youth-Friday-Fellowship_l9oqsa.png",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823647/roadtrip_dg6byv.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823647/roadtrip_dg6byv.jpg",
       ],
       
       challenge: "Create engaging visuals for a social media campaign.",
@@ -386,7 +387,7 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: 
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Worship%20Experience/Woship%20Experience.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823656/Woship_Experience_mlyf8n.jpg",
       
       challenge: "Create engaging visuals for a social media campaign.",
       process: "Designed graphics in Adobe Photoshop, tailored for WhatsApp.",
@@ -399,7 +400,7 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: 
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Youtube%20Thumbnail/Thumbnails.png",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823627/Thumbnails_ikzlho.png",
       
       challenge: "Create engaging thumbnails for youtube video series.",
       process: "Designed graphics in Adobe Photoshop, tailored for Youtube.",
@@ -412,7 +413,7 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: 
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/social/londonLM.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823698/londonLM_skv5de.jpg",
       
       challenge: "Create engaging visuals for a social media campaign.",
       process: "Designed graphics in Adobe Photoshop, tailored for Telegram.",
@@ -425,7 +426,7 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: 
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Covid%2019%20awareness/Covid%2019%20JAB.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823654/Covid_19_JAB_ukcahm.jpg",
       
       challenge: "Create engaging visuals for a social media campaign.",
       process: "Designed graphics in Adobe Photoshop and Illustrator, tailored for Whatapp and Facebook.",
@@ -438,7 +439,7 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: 
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Musa%20Gitau%20Youth/Night%20of%20Prayer.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823724/Night_of_Prayer_hsmuvv.jpg",
       
       challenge: "Create an engaging visual tailored for WhatsApp to invite youths to a Prayer Night.",
       process: "Designed graphics in Adobe Photoshop and Illustrator, tailored for Whatapp.",
@@ -451,8 +452,8 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: [
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Graced%20Family/Hangout/graced%20retreat.jpg",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Graced%20Family/Hangout/KIM%202.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823701/graced_retreat_wq38ex.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823669/KIM_2_cc6qxu.jpg",
       ],
       challenge: "Create engaging visuals for a social media campaign.",
       process: "Designed graphics in Adobe Photoshop, tailored for WhatsApp.",
@@ -465,8 +466,8 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: [
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Valentines%20Dinner/Valentines%20Dinner%202.jpg",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Valentines%20Dinner/Valentines%20Dinner.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823740/Valentines_Dinner_2_f4jbdd.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823686/Valentines_Dinner_edovz9.jpg",
       ],
       challenge: "Create engaging visuals for a social media campaign.",
       process: "Designed graphics in Adobe Photoshop and Illustrator, tailored for Facebook and WhatsApp.",
@@ -480,8 +481,8 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: [
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/valentines%20dinner%202/474816741_916344564002197_7749855537292904508_n.jpg",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/valentines%20dinner%202/474655422_916400617329925_8099537377500473090_n.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823620/474816741_916344564002197_7749855537292904508_n_zmclk2.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823616/474655422_916400617329925_8099537377500473090_n_p32ni2.jpg",
       ],
       challenge: "Create engaging visuals for a social media campaign.",
       process: "Designed graphics in Adobe Photoshop and Illustrator, tailored for Facebook and WhatsApp.",
@@ -494,8 +495,8 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: [
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Stanik%20Sneakers/Stanic%20Sneaakers.jpg",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Stanik%20Sneakers/Stanic%20Sneaakers.png",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823725/Stanic_Sneaakers_iq5icm.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823725/Stanic_Sneaakers_qukn7n.png",
       ],
       challenge: "Create engaging visuals for a social media campaign.",
       process: "Designed graphics in Adobe Photoshop, tailored for WhatsApp, Instagram and Facebook.",
@@ -508,7 +509,7 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: 
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Huwa/Huwa%20Brands%20White%20Sample%201.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823621/Huwa_Brands_White_Sample_1_cpdgy0.jpg",
       challenge: "Create a logo for Huwa Brands.",
       process: "Designed logo in Adobe Illustrator",
       outcome: "Created a modern and versatile logo that effectively represents the brand's identity.",
@@ -521,7 +522,7 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: 
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Sally%20Cyclist/Sally%20Cyclist%20on%20white%20.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823640/Sally_Cyclist_on_white_imiamv.jpg",
       challenge: "Create a logo for Sally Cyclist.",
       process: "Designed logo in Adobe Illustrator",
       outcome: "Created a modern and versatile logo that effectively represents the brand's identity.",
@@ -533,7 +534,7 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: [
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Authentic/authentic%20vessels%201.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823611/authentic_vessels_1_rjwtpe.jpg",
       ],
       challenge: "Creating a unique logo for a worship team of young people.",
       process: "Designed logo in Adobe Illustrator.",
@@ -546,7 +547,7 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: 
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Njema/Njema%20concept%202.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823621/Njema_concept_2_hscebx.jpg",
       challenge: "Create a logo for Njema Publishers.",
       process: "Designed logo in Adobe Illustrator.",
       outcome: "Created a modern and versatile logo that effectively represents the brand's identity.",
@@ -558,7 +559,7 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: 
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Jasiricup/JasiriCup%20logo.png",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823612/JasiriCup_logo_sz5ngd.png",
       challenge: "Create a logo for JasiriCup.",
       process: "Designed the logo in Adobe Illustrator.",
       outcome: "Created a modern and versatile logo that effectively represents the brand's identity.",
@@ -570,7 +571,7 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: 
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Kanyakwar/Blue%20Concept_2.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823617/Blue_Concept_2_ribqwb.jpg",
       challenge: "Create a logo for a football club.",
       process: "Designed logo in Adobe Illustrator.",
       outcome: "Created a modern and versatile logo that effectively represents the brand's identity.",
@@ -582,7 +583,7 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: 
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Mizizi/MIZIZI%20THERAPIES%20upright%20jpeg.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823615/MIZIZI_THERAPIES_upright_jpeg_udlkmq.jpg",
       challenge: "Create a logo for a child therapy consultant.",
       process: "Designed logo in Adobe Illustrator.",
       outcome: "Created an audience-appropriate logo that effectively represents the brand's identity.",
@@ -594,12 +595,12 @@ const experienceData: TimelineSection[] = [
       tag: "Graphics",
       mediaType: "image",
       media: [
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Morning%20Inspiration/1%20Thessalonians%205%3B17.jpg",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Morning%20Inspiration/1%20John%204%3B18%20.jpg",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Morning%20Inspiration/105305137_126869325721662_523079190142161469_n.png",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Morning%20Inspiration/105359956_126872652387996_2375115218194050620_n.png",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Morning%20Inspiration/114119488_141708297571098_6968834607494226061_n.jpg",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Morning%20Inspiration/115439063_141711704237424_5525665149631524814_n.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823633/1_Thessalonians_5_17_rjcvca.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823642/1_John_4_18_bngs1v.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823613/105305137_126869325721662_523079190142161469_n_xg5lr1.png",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761826028/104340679_119563923118869_2540050373772389627_n_icspfr.png",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823612/115439063_141711704237424_5525665149631524814_n_hwdqbh.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823612/114119488_141708297571098_6968834607494226061_n_ssytal.jpg",
       ],
       challenge: "Create a social media artwork for morning devotion.",
       process: "Designed graphics in Adobe Illustrator and Photoshop.",
@@ -610,7 +611,7 @@ const experienceData: TimelineSection[] = [
       category: "Presentation",
       description: "Presentation of Machine Learning Prediction Results.",
       tag: "Slide Decks",
-      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Algorithms%20FoIS.jpg",
+      coverImage: "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823609/Algorithms_FoIS_wcpqhm.jpg",
       mediaType: "googleslides",
       media: "https://docs.google.com/presentation/d/e/2PACX-1vTIYm5lReqSuqb2KM_6YqYkm2kDyDh6U4YuDIKGxzSiDfc-wF8eZgvJkN12eysdCiV49AST7nYTIDr-/pubembed?start=false&loop=false&delayms=3000",
       challenge: "Create a presentation to communicate machine learning model results.",
@@ -634,18 +635,18 @@ const experienceData: TimelineSection[] = [
       category: "Presentation",
       description: "Edge Computing presentation.",
       tag: "Slide Decks",
-      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Slide.png",
+      coverImage: "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823685/Slide_gtvphs.png",
       mediaType: "presentation",
       media: [
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide1.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide2.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide3.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide4.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide7.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide8.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide9.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide11.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Edge/Slide10.JPG",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823609/Slide1_cgxnnq.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823610/Slide2_c7kpnn.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823610/Slide3_qrk0v5.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823610/Slide4_huh8ow.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823611/Slide7_xveby3.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823611/Slide8_fojhkc.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823616/Slide9_nuykek.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823609/Slide11_moparr.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823609/Slide10_erw4jw.jpg",
       
       ],
       challenge: "Communicate Edge computing to stakeholders.",
@@ -657,19 +658,19 @@ const experienceData: TimelineSection[] = [
       category: "Presentation",
       description: "Medicine Technology presentation",
       tag: "Slide Decks",
-      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Slide%20Image/Slide3.png",
+      coverImage: "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823674/Slide3_vppp0v.png",
       mediaType: "presentation",
       media: [
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/Tomorrow%20Medicine/Slide/Slide1.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/Tomorrow%20Medicine/Slide/Slide2.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/Tomorrow%20Medicine/Slide/Slide3.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/Tomorrow%20Medicine/Slide/Slide4.JPG", 
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/Tomorrow%20Medicine/Slide/Slide5.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/Tomorrow%20Medicine/Slide/Slide6.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/Tomorrow%20Medicine/Slide/Slide7.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/Tomorrow%20Medicine/Slide/Slide8.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/Tomorrow%20Medicine/Slide/Slide9.JPG",
-        "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/presentations/Tomorrow%20Medicine/Slide/Slide10.JPG",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823622/Slide1_sbfzc1.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823616/Slide2_pfilu3.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823620/Slide3_z7syy6.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823623/Slide4_ks6v3d.jpg", 
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823621/Slide5_b9bqlf.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823618/Slide6_c4kf8t.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823622/Slide7_vscjiv.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823617/Slide8_nbomml.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823620/Slide9_uzm3a9.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823619/Slide10_kdqult.jpg",
       
       ],
       challenge: "Presentation that communicates MedTech advancements.",
@@ -681,9 +682,9 @@ const experienceData: TimelineSection[] = [
       category: "Graphics",
       description: "Peacha Studio Promo Video.",
       tag: "Video",
-      coverImage: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Peacha%20Studio%20Campaign/peacha%202.png",
+      coverImage: "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823621/peacha_2_viu1em.png",
       mediaType: "video",
-      media: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Stock/Peacha%20Studio%20Campaign/Advert.mp4",
+      media: "https://res.cloudinary.com/dsvexizbx/video/upload/v1761823780/Advert_oufk1y.mp4",
       challenge: "Create a compelling product demonstration video.",
       process: "Edited with professional transitions and effects.",
       outcome: "Achieved brand visibility.",
@@ -693,7 +694,7 @@ const experienceData: TimelineSection[] = [
   const companyProjects: CompanyProject[] = [
     {
       companyName: "Aspira Kenya",
-      companyLogo: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/corporate/Aspira_Logo-1.svg",
+      companyLogo: "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823608/Aspira_Logo-1_fpkpha.svg",
       disclaimer: "The following work was created during my tenure at Aspira Kenya. It is shared with permission for portfolio purposes only and remains the intellectual property of Aspira Kenya. The content is confidential and should not be distributed, copied, or disclosed.",
       projects: [ {
           title: "Omoka na Aspira Marketing Campaign Visual",
@@ -701,8 +702,8 @@ const experienceData: TimelineSection[] = [
           description: "Creating Omoka na Aspira visual, including lockup and social media banners for Aspira's marketing campaign.",
           tag: "Corporate Work",
           mediaType: "image",
-          media: ["https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/corporate/Aspira/476121081_1070329765122570_6522906507805961232_n.jpg",
-          "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/corporate/Aspira/476615140_1075259464629600_5660429119889293216_n.jpg",
+          media: ["https://res.cloudinary.com/dsvexizbx/image/upload/v1761823608/476121081_1070329765122570_6522906507805961232_n_ttpjfb.jpg",
+          "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823608/476615140_1075259464629600_5660429119889293216_n_vupvnk.jpg",
           ],
           challenge: "Create a visual that clearly emphasized that Aspira will help you finance your dreams that you may pay later. Allowing customers to get what they want now and pay later.",
           process: "Understanding and conducting audience research, creating a moodboard, working with the Marketing Lead: Arnold Muthama, refining concepts and sending for approval.",
@@ -714,8 +715,8 @@ const experienceData: TimelineSection[] = [
           description: "Creating social media artwork for Soma Education Financing, including the product's lockup.",
           tag: "Corporate Work",
           mediaType: "image",
-          media: ["https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/corporate/Aspira/480434558_1082669703888576_6404166143007094392_n.jpg",
-          "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/corporate/Aspira/481247611_1087361026752777_8786450958040780973_n.jpg",
+          media: ["https://res.cloudinary.com/dsvexizbx/image/upload/v1761823608/480434558_1082669703888576_6404166143007094392_n_wlbfey.jpg",
+          "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823608/481247611_1087361026752777_8786450958040780973_n_cepe4s.jpg",
           ],
           challenge: "Create social media artwork for Aspira's Facebook and Instagram pages that will help create awareness of Aspira's Soma Education financing, allowing back to school to be a breeze for parents as they can settle fees now and pay later.",
           process: "Understanding and conducting audience research, creating a moodboard, working with the Marketing Lead: Arnold Muthama, refining concepts and sending for approval.",
@@ -733,7 +734,7 @@ const experienceData: TimelineSection[] = [
           description: "Still awaiting permission to showcase this projects.",
           tag: "Corporate Work",
           mediaType: "image",
-          media: "https://raw.githubusercontent.com/Obrianmaina/Brian-Maina-Portfolio/main/portfolio/public/images/Approval/Awaiting%20Consent.png",
+          media: "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823607/Awaiting_Consent_rasgdn.png",
           challenge: "Will update upon receiving permission.",
           process: "Will update upon receiving permission.",
           outcome: "Will update upon receiving permission."
@@ -960,7 +961,7 @@ const experienceData: TimelineSection[] = [
           {companyProjects.map((project, idx) => (
             <motion.div key={project.companyName} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.08 }}>
               <Card className="w-full shadow-lg rounded-2xl group relative overflow-hidden cursor-pointer h-full flex flex-col items-center justify-center p-8 bg-gray-100 hover:bg-white transition-colors" onClick={() => setDisclaimerProject(project)}>
-                <Image src={project.companyLogo} alt={`${project.companyName} logo`} width={128} height={64} className="h-16 w-auto mb-4" />
+                <Image src={project.companyLogo} alt={`${project.companyName} logo`} width={128} height={64} className="h-16 w-auto mb-4" unoptimized={true} />
                 <h3 className="text-xl font-medium text-gray-800">{project.companyName}</h3>
                 <p className="text-sm text-teal-600 font-semibold mt-4">View Projects</p>
               </Card>

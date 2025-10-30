@@ -21,6 +21,7 @@ export default function MediaDisplay({ project }: { project: Showcase }) {
           height={800}
           className="w-full h-auto rounded-xl"
           priority
+          unoptimized={true} // <-- Fix added here
         />
         {media.length > 1 && (
           <div className="flex justify-between items-center mt-4">
@@ -101,15 +102,15 @@ export default function MediaDisplay({ project }: { project: Showcase }) {
       <div className="relative w-full" style={{ paddingBottom: "56.25%", height: 0 }}>
         {isLoading && (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-xl">
-             <div className="flex flex-col items-center gap-4">
-               <motion.div
-                 animate={{ rotate: 360 }}
-                 transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                 className="w-12 h-12 border-4 border-gray-300 border-t-orange-500 rounded-full"
-               />
-               <p className="text-sm text-gray-600">Loading slides...</p>
-             </div>
-           </div>
+            <div className="flex flex-col items-center gap-4">
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                className="w-12 h-12 border-4 border-gray-300 border-t-orange-500 rounded-full"
+              />
+              <p className="text-sm text-gray-600">Loading slides...</p>
+            </div>
+          </div>
         )}
         <iframe
           style={{
@@ -144,6 +145,7 @@ export default function MediaDisplay({ project }: { project: Showcase }) {
             height={800}
             className="w-full h-auto"
             priority
+            unoptimized={true} // <-- Fix added here
           />
         </div>
         {slides.length > 1 && (
