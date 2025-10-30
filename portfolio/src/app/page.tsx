@@ -373,7 +373,7 @@ const experienceData: TimelineSection[] = [
       media: [
         "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823647/P.C.E.A-Rev.-Musa-Gitau-Youth-Friday-Fellowship_l9oqsa.png",
         "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823647/roadtrip_dg6byv.jpg",
-        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823647/roadtrip_dg6byv.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823677/Games_qhdtkc.jpg",
       ],
       
       challenge: "Create engaging visuals for a social media campaign.",
