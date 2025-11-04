@@ -46,7 +46,7 @@ const experienceData: TimelineSection[] = [
           description: [
               "Designed banners, corporate slide decks, and edited images and videos for the Experience Technology team.",
               "Created User Interface designs and updated existing components for the Discovery Showroom.",
-              "Assisted in the design of the Experience Technology team and Afrika Kommt! Workzone pages."
+              "Assisted in the design of the Experience Technology team and AFRIKA KOMMT! Workzone pages."
             ]
         }
       ]
@@ -57,7 +57,7 @@ const experienceData: TimelineSection[] = [
         title: "Fellow",
         date: "November 2023 - November 2024",
         description: ["Completed an intensive program focused on leadership, cross-cultural exchange, and management training in Germany.",
-                      "Selected as one of 42 fellows from over 5,000 applicants for the 12th Afrika Kommt! Fellowship."
+                      "Selected as one of 42 fellows from over 5,000 applicants for the 12th AFRIKA KOMMT! Fellowship."
         ]
       }]
     },
