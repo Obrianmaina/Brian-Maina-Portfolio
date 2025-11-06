@@ -76,7 +76,7 @@ const experienceData: TimelineSection[] = [
       {
         title: "Marketing and Design Associate",
         date: "June 2022 - November 2022",
-        description: "Designed marketing and brand materials for a Aspira Kenya, including social media visuals, and event branding."
+        description: "Designed marketing and brand materials for Aspira Kenya, including social media visuals, and event branding."
       }
     ]
     },
