@@ -826,7 +826,7 @@ const experienceData: TimelineSection[] = [
         <div className="mb-10">
           <h3 className="text-2xl font-semibold mb-4">About Me</h3>
           <p className="mb-4 text-gray-700">
-            Results-oriented Visual Designer and AFRIKA KOMMT! alumni with experience creating compelling visual solutions for global brands like SAP. Skilled in designing UI components , multimedia assets , and marketing collateral for diverse campaigns. Complemented by a foundational year of Computer Science study at DHBW Mosbach, which enhances the creation of practical, buildable designs and collaboration with development teams.
+            Results-oriented Visual Designer and AFRIKA KOMMT! alumni with experience creating compelling visual solutions for global brands like SAP. Skilled in designing UI components, multimedia assets, and marketing collateral for diverse campaigns. Complemented by a foundational year of Computer Science study at DHBW Mosbach, which enhances the creation of practical, buildable designs and collaboration with development teams.
           </p>
           <ul className="space-y-2 text-gray-700">
             <li>Address: Walldorf, Germany</li>
