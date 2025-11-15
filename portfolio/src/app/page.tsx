@@ -37,7 +37,7 @@ const experienceData: TimelineSection[] = [
       entries: [
         {
           title: "VT Student",
-          date: "2024 September - 2025 October",
+          date: "2024 September - 2025 November",
           description: "Worked on real-world projects, learning from mentors on the implementation of UI5 Framework in SAP Systems and in my final rotation delivered a Web Components API Viewer for the SAP UI5 Core Framework team."
         },
         {
