@@ -3,38 +3,52 @@ import clientPromise from '@/lib/mongodb';
 import crypto from 'crypto';
 import AccessCodeEmail from '@/emails/AccessCodeEmail';
 
-// Environment variable validation
-const apiKey = process.env.RESEND_API_KEY;
-if (!apiKey) {
-  console.warn('[AUTH] Warning: RESEND_API_KEY is not defined in environment variables.');
-}
-
-const resend = new Resend(apiKey);
 const DB_NAME = "portfolio_db"; 
 const COLLECTION_NAME = "access_requests";
 
+// Helper for timeout race
+const timeout = (ms: number) => new Promise((_, reject) => 
+  setTimeout(() => reject(new Error('Connection timed out')), ms)
+);
+
 export async function POST(request: Request) {
+  const headers = { 'Content-Type': 'application/json' };
+
   try {
-    // 1. Validate Request Body
-    const body = await request.json().catch(() => ({}));
+    // 1. PRE-FLIGHT CHECK
+    const apiKey = process.env.RESEND_API_KEY;
+    const mongoUri = process.env.MONGODB_URI;
+
+    if (!apiKey || !mongoUri) {
+      console.error('[AUTH] Missing environment variables in Production');
+      return new Response(
+        JSON.stringify({ message: 'Server configuration error: Environment variables missing.' }), 
+        { status: 500, headers }
+      );
+    }
+
+    const resend = new Resend(apiKey);
+    const body = await request.json();
     const { email } = body;
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      console.log('[AUTH] Rejected: Invalid or missing email address.');
-      return Response.json({ message: 'A valid email address is required.' }, { status: 400 });
+      return new Response(JSON.stringify({ message: 'Valid email required.' }), { status: 400, headers });
     }
 
     const code = crypto.randomInt(100000, 999999).toString();
-    const expires_at = new Date(Date.now() + 15 * 60 * 1000); // 15-minute expiry
+    const expires_at = new Date(Date.now() + 15 * 60 * 1000);
 
-    // 2. Database Operation
-    // We attempt this first because if we can't save it, we can't verify it later.
-    console.log(`[AUTH] [DB] Attempting connection for: ${email}`);
-    let db;
+    // 2. DATABASE ATTEMPT (Aggressive Timeout)
+    console.log(`[AUTH] DB Start: ${email}`);
     try {
-      const mongoClient = await clientPromise;
-      db = mongoClient.db(DB_NAME);
+      // Race against 5 seconds. Vercel Hobby tier limit is 10s.
+      // We use 5s to ensure we have time to return a JSON response before Vercel kills us.
+      const mongoClient = await Promise.race([
+        clientPromise,
+        timeout(5000)
+      ]) as any;
       
+      const db = mongoClient.db(DB_NAME);
       await db.collection(COLLECTION_NAME).insertOne({
         email: email.toLowerCase(),
         code,
@@ -42,24 +56,21 @@ export async function POST(request: Request) {
         created_at: new Date(),
         used_at: null,
       });
-      console.log(`[AUTH] [DB] Code successfully stored.`);
+      console.log(`[AUTH] DB Success`);
     } catch (dbError: any) {
-      console.error('[AUTH] [DB] ERROR:', dbError.message);
-      
-      // Check if it's a timeout/whitelist issue
-      if (dbError.name === 'MongoServerSelectionError' || dbError.message.includes('timeout')) {
-        return Response.json({ 
-          message: 'Database connection failed. Ensure 0.0.0.0/0 is whitelisted in MongoDB Atlas.' 
-        }, { status: 503 });
-      }
-      
-      throw dbError; // Fall through to general catch
+      console.error('[AUTH] DB ERROR:', dbError.message);
+      return new Response(
+        JSON.stringify({ 
+          message: 'Database connection failed. Is IP 0.0.0.0/0 whitelisted in Atlas?',
+          error: dbError.message 
+        }), 
+        { status: 503, headers }
+      );
     }
 
-    // 3. Email Operation
-    console.log(`[AUTH] [EMAIL] Attempting to send to: ${email}`);
+    // 3. EMAIL ATTEMPT
+    console.log(`[AUTH] Email Start`);
     const { data, error } = await resend.emails.send({
-      // IMPORTANT: If 'brianmaina.de' is not verified in Resend Dashboard, this WILL fail.
       from: 'Portfolio Access <noreply@brianmaina.de>', 
       to: email,
       subject: 'Your Access Code - Brian Maina Portfolio',
@@ -67,25 +78,15 @@ export async function POST(request: Request) {
     });
 
     if (error) {
-      console.error('[AUTH] [EMAIL] API ERROR:', error);
-      
-      // If the email fails, we should ideally delete the record or mark it as failed, 
-      // but for now, we just inform the user.
-      return Response.json({ 
-        message: 'Email service rejected the request. Check domain verification in Resend.',
-        code: error.name
-      }, { status: 422 });
+      console.error('[AUTH] Resend Error:', error);
+      return new Response(JSON.stringify({ message: 'Email rejected.', error }), { status: 422, headers });
     }
 
-    console.log(`[AUTH] [SUCCESS] Email sent! ID: ${data?.id}`);
-    return Response.json({ message: 'Access code sent successfully.' }, { status: 200 });
+    console.log(`[AUTH] Success: ${data?.id}`);
+    return new Response(JSON.stringify({ message: 'Code sent.' }), { status: 200, headers });
 
   } catch (error: any) {
-    console.error('[AUTH] [CRITICAL] Internal Error:', error.message || error);
-    
-    return Response.json({ 
-      message: 'An internal server error occurred.',
-      error: process.env.NODE_ENV === 'development' ? error.message : undefined 
-    }, { status: 500 });
+    console.error('[AUTH] Global Catch:', error.message);
+    return new Response(JSON.stringify({ message: 'Internal Server Error' }), { status: 500, headers });
   }
 }
