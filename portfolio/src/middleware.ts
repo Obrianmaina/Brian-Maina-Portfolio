@@ -17,21 +17,29 @@ export default async function middleware(request: NextRequest) {
   // UPDATED: Get the IP address from the 'x-forwarded-for' header
   const ip = request.headers.get('x-forwarded-for') ?? '127.0.0.1';
   
-  const { success, limit, reset, remaining } = await ratelimit.limit(ip);
+  try {
+    const { success, limit, reset, remaining } = await ratelimit.limit(ip);
 
-  // If the request is blocked, return a "Too Many Requests" response.
-  if (!success) {
-    return new Response('Too many requests.', {
-      status: 429,
-      headers: {
-        'X-RateLimit-Limit': limit.toString(),
-        'X-RateLimit-Remaining': remaining.toString(),
-        'X-RateLimit-Reset': reset.toString(),
-      },
-    });
+    // If the request is blocked, return a "Too Many Requests" response.
+    if (!success) {
+      return new Response('Too many requests.', {
+        status: 429,
+        headers: {
+          'X-RateLimit-Limit': limit.toString(),
+          'X-RateLimit-Remaining': remaining.toString(),
+          'X-RateLimit-Reset': reset.toString(),
+        },
+      });
+    }
+  } catch (error) {
+    // CRITICAL FIX: Fail Open Strategy
+    // If Upstash/KV is sleeping, times out, or throws "fetch failed", 
+    // we catch the error here.
+    // We log it for debugging, but we DO NOT crash the app.
+    // We simply let the code proceed to the return NextResponse.next() below.
+    console.error("Rate Limit Error (Fail Open):", error);
   }
 
-  // If the request is allowed, continue to the API route.
+  // If the request is allowed (or if the rate limiter failed), continue to the API route.
   return NextResponse.next();
 }
-
