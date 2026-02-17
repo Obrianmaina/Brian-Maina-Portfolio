@@ -15,7 +15,7 @@ import MediaDisplay from "@/components/MediaDisplay";
 import ThumbnailPreview from "@/components/ThumbnailPreview";
 
 export default function PortfolioPage() {
-  const categories = ["All", "UI/UX", "Presentation", "Branding", "Graphics"] as const;
+  const categories = ["All", "UI/UX", "Presentation", "Branding", "Graphics", "Publication"] as const;
   
   const [activeCategory, setActiveCategory] = useState<typeof categories[number]>("All");
   const [lightbox, setLightbox] = useState<Showcase | null>(null);
@@ -223,6 +223,7 @@ const experienceData: TimelineSection[] = [
       outcome: "Increased awareness of services offered, sparking interest.",
     },
     
+    
     {
       title: "Breejoz Marketing Campaign Graphics",
       category: "Graphics",
@@ -406,6 +407,107 @@ const experienceData: TimelineSection[] = [
       process: "Designed graphics in Adobe Photoshop, tailored for Youtube.",
       outcome: "Enhance video outlook and engagement.",
     },
+
+    {
+      title: "Mwanga wa Afrika Mashariki Magazine",
+      category: "Publication",
+      description: "A publication showcasing CHAWAKAMA (CHAMA CHA WANAFUNZI WA KISWAHILI VYUO VIKUU AFRIKA MASHARIKI) year's activities.",
+      tag: "Publication",
+      mediaType: "image",
+      media: [
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771316988/Screenshot_2026-02-17_105254_vgxkir.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771316988/Screenshot_2026-02-17_105321_momccq.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771316988/Screenshot_2026-02-17_105358_arflfp.jpg",
+      
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771316985/Screenshot_2026-02-17_105040_bzbuty.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771316987/Screenshot_2026-02-17_105154_otvuvn.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771316984/Screenshot_2026-02-17_105130_fjmtdh.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771316996/Screenshot_2026-02-17_105442_t8h2pz.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771316993/Screenshot_2026-02-17_105525_f4udwm.jpg"
+
+      ],
+      challenge: "Create for us a magizine that highlights the organiztions activity for the year 2019.",
+      process: "Created artwork in Adobe Indesign and assocated grphics were edited in Adobe Photoshop.",
+      outcome: "Helped showcase the students' organization's activities, notable works and achievements for the year 2019.",
+    },
+
+    {
+      title: "TARIGIA FASAHA Magazine",
+      category: "Publication",
+      description: "A publication highlighting writing pieces of students of Moi University alongside their presentations for traditional African culture.",
+      tag: "Publication",
+      mediaType: "image",
+      media: [
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771317001/Screenshot_2026-02-17_105549_bpan6k.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771316999/Screenshot_2026-02-17_105629_wqjpby.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771317002/Screenshot_2026-02-17_105714_amwwnq.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771317005/Screenshot_2026-02-17_105733_fjhfbh.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771316999/Screenshot_2026-02-17_105820_sk3rd0.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771317006/Screenshot_2026-02-17_105833_fr6eg8.jpg"
+
+      ],
+      challenge: "Create for us a magizine that highlights our clubs activity for the year 2019.",
+      process: "Created artwork in Adobe Indesign and assocated grphics were edited in Adobe Photoshop.",
+      outcome: "Helped showcase the club's activities and achievements for the year 2019.",
+    },
+
+    {
+      title: "Dafina ya Lugha Magazine",
+      category: "Publication",
+      description: "A publication showcasing CHAKIMO(CHAMA CHA KISWAHILI MOI) year's activities.",
+      tag: "Publication",
+      mediaType: "image",
+      media: [
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771327089/Screenshot_2026-02-17_105854_wmoqgx.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771317021/Screenshot_2026-02-17_105929_ujdl4e.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771317018/Screenshot_2026-02-17_105954_jlhi7p.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771317009/Screenshot_2026-02-17_110150_nn7wjy.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771317008/Screenshot_2026-02-17_110023_bzwtpz.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771317008/Screenshot_2026-02-17_110050_s68vsg.jpg"
+      ],
+      challenge: "Create for us a magizine that highlights our clubs activity for the year 2020-2021.",
+      process: "Created artwork in Adobe Indesign and assocated grphics were edited in Adobe Photoshop.",
+      outcome: "Helped showcase the club's activities and achievements for the year 2020-2021.",
+    },
+
+    {
+      title: "Lelwak Times Magazine",
+      category: "Publication",
+      description: "A publication showcasing Lelwak Times' second edition.",
+      tag: "Publication",
+      mediaType: "image",
+      media: [
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771326221/Screenshot_2026-02-17_111413_ebuvrt.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771326253/Screenshot_2026-02-17_111623_xvpkm1.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771326375/Screenshot_2026-02-17_111456_a0bfjp.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771326392/Screenshot_2026-02-17_111535_dqllfu.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771318684/Screenshot_2026-02-17_111845_yxx4k8.jpg"
+
+      ],
+      challenge: "Create for us a magizine that highlights our clubs activity for the year 2020.",
+      process: "Created artwork in Adobe Indesign and assocated grphics were edited in Adobe Photoshop.",
+      outcome: "Helped showcase the club's activities and achievements for the year 2020.",
+    },
+
+    {
+      title: "Insha Pevu",
+      category: "Publication",
+      description: "Typesetting for Insha Pevu book.",
+      tag: "Publication",
+      mediaType: "image",
+      media: [
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771317010/Screenshot_2026-02-17_110257_d0cl6z.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771326498/Screenshot_2026-02-17_110544_trudvb.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771326446/Screenshot_2026-02-17_110340_khxaic.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771317012/Screenshot_2026-02-17_110544_trudvb.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1771317011/Screenshot_2026-02-17_110406_r8c0vx.jpg"
+
+      ],
+      challenge: "Work on typesetting for Insha Pevu book.",
+      process: "Typesetting in Adobe Indesign",
+      outcome: "Laying out the book in a visually appealing way that enhances readability and complements the content.",
+    },
+
     {
       title: "Social Media artwork",
       category: "Graphics",
