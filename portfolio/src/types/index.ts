@@ -54,6 +54,6 @@ export interface BlogComment {
 }
 
 // --- UI COMPONENT TYPES ---
-export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "outline" | "secondary" | "ghost" | "link" | string;
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "default" | "outline";
 }
