@@ -1,4 +1,5 @@
-// Reconstructing your existing types and adding the new Blog types
+import { ButtonHTMLAttributes } from "react";
+
 export interface TimelineEntry {
   title: string;
   date: string;
@@ -35,7 +36,7 @@ export interface BlogPost {
   _id?: string;
   title: string;
   slug: string;
-  description: string;
+  description: string; // Custom summary for the blog tiles
   content: string;
   featuredImage: string;
   photoCredit?: string;
@@ -50,4 +51,9 @@ export interface BlogComment {
   animalIdentity: string;
   animalIcon: string;
   createdAt: Date;
+}
+
+// --- UI COMPONENT TYPES ---
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: "default" | "outline" | "secondary" | "ghost" | "link" | string;
 }
