@@ -1,3 +1,5 @@
+import React from "react";
+
 export const Card: React.FC<{ children: React.ReactNode; className?: string; onClick?: () => void }> = ({
   children,
   className = "",
@@ -11,7 +13,9 @@ export const Card: React.FC<{ children: React.ReactNode; className?: string; onC
   </div>
 );
 
-export const CardContent: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <div className="flex flex-col gap-2">{children}</div>
+export const CardContent: React.FC<{ children: React.ReactNode; className?: string }> = ({ 
+  children, 
+  className = "" 
+}) => (
+  <div className={`flex flex-col gap-2 ${className}`}>{children}</div>
 );
-

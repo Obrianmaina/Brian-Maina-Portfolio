@@ -1,10 +1,22 @@
+// Reconstructing your existing types and adding the new Blog types
+export interface TimelineEntry {
+  title: string;
+  date: string;
+  description: string | string[];
+}
+
+export interface TimelineSection {
+  heading: string;
+  entries: TimelineEntry[];
+}
+
 export interface Showcase {
   title: string;
   category: string;
   description: string;
   tag: string;
   coverImage?: string;
-  mediaType: "image" | "video" | "figma" | "presentation" | "googleslides" | "powerpoint";
+  mediaType: string;
   media: string | string[];
   challenge: string;
   process: string;
@@ -18,20 +30,24 @@ export interface CompanyProject {
   projects: Showcase[];
 }
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "default" | "outline";
-  children: React.ReactNode;
-}
-
-// UPDATED: Changed 'description' to support string arrays for bullet points
-export interface TimelineEntry {
+// --- NEW BLOG TYPES ---
+export interface BlogPost {
+  _id?: string;
   title: string;
-  date: string;
-  description: string | string[];
+  slug: string;
+  description: string;
+  content: string;
+  featuredImage: string;
+  photoCredit?: string;
+  isPublished: boolean;
+  createdAt: Date;
 }
 
-export interface TimelineSection {
-  heading: string;
-  entries: TimelineEntry[];
+export interface BlogComment {
+  _id?: string;
+  postSlug: string;
+  text: string;
+  animalIdentity: string;
+  animalIcon: string;
+  createdAt: Date;
 }
-

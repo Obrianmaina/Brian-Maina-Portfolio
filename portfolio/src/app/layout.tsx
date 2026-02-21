@@ -1,4 +1,5 @@
 import CookieBanner from '@/components/CookieBanner'
+import Navbar from '@/components/Navbar'
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -26,11 +27,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {children}
+        <Navbar />
+        {/* Added top padding to account for the fixed Navbar */}
+        <div className="pt-16">
+          {children}
+        </div>
         <CookieBanner />
       </body>
     </html>
   )
 }
-
-
