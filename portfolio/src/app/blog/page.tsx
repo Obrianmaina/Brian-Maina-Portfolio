@@ -82,8 +82,12 @@ export default function BlogLandingPage() {
             <Settings size={24} />
           </a>
         </div>
+        {/* New Subtitle Line */}
+        <p className="text-center text-gray-600 italic mb-8 -mt-6">
+          Unapologetically random.
+        </p>
         
-        {/* Featured Blog */}
+       
         {/* Featured Blog */}
         {featuredBlog && (
           <a href={`/blog/${featuredBlog.slug}`} className="block">
