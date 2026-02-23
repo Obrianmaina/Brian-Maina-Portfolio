@@ -5,11 +5,12 @@ import React, { useEffect, useState, use } from "react";
 // next/navigation removed to fix preview build environment errors
 import ReactMarkdown from "react-markdown";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, MessageSquare, Send, Loader2, Linkedin, Github } from "lucide-react";
+import { ArrowLeft, MessageSquare, Send, Loader2, Linkedin, Github, Share2 } from "lucide-react";
 import { BlogPost, BlogComment } from "@/types";
 import Button from "@/components/ui/button";
-import { X, Info, ChevronLeft, ChevronRight } from "lucide-react"; // Import Chevron icons if not already in ui/button
+import { X, Info, ChevronLeft, ChevronRight } from "lucide-react"; 
 import { SiLinkedin, SiGithub, SiX, SiInstagram, SiBehance } from "react-icons/si";
+
 export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: string }> }) {
   // Unwrap the params Promise using React.use() as required by Next.js
   const resolvedParams = params ? use(params) : null;
@@ -82,6 +83,27 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
     }
   };
 
+  const handleShare = async () => {
+    if (!blog) return;
+    
+    const shareData = {
+      title: blog.title,
+      text: blog.description,
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        alert("Link copied to clipboard!");
+      }
+    } catch (err) {
+      console.error("Error sharing:", err);
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -105,13 +127,23 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
     <>
       <main className="min-h-screen bg-white pb-24 font-sans">
         <div className="max-w-6xl mx-auto px-6 pt-12">
-          <a 
-            href="/blog" 
-            className="inline-flex items-center text-gray-500 hover:text-teal-600 mb-10 transition-colors font-medium group"
-          >
-            <ArrowLeft size={20} className="mr-2 group-hover:-translate-x-1 transition-transform" /> 
-            Back to Articles
-          </a>
+          <div className="flex justify-between items-center mb-10">
+            <a 
+              href="/blog" 
+              className="inline-flex items-center text-gray-500 hover:text-teal-600 transition-colors font-medium group"
+            >
+              <ArrowLeft size={20} className="mr-2 group-hover:-translate-x-1 transition-transform" /> 
+              Back to Articles
+            </a>
+            
+            <button
+              onClick={handleShare}
+              className="flex items-center gap-2 bg-gray-50 hover:bg-teal-50 text-gray-700 hover:text-teal-700 px-4 py-2 rounded-xl transition-all border border-gray-100 shadow-sm font-medium"
+            >
+              <Share2 size={18} />
+              Share Article
+            </button>
+          </div>
 
           <header className="mb-12">
             <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">
@@ -139,7 +171,6 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
             </figure>
           )}
 
-          {/* Cleaned up wrapper and using the powerful components prop below */}
           <article className="text-gray-800 mb-20 leading-relaxed">
             <ReactMarkdown
               components={{
@@ -262,8 +293,6 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
         <div className="flex justify-center space-x-6 mb-6">
           <a href="https://www.linkedin.com/in/brian-maina-nyawira" target="_blank" rel="noopener noreferrer" className="hover:text-[#0077B5] transition-transform transform hover:scale-110" aria-label="LinkedIn"><SiLinkedin size={20} /></a>
           <a href="https://github.com/Obrienmaina-Mosbach" target="_blank" rel="noopener noreferrer" className="hover:text-[#C06EFF] transition-transform transform hover:scale-110" aria-label="GitHub"><SiGithub size={20} /></a>
-          {/* <a href="https://twitter.com/brianmaina" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 transition-transform transform hover:scale-110" aria-label="X (formerly Twitter)"><SiX size={20} /></a> */}
-          {/* <a href="https://instagram.com/brianmaina_design" target="_blank" rel="noopener noreferrer" className="hover:text-pink-400 transition-transform transform hover:scale-110" aria-label="Instagram"><SiInstagram size={20} /></a> */}
           <a href="https://www.behance.net/brianmaina3" target="_blank" rel="noopener noreferrer" className="hover:text-[#1769FF] transition-transform transform hover:scale-110" aria-label="Behance"><SiBehance size={20} /></a>
         </div>
         <Button className="bg-teal-500 hover:bg-teal-600 text-lg px-6 py-3 rounded-2xl" onClick={() => (window.location.href = "mailto:brianmaina.nyawira@gmail.com")}>Contact Me</Button>
