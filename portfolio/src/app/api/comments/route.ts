@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import clientPromise from '@/lib/mongodb';
 
-const DB_NAME = "portfolio_db";
+const DB_NAME = "portfolio";
 
 export async function GET(req: Request) {
   try {
