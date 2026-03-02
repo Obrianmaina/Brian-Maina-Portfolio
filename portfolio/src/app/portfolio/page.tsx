@@ -282,11 +282,7 @@ export default function PortfolioPage() {
           </motion.div>
         )}
       </AnimatePresence>
-
-
-
       
-
       <footer className="relative bg-gray-900 text-white py-20 px-6 text-center">
         <h2 className="text-3xl font-semibold mb-6">Get In Touch</h2>
         <p className="mb-6">Feel free to reach out for collaborations or opportunities.</p>
