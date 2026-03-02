@@ -3,68 +3,16 @@
 import { useState, useEffect } from "react";
 import { SiLinkedin, SiGithub, SiBehance } from "react-icons/si";
 import Image from 'next/image';
-import { motion, AnimatePresence } from "framer-motion";
-import { X, Info } from "lucide-react"; 
+import { motion } from "framer-motion";
 import { Showcase, CompanyProject } from "@/types";
 
 import Button from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import MediaDisplay from "@/components/MediaDisplay";
 import ThumbnailPreview from "@/components/ThumbnailPreview";
+import PortfolioModals from "@/components/PortfolioModals"; // Import the newly created Modals component
 
 import { showcases } from "./showcaseData";
 import { companyProjects } from "./corporateData";
-
-// --- NEW COMPONENT: Dynamic Image Gallery ---
-const DynamicImageGallery = ({ images }: { images?: string[] }) => {
-  if (!images || images.length === 0) return null;
-
-  // 1 Image: Full width
-  if (images.length === 1) {
-    return (
-      <div className="mt-6 w-full rounded-2xl overflow-hidden shadow-sm bg-gray-100">
-        <Image src={images[0]} alt="Case Study Media" width={1200} height={800} className="w-full h-auto object-cover" unoptimized={true} />
-      </div>
-    );
-  }
-
-  // 2 Images: 2 Columns sharing width
-  if (images.length === 2) {
-    return (
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {images.map((img, i) => (
-          <div key={i} className="rounded-2xl overflow-hidden shadow-sm bg-gray-100 aspect-video">
-            <Image src={img} alt={`Case Study Media ${i+1}`} width={600} height={400} className="w-full h-full object-cover" unoptimized={true} />
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  // 3 Images: 3 Columns sharing width
-  if (images.length === 3) {
-    return (
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {images.map((img, i) => (
-          <div key={i} className="rounded-2xl overflow-hidden shadow-sm bg-gray-100 aspect-video sm:aspect-square md:aspect-video">
-            <Image src={img} alt={`Case Study Media ${i+1}`} width={400} height={300} className="w-full h-full object-cover" unoptimized={true} />
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  // 4 or more Images: Horizontal Scrolling Carousel
-  return (
-    <div className="mt-6 flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4" style={{ scrollbarWidth: "none" }}>
-      {images.map((img, i) => (
-        <div key={i} className="flex-shrink-0 w-[85%] sm:w-[60%] md:w-[45%] snap-center rounded-2xl overflow-hidden shadow-sm bg-gray-100 aspect-video">
-          <Image src={img} alt={`Case Study Media ${i+1}`} width={600} height={400} className="w-full h-full object-cover" unoptimized={true} />
-        </div>
-      ))}
-    </div>
-  );
-};
 
 export default function PortfolioPage() {
   const categories = ["All", "UI/UX", "Presentation", "Branding", "Graphics", "Publication"] as const;
@@ -140,148 +88,15 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* Lightboxes and Modals */}
-      <AnimatePresence>
-        {lightbox && (
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-0 sm:p-8" 
-            onClick={() => setLightbox(null)}
-          >
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              role="dialog" 
-              aria-modal="true" 
-              aria-labelledby="lightbox-title" 
-              className="bg-white rounded-none sm:rounded-3xl p-5 sm:p-8 max-w-7xl w-full relative overflow-hidden flex flex-col h-[100dvh] sm:h-auto sm:max-h-[90vh]" 
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button 
-                className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 hover:text-black transition-colors z-10" 
-                onClick={() => setLightbox(null)} 
-                aria-label="Close dialog"
-              >
-                <X size={24} />
-              </button>
-              
-              <div className="h-full overflow-y-auto pr-2 mt-10 sm:mt-0">
-                {lightbox.category === "UI/UX" && lightbox.caseStudy ? (
-                  <div className="max-w-4xl mx-auto py-8 space-y-12">
-                    
-                    {/* Header Section */}
-                    <div className="text-center space-y-4">
-                      <h3 className="text-3xl sm:text-4xl font-bold text-gray-900">{lightbox.title}</h3>
-                      <p className="text-xl text-gray-600">{lightbox.description}</p>
-                      <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-500 pt-4">
-                        <span><strong>Role:</strong> {lightbox.caseStudy.role}</span>
-                        <span><strong>Timeline:</strong> {lightbox.caseStudy.duration}</span>
-                        <span><strong>Tools:</strong> {lightbox.caseStudy.tools.join(", ")}</span>
-                      </div>
-                    </div>
-
-                    {/* Problem Statement */}
-                    <div>
-                      <h4 className="text-2xl font-semibold mb-3">The Problem</h4>
-                      <p className="text-gray-700 leading-relaxed">{lightbox.caseStudy.problemStatement}</p>
-                      <DynamicImageGallery images={lightbox.caseStudy.problemImages} />
-                    </div>
-
-                    {/* User Research */}
-                    {lightbox.caseStudy.userResearch && (
-                      <div>
-                        <h4 className="text-2xl font-semibold mb-3">Research & Discovery</h4>
-                        <p className="text-gray-700 leading-relaxed mb-4">{lightbox.caseStudy.userResearch}</p>
-                        <DynamicImageGallery images={lightbox.caseStudy.researchImages} />
-                      </div>
-                    )}
-
-                    {/* Wireframes */}
-                    {lightbox.caseStudy.wireframesText && (
-                      <div>
-                        <h4 className="text-2xl font-semibold mb-3">Wireframes & Flow</h4>
-                        <p className="text-gray-700 leading-relaxed mb-4">{lightbox.caseStudy.wireframesText}</p>
-                        <DynamicImageGallery images={lightbox.caseStudy.wireframesImages} />
-                      </div>
-                    )}
-
-                    {/* Final Prototype / Media Stage */}
-                    <div>
-                      <h4 className="text-2xl font-semibold mb-4">Final Prototype</h4>
-                      <div className="w-full aspect-video bg-gray-100 rounded-xl overflow-hidden shadow-sm">
-                        <MediaDisplay project={lightbox} />
-                      </div>
-                    </div>
-
-                    {/* Learnings */}
-                    {lightbox.caseStudy.learnings && (
-                      <div className="bg-teal-50 p-6 rounded-2xl">
-                        <h4 className="text-2xl font-semibold text-teal-800 mb-3">Key Takeaways</h4>
-                        <p className="text-teal-900 leading-relaxed">{lightbox.caseStudy.learnings}</p>
-                      </div>
-                    )}
-
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 h-full">
-                    {/* EXISTING STANDARD LAYOUT for Graphics/Branding */}
-                    
-                    {/* Left Column: Media Stage */}
-                    <div className="lg:col-span-8 flex flex-col min-h-[40vh] sm:min-h-[50vh]">
-                      <MediaDisplay project={lightbox} />
-                    </div>
-
-                    {/* Right Column: Project Context */}
-                    <div className="lg:col-span-4 flex flex-col space-y-6 sm:space-y-8 pb-8">
-                      <div>
-                        <h3 id="lightbox-title" className="text-2xl sm:text-3xl font-bold mb-3 text-gray-900">{lightbox.title}</h3>
-                        <div className="flex flex-wrap gap-2 mb-2">
-                          {lightbox.category && (
-                            <span className="bg-teal-50 text-teal-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                              {lightbox.category}
-                            </span>
-                          )}
-                          {lightbox.tag && lightbox.tag !== lightbox.category && (
-                            <span className="bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
-                              {lightbox.tag}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-
-                      <div className="space-y-6">
-                        {lightbox.challenge && (
-                          <div>
-                            <h4 className="text-teal-600 uppercase tracking-wider text-sm font-bold mb-2">Challenge</h4>
-                            <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{lightbox.challenge}</p>
-                          </div>
-                        )}
-                        {lightbox.process && (
-                          <div>
-                            <h4 className="text-teal-600 uppercase tracking-wider text-sm font-bold mb-2">Process</h4>
-                            <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{lightbox.process}</p>
-                          </div>
-                        )}
-                        {lightbox.outcome && (
-                          <div>
-                            <h4 className="text-teal-600 uppercase tracking-wider text-sm font-bold mb-2">Outcome</h4>
-                            <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{lightbox.outcome}</p>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Render the extracted modals and pass the state handlers down */}
+      <PortfolioModals 
+        lightbox={lightbox} 
+        setLightbox={setLightbox} 
+        disclaimerProject={disclaimerProject} 
+        setDisclaimerProject={setDisclaimerProject} 
+        companyProjectsToShow={companyProjectsToShow} 
+        setCompanyProjectsToShow={setCompanyProjectsToShow} 
+      />
 
       <footer className="relative bg-gray-900 text-white py-20 px-6 text-center">
         <h2 className="text-3xl font-semibold mb-6">Get In Touch</h2>
