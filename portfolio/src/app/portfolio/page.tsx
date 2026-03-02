@@ -283,6 +283,8 @@ export default function PortfolioPage() {
         )}
       </AnimatePresence>
 
+
+
       
 
       <footer className="relative bg-gray-900 text-white py-20 px-6 text-center">
