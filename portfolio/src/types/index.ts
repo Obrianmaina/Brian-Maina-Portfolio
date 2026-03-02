@@ -11,6 +11,21 @@ export interface TimelineSection {
   entries: TimelineEntry[];
 }
 
+export interface CaseStudyDetails {
+  role: string;
+  duration: string;
+  tools: string[];
+  problemStatement: string;
+  problemImages?: string[];
+  userResearch?: string;
+  researchImages?: string[];
+  wireframesText?: string;
+  wireframesImages?: string[];
+  designSystemText?: string;
+  designSystemImage?: string;
+  learnings?: string;
+}
+
 export interface Showcase {
   title: string;
   category: string;
@@ -22,6 +37,7 @@ export interface Showcase {
   challenge: string;
   process: string;
   outcome: string;
+  caseStudy?: CaseStudyDetails;
 }
 
 export interface CompanyProject {

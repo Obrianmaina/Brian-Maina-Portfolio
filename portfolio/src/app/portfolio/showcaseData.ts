@@ -98,7 +98,30 @@ export const showcases: Showcase[] = [
     challenge: "Create an intuitive dashboard for a social impact website.",
     process: "Conducted online research on audience, and created wireframes in Figma.",
     outcome: "Informed the development of the website for the client.",
+    caseStudy: {
+      role: "Lead UI/UX Designer",
+      duration: "4 Weeks",
+      tools: ["Figma", "Miro", "Notion"],
+      problemStatement: "The client needed an intuitive dashboard for a social impact website to help users easily track their contributions and navigate resources.",
+      problemImages: [
+        "https://res.cloudinary.com/your-cloud/image/upload/v1234/wireframe1.jpg"
+      ],
+      userResearch: "I conducted online research on the target demographic and discovered that clarity and accessibility were their top priorities. I mapped out user journeys to ensure the navigation required minimal clicks.",
+      researchImages: [
+        "https://res.cloudinary.com/your-cloud/image/upload/v1234/wireframe1.jpg",
+        "https://res.cloudinary.com/your-cloud/image/upload/v1234/wireframe1.jpg",
+        "https://res.cloudinary.com/your-cloud/image/upload/v1234/wireframe1.jpg",
+        "https://res.cloudinary.com/your-cloud/image/upload/v1234/wireframe1.jpg"
+      ],
+      wireframesText: "Before jumping into high-fidelity designs, I created low-fidelity wireframes to establish the information architecture.",
+      wireframesImages: [
+        "https://res.cloudinary.com/your-cloud/image/upload/v1234/wireframe1.jpg"
+      ],
+      designSystemText: "To maintain consistency, I built a design system focused on accessible contrast ratios and a vibrant color palette that aligns with social impact themes.",
+      learnings: "This project taught me the importance of prioritizing accessibility in component design right from the wireframing stage."
+    }
   },
+
   {
     title: "Troubleshooters Mobile App Prototype",
     category: "UI/UX",
@@ -109,7 +132,26 @@ export const showcases: Showcase[] = [
     media: "https://embed.figma.com/proto/RYhQMvRdbgh89KQFbCVJQ6/Troubleshooters?page-id=0%3A1&node-id=17-825&viewport=315%2C330%2C0.13&scaling=scale-down&content-scaling=fixed&starting-point-node-id=12%3A421&embed-host=share",
     challenge: "Design a user-friendly mobile app interface for an IT Support Application.",
     process: "Developed wireframes and prototypes in Figma.",
-    outcome: "Helped me learn fundamentals of prototyping."
+    outcome: "Helped me learn fundamentals of prototyping.",
+    caseStudy: {
+    role: "UI/UX Designer",
+    duration: "3 Weeks",
+    tools: ["Figma", "Adobe Photoshop"],
+    problemStatement: "Users often find technical support interfaces overwhelming and difficult to navigate during urgent IT crises. The goal was to create a streamlined mobile experience that allows users to log issues and track resolutions without friction.",
+    problemImages: ["https://res.cloudinary.com/your-cloud/image/upload/v1234/wireframe1.jpg"],
+    userResearch: "I analyzed common pain points in IT helpdesk portals, identifying that 'Ticket Status' and 'Quick Chat' were the most sought after features. I focused on a hierarchy that puts these front and center.",
+    researchImages: [
+      "https://res.cloudinary.com/your-cloud/image/upload/v1234/wireframe1.jpg",
+      "https://res.cloudinary.com/your-cloud/image/upload/v1234/wireframe1.jpg"
+    ],
+    wireframesText: "I transitioned from low-fidelity sketches to high-fidelity prototypes in Figma, focusing on a clean, professional aesthetic that builds user trust.",
+    wireframesImages: [
+      "https://res.cloudinary.com/your-cloud/image/upload/v1234/wireframe1.jpg",
+      "https://res.cloudinary.com/your-cloud/image/upload/v1234/wireframe1.jpg",
+      "https://res.cloudinary.com/your-cloud/image/upload/v1234/wireframe1.jpg"
+    ],
+    learnings: "This project was pivotal in helping me understand the balance between complex data entry and clean mobile UI design."
+  }
   },
   {
     title: "DUCR Mobile App Prototype",
@@ -122,6 +164,26 @@ export const showcases: Showcase[] = [
     challenge: "Design a user-friendly mobile app interface for spare parts shop app.",
     process: "Developed wireframes and prototypes in Figma.",
     outcome: "Helped me learn fundamentals of prototyping",
+    caseStudy: {
+    role: "Product Designer",
+    duration: "4 Weeks",
+    tools: ["Figma", "Adobe Illustrator"],
+    problemStatement: "Finding specific car spare parts is a manual and error-prone process for many vehicle owners. DUCR aims to digitize the spare parts catalog with an intuitive search and filtering system.",
+    problemImages: ["https://res.cloudinary.com/your-cloud/image/upload/v1234/wireframe1.jpg"],
+    userResearch: "Research showed that users prioritize part compatibility and high-quality images. I designed the search flow to include vehicle make/model selection early in the process to ensure accuracy.",
+    researchImages: [
+      "https://res.cloudinary.com/your-cloud/image/upload/v1234/wireframe1.jpg",
+      "https://res.cloudinary.com/your-cloud/image/upload/v1234/wireframe1.jpg"
+    ],
+    wireframesText: "The wireframing phase focused on the checkout experience and the parts categorization system to ensure users could find what they needed in under three taps.",
+    wireframesImages: [
+      "https://res.cloudinary.com/your-cloud/image/upload/v1234/wireframe1.jpg",
+      "https://res.cloudinary.com/your-cloud/image/upload/v1234/wireframe1.jpg",
+      "https://res.cloudinary.com/your-cloud/image/upload/v1234/wireframe1.jpg",
+      "https://res.cloudinary.com/your-cloud/image/upload/v1234/wireframe1.jpg"
+    ],
+    learnings: "I learned how to manage large-scale inventories within a mobile interface while maintaining a smooth user experience."
+  }
   },
   {
     title: "P.C.E.A Musa Gitau Youth Christmas Events Posters",
