@@ -5,7 +5,7 @@ import { SiLinkedin, SiGithub, SiBehance } from "react-icons/si";
 import Image from 'next/image';
 import { motion } from "framer-motion";
 import { X, Info } from "lucide-react"; 
-
+import { AnimatePresence } from "framer-motion";
 import { Showcase, CompanyProject } from "@/types";
 
 import Button from "@/components/ui/button";
@@ -92,83 +92,88 @@ export default function PortfolioPage() {
       </section>
 
       {/* Lightboxes and Modals */}
-      {lightbox && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4" onClick={() => setLightbox(null)}>
-          <div role="dialog" aria-modal="true" aria-labelledby="lightbox-title" className="bg-white rounded-2xl p-4 sm:p-6 max-w-4xl w-full relative overflow-y-auto max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
-            <button className="absolute top-2 right-2 text-gray-600 hover:text-black" onClick={() => setLightbox(null)} aria-label="Close dialog"><X size={24} /></button>
-            <h3 id="lightbox-title" className="text-2xl font-semibold mb-4">{lightbox.title}</h3>
-            <div className="mb-6"><MediaDisplay project={lightbox} /></div>
-            <div className="space-y-4">
-              <div><h4 className="font-medium text-lg">Challenge</h4><p className="text-sm text-gray-700">{lightbox.challenge}</p></div>
-              <div><h4 className="font-medium text-lg">Process</h4><p className="text-sm text-gray-700">{lightbox.process}</p></div>
-              <div><h4 className="font-medium text-lg">Outcome</h4><p className="text-sm text-gray-700">{lightbox.outcome}</p></div>
-            </div>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {lightbox && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            // Removed p-4 on mobile so it goes edge-to-edge
+            className="fixed inset-0 bg-black/90 flex items-center justify-center z-50 p-0 sm:p-8" 
+            onClick={() => setLightbox(null)}
+          >
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              role="dialog" 
+              aria-modal="true" 
+              aria-labelledby="lightbox-title" 
+              // Full height/width on mobile (h-[100dvh] and rounded-none), rounded card on sm and up
+              className="bg-white rounded-none sm:rounded-3xl p-5 sm:p-8 max-w-7xl w-full relative overflow-hidden flex flex-col h-[100dvh] sm:h-auto sm:max-h-[90vh]" 
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button 
+                className="absolute top-3 right-3 sm:top-4 sm:right-4 p-2 bg-gray-100 text-gray-600 rounded-full hover:bg-gray-200 hover:text-black transition-colors z-10" 
+                onClick={() => setLightbox(null)} 
+                aria-label="Close dialog"
+              >
+                <X size={24} />
+              </button>
+              
+              {/* Added mt-8 on mobile to push content below the close button */}
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 h-full overflow-y-auto pr-2 mt-10 sm:mt-0">
+                {/* Left Column: Media Stage */}
+                <div className="lg:col-span-8 flex flex-col min-h-[40vh] sm:min-h-[50vh]">
+                  <MediaDisplay project={lightbox} />
+                </div>
 
-      {disclaimerProject && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4" onClick={() => setDisclaimerProject(null)}>
-          <div role="dialog" aria-modal="true" aria-labelledby="disclaimer-title" className="bg-white rounded-2xl p-4 sm:p-6 max-w-2xl w-full relative" onClick={(e) => e.stopPropagation()}>
-            <button className="absolute top-2 right-2 text-gray-600 hover:text-black" onClick={() => setDisclaimerProject(null)} aria-label="Close dialog"><X size={24} /></button>
-            <div className="flex items-start gap-4">
-              <div className="flex-shrink-0 bg-teal-100 text-teal-600 rounded-full p-3 mt-1"><Info size={24} /></div>
-              <div>
-                <h3 id="disclaimer-title" className="text-2xl font-semibold mb-2">Notice of Confidentiality</h3>
-                <p className="text-sm text-gray-700 mb-6">{disclaimerProject.disclaimer}</p>
-                <div className="flex flex-col sm:flex-row sm:justify-end gap-4">
-                  <Button variant="outline" onClick={() => setDisclaimerProject(null)}>Cancel</Button>
-                  <Button onClick={() => {
-                    if (!disclaimerProject) return;
-                    if (disclaimerProject.projects.length === 1) {
-                      setLightbox(disclaimerProject.projects[0]);
-                    } else if (disclaimerProject.projects.length > 1) {
-                      setCompanyProjectsToShow(disclaimerProject.projects);
-                    }
-                    setDisclaimerProject(null);
-                  }}>Acknowledge & Proceed</Button>
+                {/* Right Column: Project Context */}
+                <div className="lg:col-span-4 flex flex-col space-y-6 sm:space-y-8 pb-8">
+                  <div>
+                    <h3 id="lightbox-title" className="text-2xl sm:text-3xl font-bold mb-3 text-gray-900">{lightbox.title}</h3>
+                    <div className="flex flex-wrap gap-2 mb-2">
+                      {lightbox.category && (
+                        <span className="bg-teal-50 text-teal-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                          {lightbox.category}
+                        </span>
+                      )}
+                      {/* Logic check to prevent duplicate badges */}
+                      {lightbox.tag && lightbox.tag !== lightbox.category && (
+                        <span className="bg-gray-100 text-gray-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">
+                          {lightbox.tag}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="space-y-6">
+                    {lightbox.challenge && (
+                      <div>
+                        <h4 className="text-teal-600 uppercase tracking-wider text-sm font-bold mb-2">Challenge</h4>
+                        <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{lightbox.challenge}</p>
+                      </div>
+                    )}
+                    {lightbox.process && (
+                      <div>
+                        <h4 className="text-teal-600 uppercase tracking-wider text-sm font-bold mb-2">Process</h4>
+                        <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{lightbox.process}</p>
+                      </div>
+                    )}
+                    {lightbox.outcome && (
+                      <div>
+                        <h4 className="text-teal-600 uppercase tracking-wider text-sm font-bold mb-2">Outcome</h4>
+                        <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{lightbox.outcome}</p>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {companyProjectsToShow && (
-        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4" onClick={() => setCompanyProjectsToShow(null)}>
-          <div role="dialog" aria-modal="true" aria-labelledby="gallery-title" className="bg-white rounded-2xl p-4 sm:p-6 max-w-4xl w-full relative overflow-y-auto max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
-            <button className="absolute top-2 right-2 text-gray-600 hover:text-black" onClick={() => setCompanyProjectsToShow(null)} aria-label="Close dialog"><X size={24} /></button>
-            <h3 id="gallery-title" className="text-2xl font-semibold mb-2">Corporate Projects</h3>
-            <p className="text-gray-600 mb-6">Please select a project to view its details.</p>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {companyProjectsToShow.map((project, idx) => (
-                <motion.div key={project.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.08 }}>
-                  <Card className="shadow-lg rounded-2xl group relative overflow-hidden cursor-pointer h-full" onClick={() => {
-                    setLightbox(project); 
-                    setCompanyProjectsToShow(null); 
-                  }}>
-                    <CardContent>
-                      <div className="h-40 flex items-center justify-center relative bg-gray-100 rounded-lg overflow-hidden">
-                        <ThumbnailPreview project={project} />
-                        <span className="absolute top-2 left-2 bg-teal-500 text-white text-xs px-2 py-1 rounded-full">{project.tag}</span>
-                        <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                          <p className="text-white text-sm mb-2 px-4 text-center">{project.description}</p>
-                          <Button className="bg-teal-500 hover:bg-teal-600">View Project</Button>
-                        </div>
-                      </div>
-                      <div className="p-4">
-                        <h3 className="text-xl font-medium">{project.title}</h3>
-                        <p className="text-sm text-gray-600">Category: {project.category}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     
     <footer className="relative bg-gray-900 text-white py-20 px-6 text-center">
