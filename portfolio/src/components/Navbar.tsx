@@ -28,7 +28,7 @@ export default function Navbar() {
             )}
           </Link>
           <Link href="/resume" className="relative text-gray-900 hover:text-teal-600 font-medium transition-colors">
-            Resume
+            CV
             {pathname.includes("/resume") && (
               <motion.div layoutId="underline" className="absolute left-0 top-full mt-1 w-full h-0.5 bg-teal-500 rounded-full" />
             )}
