@@ -68,7 +68,7 @@ export const showcases: Showcase[] = [
     mediaType: "image",
     media: [
       "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823625/Maggie_s_Catering_Services_zkpn6h.jpg",
-      "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823618/Maggie_s_Catering_Service_Business_Card_kckg2b.jpg",
+      "https://res.cloudinary.com/dsvexizbx/image/upload/v1772471188/Maggie_s_Catering_Service_Business_Card_kckg2b.jpg",
     ],
     challenge: "Create engaging visuals for a social media campaign.",
     process: "Designed graphics in Adobe Photoshop and Illustrator, tailored for Whatsapp, Facebook and personal handout.",
