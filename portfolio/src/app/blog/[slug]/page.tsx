@@ -1,14 +1,12 @@
 "use client";
 
 import React, { useEffect, useState, use } from "react";
-// Note: Standard img and a tags used for preview compatibility
-// next/navigation removed to fix preview build environment errors
+import Link from "next/link"; // Added next/link import
 import ReactMarkdown from "react-markdown";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, MessageSquare, Send, Loader2, Linkedin, Github, Share2 } from "lucide-react";
+import { ArrowLeft, MessageSquare, Send, Loader2, Share2 } from "lucide-react";
 import { BlogPost, BlogComment } from "@/types";
 import Button from "@/components/ui/button";
-import { X, Info, ChevronLeft, ChevronRight } from "lucide-react"; 
 import { SiLinkedin, SiGithub, SiX, SiInstagram, SiBehance } from "react-icons/si";
 
 export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: string }> }) {
@@ -116,9 +114,10 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Article Not Found</h2>
-        <a href="/blog" className="text-teal-600 font-medium flex items-center">
+        {/* Replaced standard <a> with Next.js <Link> */}
+        <Link href="/blog" className="text-teal-600 font-medium flex items-center">
           <ArrowLeft size={18} className="mr-2" /> Return to Blog
-        </a>
+        </Link>
       </div>
     );
   }
@@ -128,13 +127,14 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
       <main className="min-h-screen bg-white pb-24 font-sans">
         <div className="max-w-6xl mx-auto px-6 pt-12">
           <div className="flex justify-between items-center mb-10">
-            <a 
+            {/* Replaced standard <a> with Next.js <Link> */}
+            <Link 
               href="/blog" 
               className="inline-flex items-center text-gray-500 hover:text-teal-600 transition-colors font-medium group"
             >
               <ArrowLeft size={20} className="mr-2 group-hover:-translate-x-1 transition-transform" /> 
               Back to Articles
-            </a>
+            </Link>
             
             <button
               onClick={handleShare}
@@ -295,7 +295,7 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
           <a href="https://github.com/Obrienmaina-Mosbach" target="_blank" rel="noopener noreferrer" className="hover:text-[#C06EFF] transition-transform transform hover:scale-110" aria-label="GitHub"><SiGithub size={20} /></a>
           <a href="https://www.behance.net/brianmaina3" target="_blank" rel="noopener noreferrer" className="hover:text-[#1769FF] transition-transform transform hover:scale-110" aria-label="Behance"><SiBehance size={20} /></a>
         </div>
-        <Button className="bg-teal-500 hover:bg-teal-600 text-lg px-6 py-3 rounded-2xl" onClick={() => (window.location.href = "mailto:brianmaina.nyawira@gmail.com")}>Contact Me</Button>
+        <Button className="bg-teal-500 hover:bg-teal-600 text-lg px-6 py-3 rounded-2xl" onClick={() => (window.location.href = "mailto:request@brianmaina.de")}>Contact Me</Button>
     </footer>
     </>
   );
