@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import WelcomeEmail from "@/emails/VerificationEmail";
+import VerificationEmail from "@/emails/VerificationEmail";
 import clientPromise from "@/lib/mongodb";
 import { randomUUID } from "crypto";
 
@@ -55,13 +55,14 @@ export async function POST(req: Request) {
       `,
     });
 
-    // Send the Welcome Email with the verification token
-    if (newsletter) {
+    // Send the Verification Email with the verification token
+   if (newsletter) {
       await resend.emails.send({
         from: "Brian Maina <hello@brianmaina.de>",
         to: email,
         subject: "Action Required: Verify your email",
-        react: WelcomeEmail({ userEmail: email, nickname: nickname, token: verificationToken }),
+        // Call the new component name here
+        react: VerificationEmail({ userEmail: email, nickname: nickname, token: verificationToken }), 
       });
     }
 
