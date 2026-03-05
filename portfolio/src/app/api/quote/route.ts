@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
-import WelcomeEmail from "@/emails/WelcomeEmail";
+import WelcomeEmail from "@/emails/VerificationEmail";
 import clientPromise from "@/lib/mongodb";
 import { randomUUID } from "crypto";
 

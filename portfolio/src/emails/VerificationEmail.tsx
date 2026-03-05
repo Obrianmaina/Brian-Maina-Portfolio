@@ -1,13 +1,14 @@
 import { Body, Container, Head, Html, Preview, Text, Link } from "@react-email/components";
 import * as React from "react";
 
-interface WelcomeEmailProps {
+// Changed interface name
+interface VerificationEmailProps {
   userEmail: string;
   nickname: string;
-  token: string; // Add the token prop
+  token: string; 
 }
 
-export default function WelcomeEmail({ userEmail, nickname, token }: WelcomeEmailProps) {
+export default function VerificationEmail({ userEmail, nickname, token }: VerificationEmailProps) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://brianmaina.de";
 
   return (
@@ -26,7 +27,6 @@ export default function WelcomeEmail({ userEmail, nickname, token }: WelcomeEmai
             You also checked the box to join my design newsletter. To ensure no one else used your email address, please click the link below to confirm your subscription:
           </Text>
 
-          {/* Verification Link */}
           <Text style={text}>
             <Link href={`${baseUrl}/verify?token=${token}`} style={button}>
               Verify My Email
