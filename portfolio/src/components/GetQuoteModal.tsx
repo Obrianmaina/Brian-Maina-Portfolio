@@ -6,7 +6,8 @@ import toast from "react-hot-toast";
 
 export default function GetQuoteModal({ onClose }: { onClose: () => void }) {
   const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false); // New success state
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [showDisclaimer, setShowDisclaimer] = useState(false); // State for the disclaimer toggle
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -30,7 +31,7 @@ export default function GetQuoteModal({ onClose }: { onClose: () => void }) {
 
       if (!response.ok) throw new Error("Failed to send request");
 
-      // Instead of closing the modal, we trigger the success screen
+     
       setIsSuccess(true);
       toast.success("Message sent!");
     } catch (error) {
@@ -41,17 +42,18 @@ export default function GetQuoteModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-md relative overflow-hidden">
+      {/* Added max-h-[90vh] and overflow-y-auto so the modal scrolls on small screens */}
+      <div className="bg-white rounded-xl shadow-xl w-full max-w-md relative max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300">
         <button 
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-800 bg-white rounded-full p-1"
           aria-label="Close"
         >
           <X className="w-5 h-5" />
         </button>
 
-        <div className="p-6">
-          {/* Conditional Rendering: Show Success Screen OR the Form */}
+        {/* Changed padding to p-5 sm:p-6 for tighter mobile view */}
+        <div className="p-5 sm:p-6">
           {isSuccess ? (
             <div className="text-center py-8">
               <CheckCircle className="w-16 h-16 text-teal-500 mx-auto mb-4" />
@@ -68,10 +70,11 @@ export default function GetQuoteModal({ onClose }: { onClose: () => void }) {
             </div>
           ) : (
             <>
-              <h2 className="text-2xl font-semibold text-gray-900 mb-1">Get a Quote</h2>
-              <p className="text-sm text-gray-600 mb-6">Let&apos;s build something great together.</p>
+              <h2 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-1 pr-6">Get a Quote</h2>
+              <p className="text-sm text-gray-600 mb-5 sm:mb-6">Let&apos;s build something great together.</p>
 
-              <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Reduced space between inputs on mobile (space-y-3 sm:space-y-4) */}
+              <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
                 <div>
                   <label htmlFor="nickname" className="block text-sm font-medium text-gray-700 mb-1">Preferred Name / Nickname *</label>
                   <input 
@@ -79,7 +82,7 @@ export default function GetQuoteModal({ onClose }: { onClose: () => void }) {
                     id="nickname" 
                     name="nickname" 
                     required 
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm sm:text-base"
                     placeholder="How should I address you?"
                   />
                 </div>
@@ -91,7 +94,7 @@ export default function GetQuoteModal({ onClose }: { onClose: () => void }) {
                     id="email" 
                     name="email" 
                     required 
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm sm:text-base"
                     placeholder="you@example.com"
                   />
                 </div>
@@ -103,7 +106,7 @@ export default function GetQuoteModal({ onClose }: { onClose: () => void }) {
                     id="service" 
                     name="service" 
                     required 
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 text-sm sm:text-base"
                     placeholder="Select or type a service"
                   />
                   <datalist id="design-services">
@@ -123,13 +126,13 @@ export default function GetQuoteModal({ onClose }: { onClose: () => void }) {
                   <textarea 
                     id="details" 
                     name="details" 
-                    rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none"
+                    rows={2}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-500 resize-none text-sm sm:text-base"
                     placeholder="Tell me a bit about your project..."
                   ></textarea>
                 </div>
 
-                <div className="flex items-start space-x-2 pt-2">
+                <div className="flex items-start space-x-2 pt-1 sm:pt-2">
                   <input 
                     type="checkbox" 
                     id="newsletter" 
@@ -141,14 +144,35 @@ export default function GetQuoteModal({ onClose }: { onClose: () => void }) {
                   </label>
                 </div>
 
+                {/* Collapsible Disclaimer */}
                 <div className="bg-gray-50 p-3 rounded-md text-xs text-gray-500 mt-4 border border-gray-100">
-                  <strong>Data Collection Notice:</strong> By submitting this form, you consent to the collection of your email address and provided details strictly for the purpose of discussing your project quote. If you opt into the newsletter, your email will be used for marketing purposes. Your data is secure and will never be shared with or sold to third parties. You may withdraw your consent or unsubscribe at any time.
+                  <strong>Data Collection Notice:</strong> By submitting this form, you consent to the collection of your details to discuss your project.{" "}
+                  {!showDisclaimer ? (
+                    <button 
+                      type="button" 
+                      onClick={() => setShowDisclaimer(true)}
+                      className="text-teal-600 hover:text-teal-700 font-medium underline inline-block"
+                    >
+                      Read more
+                    </button>
+                  ) : (
+                    <span className="inline">
+                      If you opt into the newsletter, your email will be used for marketing purposes. Your data is secure and will never be shared with or sold to third parties. You may withdraw your consent or unsubscribe at any time.
+                      <button 
+                        type="button" 
+                        onClick={() => setShowDisclaimer(false)}
+                        className="text-teal-600 hover:text-teal-700 font-medium underline ml-1"
+                      >
+                        Show less
+                      </button>
+                    </span>
+                  )}
                 </div>
 
                 <button 
                   type="submit" 
                   disabled={isLoading}
-                  className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2.5 rounded-md transition-colors disabled:opacity-70"
+                  className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2.5 rounded-md transition-colors disabled:opacity-70 mt-2"
                 >
                   {isLoading ? "Sending..." : "Request Quote"}
                 </button>
