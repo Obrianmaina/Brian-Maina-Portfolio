@@ -15,7 +15,7 @@ export async function POST(req: Request) {
 
     if (newsletter) {
       const client = await clientPromise;
-      const db = client.db();
+      const db = client.db("portfolio");
 
       await db.collection("subscribers").updateOne(
         { email: email },

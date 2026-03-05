@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     }
 
     const client = await clientPromise;
-    const db = client.db();
+    const db = client.db("portfolio");
 
     // 1. Fetch the user to get their nickname before we unsubscribe them
     const user = await db.collection("subscribers").findOne({ email: email });
