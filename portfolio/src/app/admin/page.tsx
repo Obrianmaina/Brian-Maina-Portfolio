@@ -1,74 +1,28 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import Button from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { BlogPost } from "@/types";
-import { Pencil, Trash2, Plus, ArrowLeft, Eye, EyeOff, Mail, Send } from "lucide-react";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { FileText, Megaphone, Receipt } from "lucide-react";
 import AdminModal from "@/components/AdminModal";
 
 export default function AdminDashboard() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const router = useRouter();
   const [password, setPassword] = useState("");
-  
-  const [view, setView] = useState<'grid' | 'editor' | 'newsletter'>('grid');
-  const [blogs, setBlogs] = useState<BlogPost[]>([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
-  
-  // Blog Editor State
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [content, setContent] = useState("");
-  const [featuredImage, setFeaturedImage] = useState("");
-  const [photoCredit, setPhotoCredit] = useState("");
-
-  // Newsletter Editor State
-  const [newsletterSubject, setNewsletterSubject] = useState("");
-  const [newsletterMessage, setNewsletterMessage] = useState("");
-  const [newsletterImage, setNewsletterImage] = useState("");
-
-  // MODAL STATE
   const [modal, setModal] = useState<{
     show: boolean;
     type: 'success' | 'error' | 'confirm';
     title: string;
     message: string;
     onConfirm?: () => void;
-  }>({
-    show: false,
-    type: 'success',
-    title: '',
-    message: ''
-  });
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      fetchBlogs();
-    }
-  }, [isAuthenticated]);
-
-  const fetchBlogs = async () => {
-    try {
-      const res = await fetch("/api/blogs");
-      if (res.ok) {
-        const data = await res.json();
-        setBlogs(data);
-      }
-    } catch (error) {
-      console.error("Failed to fetch blogs", error);
-    }
-  };
+  }>({ show: false, type: 'success', title: '', message: '' });
 
   const showModal = (type: 'success' | 'error' | 'confirm', title: string, message: string, onConfirm?: () => void) => {
     setModal({ show: true, type, title, message, onConfirm });
   };
 
-  const closeModal = () => {
-    setModal(prev => ({ ...prev, show: false }));
-  };
+  const closeModal = () => setModal(prev => ({ ...prev, show: false }));
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,186 +39,10 @@ export default function AdminDashboard() {
       } else {
         showModal('error', 'Access Denied', data.message || "Incorrect password");
       }
-    } catch (error) {
+    } catch {
       showModal('error', 'Error', "Connection failed. Please try again.");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleSubmit = async (isPublished: boolean) => {
-    if (!title || !content || !description) {
-      showModal('error', 'Incomplete', "Title, Description, and Content are required.");
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const method = editingId ? "PUT" : "POST";
-      const payload = editingId 
-        ? { id: editingId, title, description, content, featuredImage, photoCredit, isPublished }
-        : { title, description, content, featuredImage, photoCredit, isPublished };
-
-      const res = await fetch("/api/blogs", {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
-
-      if (res.ok) {
-        showModal('success', 'Success', `Article ${isPublished ? "published" : "saved as draft"}!`);
-        resetForm();
-        fetchBlogs();
-      } else {
-        showModal('error', 'Save Failed', "Could not save the article.");
-      }
-    } catch (error) {
-      showModal('error', 'Error', "An unexpected error occurred.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleTogglePublish = async (blog: BlogPost) => {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/blogs", {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          id: blog._id,
-          title: blog.title,
-          description: blog.description,
-          content: blog.content,
-          featuredImage: blog.featuredImage,
-          photoCredit: blog.photoCredit,
-          isPublished: !blog.isPublished,
-        }),
-      });
-
-      if (res.ok) {
-        showModal(
-          'success', 
-          'Status Updated', 
-          `Article has been ${!blog.isPublished ? "published" : "moved to drafts"}.`
-        );
-        fetchBlogs();
-      } else {
-        showModal('error', 'Update Failed', "Failed to change publication status.");
-      }
-    } catch (error) {
-      showModal('error', 'Error', "An error occurred.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const confirmDelete = (id: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    showModal(
-      'confirm',
-      'Delete Article',
-      'Are you sure? This will permanently remove the article.',
-      () => executeDelete(id)
-    );
-  };
-
-  const executeDelete = async (id: string) => {
-    closeModal();
-    try {
-      const res = await fetch("/api/blogs", {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id }),
-      });
-      if (res.ok) {
-        fetchBlogs();
-      } else {
-        showModal('error', 'Delete Failed', "Could not delete from database.");
-      }
-    } catch (error) {
-      showModal('error', 'Error', "Error while deleting.");
-    }
-  };
-
-  const handleSendNewsletter = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newsletterSubject || !newsletterMessage) {
-      showModal('error', 'Incomplete', 'Subject and message are required.');
-      return;
-    }
-    
-    setLoading(true);
-    try {
-      const res = await fetch("/api/admin/broadcast", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          subject: newsletterSubject,
-          message: newsletterMessage,
-          imageUrl: newsletterImage
-        }),
-      });
-      
-      const data = await res.json();
-      
-      if (res.ok) {
-        showModal('success', 'Broadcast Sent!', `Your newsletter was sent to ${data.sentCount} active subscribers.`);
-        setNewsletterSubject("");
-        setNewsletterMessage("");
-        setNewsletterImage("");
-        setView('grid');
-      } else {
-        showModal('error', 'Broadcast Failed', data.error || "Failed to send newsletter.");
-      }
-    } catch (error) {
-      showModal('error', 'Error', "An unexpected error occurred while sending.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const openEditorForNew = () => {
-    setEditingId(null);
-    setTitle("");
-    setDescription("");
-    setContent("");
-    setFeaturedImage("");
-    setPhotoCredit("");
-    setView('editor');
-  };
-
-  const openEditorForEdit = (blog: BlogPost) => {
-    if (blog._id) {
-      setEditingId(blog._id);
-      setTitle(blog.title);
-      setDescription(blog.description || "");
-      setContent(blog.content);
-      setFeaturedImage(blog.featuredImage || "");
-      setPhotoCredit(blog.photoCredit || "");
-      setView('editor');
-    }
-  };
-
-  const resetForm = () => {
-    setEditingId(null);
-    setTitle("");
-    setDescription("");
-    setContent("");
-    setFeaturedImage("");
-    setPhotoCredit("");
-    setNewsletterSubject("");
-    setNewsletterMessage("");
-    setNewsletterImage("");
-    setView('grid');
-  };
-
-  const getWordCount = (str: string) => str.trim() === "" ? 0 : str.trim().split(/\s+/).length;
-
-  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    const value = e.target.value;
-    if (getWordCount(value) <= 20 || value.length < description.length) {
-      setDescription(value);
     }
   };
 
@@ -273,16 +51,16 @@ export default function AdminDashboard() {
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <form onSubmit={handleLogin} className="bg-white p-8 rounded-2xl shadow-lg w-full max-w-sm">
           <h2 className="text-2xl font-bold mb-6 text-center">Admin Access</h2>
-          <input 
-            type="password" 
-            placeholder="Password" 
+          <input
+            type="password"
+            placeholder="Password"
             className="w-full p-3 border border-gray-300 rounded-xl mb-4"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button 
+          <button
             type="submit"
-            disabled={loading} 
+            disabled={loading}
             className="w-full bg-teal-600 text-white py-3 rounded-xl font-bold hover:bg-teal-700 transition-colors disabled:opacity-50"
           >
             {loading ? "Verifying..." : "Access Portal"}
@@ -296,211 +74,43 @@ export default function AdminDashboard() {
   return (
     <main className="min-h-screen bg-gray-50 py-12 px-6">
       <div className="max-w-6xl mx-auto">
-        {view === 'grid' && (
-          <>
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 border-l-4 border-gray-300 pb-2 px-4 gap-4">
-              <h1 className="text-3xl font-bold">Blog Dashboard</h1>
-              <button 
-                onClick={() => setView('newsletter')}
-                className="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-xl font-medium transition-colors flex items-center shadow-md shadow-indigo-100"
-              >
-                <Mail size={18} className="mr-2" />
-                Send Newsletter
-              </button>
+        <h1 className="text-4xl font-bold mb-8 text-center text-gray-800">Command Center</h1>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mt-12">
+
+          <div
+            onClick={() => router.push('/admin/blogs')}
+            className="bg-white p-8 rounded-3xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border border-gray-100 flex flex-col items-center text-center group"
+          >
+            <div className="w-16 h-16 bg-teal-100 text-teal-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <FileText size={32} />
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div 
-                onClick={openEditorForNew} 
-                className="border-2 border-dashed border-gray-300 bg-gray-50/50 hover:bg-teal-50 hover:border-teal-500 rounded-2xl flex flex-col items-center justify-center min-h-[300px] cursor-pointer transition-colors group"
-              >
-                <Plus size={32} className="text-gray-400 group-hover:text-teal-600 mb-4" />
-                <p className="font-semibold text-gray-600 group-hover:text-teal-700">New Article</p>
-              </div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Manage Blogs</h2>
+            <p className="text-gray-500">Write, edit, publish, and manage your articles.</p>
+          </div>
 
-              {blogs.map((blog) => (
-                <Card key={blog._id} className="overflow-hidden flex flex-col h-full hover:shadow-xl transition-shadow relative">
-                  <div className="absolute top-4 left-4 z-10 flex items-center gap-2">
-                    <span className={`mt-6 ml-6 px-3 py-1 rounded-full text-xs font-bold shadow-sm ${blog.isPublished ? 'bg-green-100 text-green-700' : 'bg-blue-100 text-blue-700'}`}>
-                      {blog.isPublished ? 'Published' : 'Draft'}
-                    </span>
-                    {blog.photoCredit && blog.isPublished && (
-                      <span 
-                        className="mt-6 text-white text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full border border-white" 
-                        title={`Credit: ${blog.photoCredit}`}
-                      >
-                        C
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="h-40 relative bg-gray-200 shrink-0 rounded-xl overflow-hidden m-4 border border-gray-100">
-                    {blog.featuredImage ? (
-                      <Image 
-                        src={blog.featuredImage} 
-                        alt={blog.title} 
-                        fill 
-                        className="object-cover" 
-                        unoptimized
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400">No Cover</div>
-                    )}
-                  </div>
-
-                  <CardContent className="px-6 pb-6 pt-2 flex flex-col flex-grow">
-                    <div className="flex-grow">
-                      <h3 className="font-bold text-gray-900 mb-2 line-clamp-1">{blog.title}</h3>
-                      <p className="text-sm text-gray-600 line-clamp-2 mb-4">{blog.description}</p>
-                    </div>
-                    
-                    <div className="flex justify-between items-center pt-4 border-t border-gray-100">
-                      <button 
-                        onClick={() => openEditorForEdit(blog)} 
-                        className="text-blue-600 hover:text-blue-800 flex items-center text-sm font-medium transition-colors"
-                        title="Edit Article"
-                      >
-                        <Pencil size={16} className="mr-1" /> Edit
-                      </button>
-
-                      <button 
-                        onClick={() => handleTogglePublish(blog)} 
-                        className={`${blog.isPublished ? 'text-amber-600 hover:text-amber-800' : 'text-green-600 hover:text-green-800'} flex items-center text-sm font-medium transition-colors`}
-                        title={blog.isPublished ? "Unpublish to Drafts" : "Publish Now"}
-                      >
-                        {blog.isPublished ? (
-                          <><EyeOff size={16} className="mr-1" /> Unpublish</>
-                        ) : (
-                          <><Eye size={16} className="mr-1" /> Publish</>
-                        )}
-                      </button>
-
-                      <button 
-                        onClick={(e) => blog._id && confirmDelete(blog._id, e)} 
-                        className="text-red-600 hover:text-red-800 flex items-center text-sm font-medium transition-colors"
-                        title="Delete Article"
-                      >
-                        <Trash2 size={16} className="mr-1" /> Delete
-                      </button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+          <div
+            onClick={() => router.push('/admin/broadcast')}
+            className="bg-white p-8 rounded-3xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border border-gray-100 flex flex-col items-center text-center group"
+          >
+            <div className="w-16 h-16 bg-indigo-100 text-indigo-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <Megaphone size={32} />
             </div>
-          </>
-        )}
-
-        {view === 'editor' && (
-          <div className="max-w-4xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-            <button onClick={resetForm} className="flex items-center text-gray-500 hover:text-gray-900 mb-6 transition-colors font-medium">
-              <ArrowLeft size={20} className="mr-2" /> Back to Dashboard
-            </button>
-            <h2 className="text-3xl font-bold mb-8 border-l-4 border-gray-300 pb-2 px-4">
-              {editingId ? "Edit" : "New"} Article
-            </h2>
-            <form className="space-y-6">
-              <div className="space-y-1">
-                <label className="text-sm font-semibold text-gray-700 ml-1">Title</label>
-                <input type="text" required value={title} onChange={(e) => setTitle(e.target.value)} className="w-full p-4 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-teal-500" placeholder="Title" />
-              </div>
-              
-              <div className="space-y-1">
-                <label className="text-sm font-semibold text-gray-700 ml-1">Short Description</label>
-                <textarea required rows={3} value={description} onChange={handleDescriptionChange} className="w-full p-4 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 resize-none" placeholder="Short summary..." />
-                <div className="flex justify-end text-xs text-gray-400 mt-1 font-medium">{getWordCount(description)} / 20 words</div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-sm font-semibold text-gray-700 ml-1">Image URL</label>
-                  <input type="url" value={featuredImage} onChange={(e) => setFeaturedImage(e.target.value)} className="w-full p-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-teal-500" placeholder="https://..." />
-                </div>
-                <div className="space-y-1">
-                  <label className="text-sm font-semibold text-gray-700 ml-1">Photo Credit</label>
-                  <input type="text" value={photoCredit} onChange={(e) => setPhotoCredit(e.target.value)} className="w-full p-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-teal-500" placeholder="Photographer name" />
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-sm font-semibold text-gray-700 ml-1">Content (Markdown)</label>
-                <textarea required rows={15} value={content} onChange={(e) => setContent(e.target.value)} className="w-full p-4 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 font-mono text-sm resize-y" placeholder="Write your article here..." />
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-gray-100">
-                <button type="button" onClick={() => handleSubmit(false)} disabled={loading} className="flex-1 py-3 border-2 border-gray-300 text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors">
-                  {loading ? "Saving..." : "Save as Draft"}
-                </button>
-                <button type="button" onClick={() => handleSubmit(true)} disabled={loading} className="flex-1 py-3 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 transition-all active:scale-95 shadow-lg shadow-teal-100">
-                  {loading ? "Publishing..." : "Publish Article"}
-                </button>
-              </div>
-            </form>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Broadcast</h2>
+            <p className="text-gray-500">Target audiences and send your newsletters.</p>
           </div>
-        )}
 
-        {view === 'newsletter' && (
-          <div className="max-w-3xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-            <button onClick={resetForm} className="flex items-center text-gray-500 hover:text-gray-900 mb-6 transition-colors font-medium">
-              <ArrowLeft size={20} className="mr-2" /> Back to Dashboard
-            </button>
-            <h2 className="text-3xl font-bold mb-2 border-l-4 border-indigo-300 pb-2 px-4">
-              Broadcast Newsletter
-            </h2>
-            <p className="text-gray-500 mb-8 ml-5 text-sm">
-              This message will be sent to all your active, verified subscribers.
-            </p>
-            
-            <form onSubmit={handleSendNewsletter} className="space-y-6">
-              <div className="space-y-1">
-                <label className="text-sm font-semibold text-gray-700 ml-1">Subject Line</label>
-                <input 
-                  type="text" 
-                  required 
-                  value={newsletterSubject} 
-                  onChange={(e) => setNewsletterSubject(e.target.value)} 
-                  className="w-full p-4 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500" 
-                  placeholder="E.g., Updates on my latest UI project" 
-                />
-              </div>
-
-              <div className="space-y-1">
-                <div className="flex justify-between items-end ml-1">
-                  <label className="text-sm font-semibold text-gray-700">Cover Image URL</label>
-                  <span className="text-xs text-gray-400 font-medium">Optional</span>
-                </div>
-                <input 
-                  type="url" 
-                  value={newsletterImage} 
-                  onChange={(e) => setNewsletterImage(e.target.value)} 
-                  className="w-full p-4 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500" 
-                  placeholder="https://example.com/image.jpg" 
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-sm font-semibold text-gray-700 ml-1">Message Body</label>
-                <textarea 
-                  required 
-                  rows={10} 
-                  value={newsletterMessage} 
-                  onChange={(e) => setNewsletterMessage(e.target.value)} 
-                  className="w-full p-4 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500 resize-y" 
-                  placeholder="Type your newsletter content here. Line breaks will be preserved." 
-                />
-              </div>
-
-              <div className="pt-4 border-t border-gray-100">
-                <button 
-                  type="submit" 
-                  disabled={loading} 
-                  className="w-full py-4 bg-indigo-600 text-white font-bold rounded-xl hover:bg-indigo-700 transition-all active:scale-95 shadow-lg shadow-indigo-100 flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed"
-                >
-                  {loading ? "Sending Broadcast..." : <><Send size={20} className="mr-2" /> Send to All Subscribers</>}
-                </button>
-              </div>
-            </form>
+          <div
+            onClick={() => router.push('/admin/accounts')}
+            className="bg-white p-8 rounded-3xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border border-gray-100 flex flex-col items-center text-center group"
+          >
+            <div className="w-16 h-16 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <Receipt size={32} />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Manage Books</h2>
+            <p className="text-gray-500">Handle receipts, invoices, and financials.</p>
           </div>
-        )}
+
+        </div>
       </div>
       <AdminModal modal={modal} close={closeModal} />
     </main>

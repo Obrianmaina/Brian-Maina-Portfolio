@@ -6,6 +6,13 @@ import { cookies } from "next/headers";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// Define the shape of our query to avoid using 'any'
+interface SubscriberQuery {
+  verified: boolean;
+  subscribed: boolean;
+  subscriptionType?: 'blog' | 'client';
+}
+
 export async function POST(req: Request) {
   try {
     const cookieStore = await cookies();
@@ -15,8 +22,8 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
     }
 
-    // Add imageUrl to the destructured JSON payload
-    const { subject, message, imageUrl } = await req.json();
+    // Include audience in the destructured JSON payload
+    const { subject, message, imageUrl, audience } = await req.json();
 
     if (!subject || !message) {
       return NextResponse.json({ error: "Subject and message are required" }, { status: 400 });
@@ -25,13 +32,23 @@ export async function POST(req: Request) {
     const client = await clientPromise;
     const db = client.db("portfolio");
 
-    const subscribers = await db.collection("subscribers").find({ 
+    // Build the query using the newly defined SubscriberQuery type
+    const query: SubscriberQuery = { 
       verified: true, 
       subscribed: true 
-    }).toArray();
+    };
+
+    if (audience === 'blog') {
+      query.subscriptionType = 'blog';
+    } else if (audience === 'client') {
+      query.subscriptionType = 'client';
+    }
+    // If audience is 'all', the optional subscriptionType property remains undefined
+
+    const subscribers = await db.collection("subscribers").find(query).toArray();
 
     if (subscribers.length === 0) {
-      return NextResponse.json({ error: "No active subscribers found" }, { status: 404 });
+      return NextResponse.json({ error: "No active subscribers found for this audience" }, { status: 404 });
     }
 
     const emailsToSend = subscribers.map((sub) => ({
@@ -42,7 +59,7 @@ export async function POST(req: Request) {
         nickname: sub.nickname || "there", 
         userEmail: sub.email,
         message: message,
-        imageUrl: imageUrl // Pass the image URL down to the component
+        imageUrl: imageUrl 
       }),
     }));
 

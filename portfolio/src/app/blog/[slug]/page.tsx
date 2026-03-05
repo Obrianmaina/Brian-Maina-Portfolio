@@ -1,16 +1,16 @@
 "use client";
 
-import React, { useEffect, useState, use } from "react";
-import Link from "next/link"; // Added next/link import
+import React, { useEffect, useState, use, useRef } from "react";
+import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, MessageSquare, Send, Loader2, Share2 } from "lucide-react";
+import { ArrowLeft, MessageSquare, Send, Loader2, Share2, Mail, X } from "lucide-react";
 import { BlogPost, BlogComment } from "@/types";
 import Button from "@/components/ui/button";
 import { SiLinkedin, SiGithub, SiX, SiInstagram, SiBehance } from "react-icons/si";
+import BlogSubscribe from "@/components/BlogSubscribe";
 
 export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: string }> }) {
-  // Unwrap the params Promise using React.use() as required by Next.js
   const resolvedParams = params ? use(params) : null;
   const slug = resolvedParams?.slug || (typeof window !== "undefined" ? window.location.pathname.split("/").filter(Boolean).pop() : "");
   
@@ -20,13 +20,18 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
-  // Helper function to resolve relative URLs safely in preview/blob environments
+  // NEW: State for Modal and Toast
+  const [isSubscribeModalOpen, setIsSubscribeModalOpen] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [hasDismissedToast, setHasDismissedToast] = useState(false);
+  const articleEndRef = useRef<HTMLDivElement>(null);
+
   const getApiUrl = (path: string) => {
     if (typeof window !== "undefined") {
       if (window.location.protocol === "blob:" || window.location.origin === "null") {
         return `http://localhost:3000${path}`;
       }
-      return path; // Standard relative path for normal browser environment
+      return path;
     }
     return `http://localhost:3000${path}`;
   };
@@ -55,6 +60,26 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
     }
     fetchData();
   }, [slug]);
+
+  // NEW: Intersection Observer to detect when user reaches the end of the article
+  useEffect(() => {
+    if (loading || !blog) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasDismissedToast) {
+          setShowToast(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (articleEndRef.current) {
+      observer.observe(articleEndRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [loading, blog, hasDismissedToast]);
 
   const handlePostComment = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -114,7 +139,6 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">Article Not Found</h2>
-        {/* Replaced standard <a> with Next.js <Link> */}
         <Link href="/blog" className="text-teal-600 font-medium flex items-center">
           <ArrowLeft size={18} className="mr-2" /> Return to Blog
         </Link>
@@ -124,10 +148,73 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
 
   return (
     <>
+      {/* NEW: Full Screen Subscription Modal */}
+      <AnimatePresence>
+        {isSubscribeModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-xl bg-white rounded-[2rem] shadow-2xl overflow-hidden"
+            >
+              <button
+                onClick={() => setIsSubscribeModalOpen(false)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 p-2 rounded-full transition-colors z-10"
+              >
+                <X size={20} />
+              </button>
+              
+              <div className="p-2">
+                <BlogSubscribe />
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* NEW: Slide-In Toast Notification */}
+      <AnimatePresence>
+        {showToast && !isSubscribeModalOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, x: 50 }}
+            animate={{ opacity: 1, y: 0, x: 0 }}
+            exit={{ opacity: 0, y: 50, x: 50 }}
+            className="fixed bottom-6 right-6 z-40 bg-white border border-gray-100 shadow-2xl rounded-2xl p-5 max-w-[320px] flex gap-4 items-start"
+          >
+            <div className="w-10 h-10 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center shrink-0">
+              <Mail size={20} />
+            </div>
+            <div className="flex-1 pr-4">
+              <h4 className="font-bold text-gray-900 mb-1 text-sm">Enjoying the read?</h4>
+              <p className="text-xs text-gray-500 mb-3">Get notified whenever a new article drops.</p>
+              <button
+                onClick={() => {
+                  setShowToast(false);
+                  setIsSubscribeModalOpen(true);
+                }}
+                className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors w-full shadow-md shadow-teal-100"
+              >
+                Subscribe Now
+              </button>
+            </div>
+            <button
+              onClick={() => {
+                setShowToast(false);
+                setHasDismissedToast(true);
+              }}
+              className="text-gray-400 hover:text-gray-700 absolute top-3 right-3 p-1 rounded-full hover:bg-gray-100 transition-colors"
+            >
+              <X size={14} />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <main className="min-h-screen bg-white pb-24 font-sans">
         <div className="max-w-6xl mx-auto px-6 pt-12">
-          <div className="flex justify-between items-center mb-10">
-            {/* Replaced standard <a> with Next.js <Link> */}
+          
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-10 gap-4">
             <Link 
               href="/blog" 
               className="inline-flex items-center text-gray-500 hover:text-teal-600 transition-colors font-medium group"
@@ -136,13 +223,24 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
               Back to Articles
             </Link>
             
-            <button
-              onClick={handleShare}
-              className="flex items-center gap-2 bg-gray-50 hover:bg-teal-50 text-gray-700 hover:text-teal-700 px-4 py-2 rounded-xl transition-all border border-gray-100 shadow-sm font-medium"
-            >
-              <Share2 size={18} />
-              Share Article
-            </button>
+            {/* NEW: Action Bar updated with Subscribe button */}
+            <div className="flex items-center gap-3 w-full sm:w-auto">
+              <button
+                onClick={() => setIsSubscribeModalOpen(true)}
+                className="flex-1 sm:flex-none flex justify-center items-center gap-2 bg-teal-50 hover:bg-teal-100 text-teal-700 px-5 py-2.5 rounded-xl transition-all border border-teal-100 shadow-sm font-medium"
+              >
+                <Mail size={18} />
+                Subscribe
+              </button>
+              
+              <button
+                onClick={handleShare}
+                className="flex-1 sm:flex-none flex justify-center items-center gap-2 bg-gray-50 hover:bg-teal-50 text-gray-700 hover:text-teal-700 px-5 py-2.5 rounded-xl transition-all border border-gray-100 shadow-sm font-medium"
+              >
+                <Share2 size={18} />
+                Share
+              </button>
+            </div>
           </div>
 
           <header className="mb-12">
@@ -207,6 +305,9 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
             >
               {blog.content}
             </ReactMarkdown>
+
+            {/* NEW: This hidden div tells the observer we reached the end of the post */}
+            <div ref={articleEndRef} className="h-1 w-full mt-10"></div>
           </article>
 
           {/* THE COMMENT THREAD UI */}
@@ -296,7 +397,7 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
           <a href="https://www.behance.net/brianmaina3" target="_blank" rel="noopener noreferrer" className="hover:text-[#1769FF] transition-transform transform hover:scale-110" aria-label="Behance"><SiBehance size={20} /></a>
         </div>
         <Button className="bg-teal-500 hover:bg-teal-600 text-lg px-6 py-3 rounded-2xl" onClick={() => (window.location.href = "mailto:request@brianmaina.de")}>Contact Me</Button>
-    </footer>
+      </footer>
     </>
   );
 }
