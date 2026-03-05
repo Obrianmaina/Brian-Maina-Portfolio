@@ -15,7 +15,7 @@ import ThumbnailPreview from "@/components/ThumbnailPreview";
 import { showcases } from "./showcaseData";
 import { companyProjects } from "./corporateData";
 
-// --- NEW COMPONENT: Dynamic Image Gallery ---
+// NEW COMPONENT: Dynamic Image Gallery
 const DynamicImageGallery = ({ images }: { images?: string[] }) => {
   if (!images || images.length === 0) return null;
 
@@ -67,18 +67,22 @@ const DynamicImageGallery = ({ images }: { images?: string[] }) => {
 };
 
 export default function PortfolioPage() {
-  const categories = ["All", "UI/UX", "Presentation", "Branding", "Graphics", "Publication"] as const;
+  const categories = ["All", "UI/UX", "Presentation", "Branding", "Logo", "Graphics", "Publication", "Video"] as const;
   
   const [activeCategory, setActiveCategory] = useState<typeof categories[number]>("All");
   const [lightbox, setLightbox] = useState<Showcase | null>(null);
   const [disclaimerProject, setDisclaimerProject] = useState<CompanyProject | null>(null);
   const [companyProjectsToShow, setCompanyProjectsToShow] = useState<Showcase[] | null>(null);
 
+  // NEW STATE: Tracks which mockup is currently clicked/expanded
+  const [expandedMockup, setExpandedMockup] = useState<string | null>(null);
+
   const filteredShowcases = activeCategory === "All" ? showcases : showcases.filter((item) => item.category === activeCategory);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
+        setExpandedMockup(null);
         setLightbox(null);
         setDisclaimerProject(null);
         setCompanyProjectsToShow(null); 
@@ -226,9 +230,99 @@ export default function PortfolioPage() {
                     )}
 
                   </div>
+                ) : lightbox.title.toLowerCase().includes("logo") ? (
+                  
+                  <div className="max-w-5xl mx-auto py-8 sm:py-12 space-y-12 sm:space-y-16">
+                    {/* BRAND BOOK ONE-PAGER LAYOUT */}
+                    
+                    {/* Brand Header */}
+                    <div className="text-center space-y-6">
+                      <h3 className="text-4xl sm:text-5xl font-extrabold text-gray-900 tracking-tight">{lightbox.title}</h3>
+                      <p className="text-xl text-gray-500 max-w-2xl mx-auto">{lightbox.description}</p>
+                      <div className="flex justify-center gap-3">
+                        <span className="bg-gray-900 text-white text-xs font-bold px-4 py-2 rounded-full uppercase tracking-widest">{lightbox.tag}</span>
+                      </div>
+                    </div>
+
+                    {/* Main Logo Showcase */}
+                    <div className="w-full bg-gray-50 rounded-3xl p-4 sm:p-12 shadow-inner border border-gray-200">
+                      <div className="w-full aspect-square sm:aspect-video relative rounded-2xl overflow-hidden">
+                        <MediaDisplay project={lightbox} />
+                      </div>
+                    </div>
+
+                    {/* Color Palette Section */}
+                    {lightbox.brandDetails?.colors && lightbox.brandDetails.colors.length > 0 && (
+                      <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center">
+                        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6">Brand Colors</h4>
+                        <div className="flex flex-wrap justify-center gap-6">
+                          {lightbox.brandDetails.colors.map((color, idx) => (
+                            <div key={idx} className="flex flex-col items-center gap-3">
+                              <div 
+                                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow-inner border border-gray-200"
+                                style={{ backgroundColor: color }}
+                              />
+                              <span className="text-sm font-mono text-gray-600 uppercase">{color}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Brand Strategy Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+                      {lightbox.challenge && (
+                        <div className="space-y-3">
+                          <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest">The Challenge</h4>
+                          <p className="text-gray-700 leading-relaxed text-sm sm:text-base">{lightbox.challenge}</p>
+                        </div>
+                      )}
+                      {lightbox.process && (
+                        <div className="space-y-3">
+                          <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest">The Process</h4>
+                          <p className="text-gray-700 leading-relaxed text-sm sm:text-base">{lightbox.process}</p>
+                        </div>
+                      )}
+                      {lightbox.outcome && (
+                        <div className="space-y-3">
+                          <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest">The Outcome</h4>
+                          <p className="text-gray-700 leading-relaxed text-sm sm:text-base">{lightbox.outcome}</p>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Sliding Mockup Carousel */}
+                    {lightbox.brandDetails?.mockups && lightbox.brandDetails.mockups.length > 0 && (
+                      <div className="space-y-6">
+                        <h4 className="text-2xl font-bold text-center text-gray-900">Logo in Action</h4>
+                        <div 
+                          className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-6 px-4 sm:px-0"
+                          style={{ scrollbarWidth: "none" }}
+                        >
+                          {lightbox.brandDetails.mockups.map((mockup, idx) => (
+                            <div 
+                              key={idx} 
+                              className="flex-shrink-0 w-[85%] sm:w-[60%] lg:w-[45%] aspect-video relative snap-center rounded-2xl overflow-hidden cursor-zoom-in group shadow-md hover:shadow-xl transition-shadow"
+                              onClick={() => setExpandedMockup(mockup)}
+                            >
+                              <Image 
+                                src={mockup} 
+                                alt={`Brand mockup ${idx + 1}`} 
+                                fill 
+                                className="object-cover group-hover:scale-105 transition-transform duration-500" 
+                                unoptimized={true} 
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  
                 ) : (
+                  
                   <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 h-full">
-                    {/* EXISTING STANDARD LAYOUT for Graphics/Branding */}
+                    {/* STANDARD LAYOUT */}
                     
                     {/* Left Column: Media Stage */}
                     <div className="lg:col-span-8 flex flex-col min-h-[40vh] sm:min-h-[50vh]">
@@ -277,7 +371,7 @@ export default function PortfolioPage() {
                   </div>
                 )}
               </div>
-
+    
             </motion.div>
           </motion.div>
         )}
@@ -385,6 +479,36 @@ export default function PortfolioPage() {
                 ))}
               </div>
             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Expanded Mockup Modal */}
+      <AnimatePresence>
+        {expandedMockup && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95 p-4 sm:p-8"
+            onClick={() => setExpandedMockup(null)}
+          >
+            <button
+              className="absolute top-4 right-4 p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors z-[110]"
+              onClick={(e) => { e.stopPropagation(); setExpandedMockup(null); }}
+              aria-label="Close fullscreen mockup"
+            >
+              <X size={24} />
+            </button>
+            <div className="relative w-full h-full max-w-7xl max-h-full">
+              <Image
+                src={expandedMockup}
+                alt="Fullscreen mockup"
+                fill
+                className="object-contain"
+                unoptimized={true}
+              />
+            </div>
           </motion.div>
         )}
       </AnimatePresence>

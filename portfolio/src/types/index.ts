@@ -38,6 +38,10 @@ export interface Showcase {
   process: string;
   outcome: string;
   caseStudy?: CaseStudyDetails;
+  brandDetails?: {
+    colors?: string[];
+    mockups?: string[]; 
+  };
 }
 
 export interface CompanyProject {

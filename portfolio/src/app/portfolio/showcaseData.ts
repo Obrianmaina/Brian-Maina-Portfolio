@@ -430,31 +430,47 @@ export const showcases: Showcase[] = [
   },
   {
     title: "HUWA Brands Logo",
-    category: "Graphics",
+    category: "Logo",
     description: "A logo for HUWA Brands.",
-    tag: "Graphics",
+    tag: "Logo",
     mediaType: "image",
     media: "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823621/Huwa_Brands_White_Sample_1_cpdgy0.jpg",
     challenge: "Create a logo for Huwa Brands.",
     process: "Designed logo in Adobe Illustrator",
     outcome: "Created a modern and versatile logo that effectively represents the brand's identity.",
+    brandDetails: {
+      colors: ["#000000", "#FFFFFF", "#E3342F"], // Replace with actual hex codes
+      mockups: [
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup1.jpg", // Replace with real links
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup2.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup3.jpg"
+      ]
+    }
   },
   {
     title: "Sally Cyclist Logo",
-    category: "Graphics",
+    category: "Logo",
     description: "A logo for Sally Cyclist .",
-    tag: "Graphics",
+    tag: "Logo",
     mediaType: "image",
     media: "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823640/Sally_Cyclist_on_white_imiamv.jpg",
     challenge: "Create a logo for Sally Cyclist.",
     process: "Designed logo in Adobe Illustrator",
     outcome: "Created a modern and versatile logo that effectively represents the brand's identity.",
+    brandDetails: {
+      colors: ["#000000", "#FFFFFF", "#E3342F"], // Replace with actual hex codes
+      mockups: [
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup1.jpg", // Replace with real links
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup2.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup3.jpg"
+      ]
+    }
   },
   {
     title: "Authentic Vessels Logo Design",
-    category: "Graphics",
+    category: "Logo",
     description: "Logo for Authentic Vessels.",
-    tag: "Graphics",
+    tag: "Logo",
     mediaType: "image",
     media: [
       "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823611/authentic_vessels_1_rjwtpe.jpg",
@@ -462,50 +478,90 @@ export const showcases: Showcase[] = [
     challenge: "Creating a unique logo for a worship team of young people.",
     process: "Designed logo in Adobe Illustrator.",
     outcome: "Created a modern and versatile logo that effectively represents the brand's identity.",
+    brandDetails: {
+      colors: ["#000000", "#FFFFFF", "#E3342F"], // Replace with actual hex codes
+      mockups: [
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup1.jpg", // Replace with real links
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup2.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup3.jpg"
+      ]
+    }
   },
   {
     title: "Njema Logo",
-    category: "Graphics",
+    category: "Logo",
     description: "A logo for Njema.",
-    tag: "Graphics",
+    tag: "Logo",
     mediaType: "image",
     media: "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823621/Njema_concept_2_hscebx.jpg",
     challenge: "Create a logo for Njema Publishers.",
     process: "Designed logo in Adobe Illustrator.",
     outcome: "Created a modern and versatile logo that effectively represents the brand's identity.",
+    brandDetails: {
+        colors: ["#000000", "#FFFFFF", "#E3342F"], // Replace with actual hex codes
+        mockups: [
+          "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup1.jpg", // Replace with real links
+          "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup2.jpg",
+          "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup3.jpg"
+        ]
+      }
   },
   {
     title: "JasiriCup Logo",
-    category: "Graphics",
+    category: "Logo",
     description: "A logo for jasiriCup.",
-    tag: "Graphics",
+    tag: "Logo",
     mediaType: "image",
     media: "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823612/JasiriCup_logo_sz5ngd.png",
     challenge: "Create a logo for JasiriCup.",
     process: "Designed the logo in Adobe Illustrator.",
     outcome: "Created a modern and versatile logo that effectively represents the brand's identity.",
+    brandDetails: {
+      colors: ["#000000", "#FFFFFF", "#E3342F"], // Replace with actual hex codes
+      mockups: [
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup1.jpg", // Replace with real links
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup2.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup3.jpg"
+      ]
+    }
   },
   {
     title: "Kanyakwar Logo",
-    category: "Graphics",
+    category: "Logo",
     description: "A logo for Kanyakwar.",
-    tag: "Graphics",
+    tag: "Logo",
     mediaType: "image",
     media: "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823617/Blue_Concept_2_ribqwb.jpg",
     challenge: "Create a logo for a football club.",
     process: "Designed logo in Adobe Illustrator.",
     outcome: "Created a modern and versatile logo that effectively represents the brand's identity.",
+    brandDetails: {
+      colors: ["#000000", "#FFFFFF", "#E3342F"], // Replace with actual hex codes
+      mockups: [
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup1.jpg", // Replace with real links
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup2.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup3.jpg"
+      ]
+    }
   },
   {
     title: "Mizizi Therapies Logo",
-    category: "Graphics",
+    category: "Logo",
     description: "A logo for Mizizi Therapies.",
-    tag: "Graphics",
+    tag: "Logo",
     mediaType: "image",
     media: "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823615/MIZIZI_THERAPIES_upright_jpeg_udlkmq.jpg",
     challenge: "Create a logo for a child therapy consultant.",
     process: "Designed logo in Adobe Illustrator.",
     outcome: "Created an audience-appropriate logo that effectively represents the brand's identity.",
+    brandDetails: {
+      colors: ["#000000", "#FFFFFF", "#E3342F"], // Replace with actual hex codes
+      mockups: [
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup1.jpg", // Replace with real links
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup2.jpg",
+        "https://res.cloudinary.com/dsvexizbx/image/upload/v123/mockup3.jpg"
+      ]
+    }
   },
   {
     title: "Morning Inspiration Artwork for Social Media",
@@ -584,7 +640,7 @@ export const showcases: Showcase[] = [
   },
   {
     title: "Peacha Studio Promo Video",
-    category: "Graphics",
+    category: "Video",
     description: "Peacha Studio Promo Video.",
     tag: "Video",
     coverImage: "https://res.cloudinary.com/dsvexizbx/image/upload/v1761823621/peacha_2_viu1em.png",
