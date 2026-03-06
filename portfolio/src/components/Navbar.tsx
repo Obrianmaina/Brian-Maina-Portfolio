@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Home, PenTool } from "lucide-react";
+import { Home, PenTool, Settings, Briefcase, FileText, BookOpen } from "lucide-react";
 import { useState } from "react";
 import GetQuoteModal from "./GetQuoteModal";
 
@@ -20,27 +20,46 @@ export default function Navbar() {
             href="/" 
             className="text-gray-800 hover:text-teal-600 transition-colors"
             aria-label="Home"
+            title="Home"
           >
             <Home className="w-5 h-5" />
           </Link>
 
           <div className="flex space-x-6 items-center">
-            <Link href="/portfolio" className="relative text-gray-900 hover:text-teal-600 font-medium transition-colors">
-              Portfolio
+            
+            <Link 
+              href="/portfolio" 
+              className="relative text-gray-900 hover:text-teal-600 transition-colors flex items-center justify-center"
+              aria-label="Portfolio"
+              title="Portfolio"
+            >
+              <Briefcase className="w-5 h-5" />
               {pathname.includes("/portfolio") && (
-                <motion.div layoutId="underline" className="absolute left-0 top-full mt-1 w-full h-0.5 bg-teal-500 rounded-full" />
+                <motion.div layoutId="underline" className="absolute left-0 top-full mt-2 w-full h-0.5 bg-teal-500 rounded-full" />
               )}
             </Link>
-            <Link href="/resume" className="relative text-gray-900 hover:text-teal-600 font-medium transition-colors">
-              CV
+
+            <Link 
+              href="/resume" 
+              className="relative text-gray-900 hover:text-teal-600 transition-colors flex items-center justify-center"
+              aria-label="CV / Resume"
+              title="CV / Resume"
+            >
+              <FileText className="w-5 h-5" />
               {pathname.includes("/resume") && (
-                <motion.div layoutId="underline" className="absolute left-0 top-full mt-1 w-full h-0.5 bg-teal-500 rounded-full" />
+                <motion.div layoutId="underline" className="absolute left-0 top-full mt-2 w-full h-0.5 bg-teal-500 rounded-full" />
               )}
             </Link>
-            <Link href="/blog" className="relative text-gray-900 hover:text-teal-600 font-medium transition-colors">
-              Blog
+
+            <Link 
+              href="/blog" 
+              className="relative text-gray-900 hover:text-teal-600 transition-colors flex items-center justify-center"
+              aria-label="Blog"
+              title="Blog"
+            >
+              <BookOpen className="w-5 h-5" />
               {pathname.includes("/blog") && (
-                <motion.div layoutId="underline" className="absolute left-0 top-full mt-1 w-full h-0.5 bg-teal-500 rounded-full" />
+                <motion.div layoutId="underline" className="absolute left-0 top-full mt-2 w-full h-0.5 bg-teal-500 rounded-full" />
               )}
             </Link>
             
@@ -53,6 +72,16 @@ export default function Navbar() {
             >
               <PenTool className="w-5 h-5" />
             </button>
+
+            {/* Admin Portal Button */}
+            <Link 
+              href="/admin"
+              className="text-gray-900 hover:text-teal-600 transition-colors ml-4"
+              aria-label="Admin Portal"
+              title="Admin Portal"
+            >
+              <Settings className="w-5 h-5" />
+            </Link>
           </div>
         </div>
       </nav>

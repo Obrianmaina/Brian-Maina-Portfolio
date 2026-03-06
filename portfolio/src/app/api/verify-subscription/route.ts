@@ -1,5 +1,10 @@
 import clientPromise from '@/lib/mongodb';
 import { NextResponse } from 'next/server';
+import { Resend } from 'resend';
+import SubscriptionConfirmedEmail from '@/emails/SubscriptionConfirmedEmail';
+
+// Initialize Resend
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
@@ -36,6 +41,23 @@ export async function POST(request: Request) {
         $unset: { verificationToken: "" }
       }
     );
+
+    // Send the Welcome / Confirmation Email with the required props
+    try {
+      await resend.emails.send({
+        from: 'Brian Maina <hello@brianmaina.de>', // Ensure this matches your verified Resend domain
+        to: subscriber.email,
+        subject: 'Subscription Confirmed! 🎉',
+        react: SubscriptionConfirmedEmail({
+          nickname: subscriber.nickname || subscriber.email.split('@')[0],
+          userEmail: subscriber.email
+        }), 
+      });
+      console.log("Welcome email sent to:", subscriber.email);
+    } catch (emailError) {
+      console.error("Failed to send welcome email:", emailError);
+      // We log the error but don't fail the whole request since the DB update worked
+    }
 
     return NextResponse.json({ success: true, message: 'Subscription verified successfully!' }, { status: 200 });
 

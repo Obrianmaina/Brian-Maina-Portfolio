@@ -14,23 +14,32 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    // Generate a unique token for verification
     const verificationToken = randomUUID();
+    const client = await clientPromise;
+    const db = client.db("portfolio");
 
+    // 1. SAVE THE QUOTE TO THE DATABASE FIRST
+    await db.collection("quotes").insertOne({
+      name: nickname,
+      email: email,
+      service: service,
+      message: details || "None provided",
+      budget: "TBD", // Adding a default since it's expected in your table
+      status: 'New',
+      createdAt: new Date()
+    });
+
+    // 2. HANDLE NEWSLETTER SUBSCRIPTION (If checked)
     if (newsletter) {
-      const client = await clientPromise;
-      const db = client.db("portfolio");
-
-      // Save them as unverified initially
       await db.collection("subscribers").updateOne(
         { email: email },
         { 
           $set: { 
             email: email, 
             nickname: nickname,
-            subscribed: false, // Set to false until they verify
-            verified: false,   // New verification status
-            verificationToken: verificationToken, // Save the token
+            subscribed: false, 
+            verified: false,   
+            verificationToken: verificationToken, 
             updatedAt: new Date()
           },
           $setOnInsert: {
@@ -41,7 +50,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // Send the quote to yourself
+    // 3. SEND ADMIN NOTIFICATION EMAIL
     await resend.emails.send({
       from: "Portfolio Form <noreply@brianmaina.de>", 
       to: "request@brianmaina.de",
@@ -55,13 +64,12 @@ export async function POST(req: Request) {
       `,
     });
 
-    // Send the Verification Email with the verification token
-   if (newsletter) {
+    // 4. SEND VERIFICATION EMAIL (If newsletter checked)
+    if (newsletter) {
       await resend.emails.send({
         from: "Brian Maina <hello@brianmaina.de>",
         to: email,
         subject: "Action Required: Verify your email",
-        // Call the new component name here
         react: VerificationEmail({ userEmail: email, nickname: nickname, token: verificationToken }), 
       });
     }

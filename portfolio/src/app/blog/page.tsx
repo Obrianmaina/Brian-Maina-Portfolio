@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 // Using standard img and a tags to resolve resolution errors in the preview environment
 // while maintaining the Next.js project structure
 import { motion } from "framer-motion";
-import { Settings} from "lucide-react"; 
 import { Card, CardContent } from "@/components/ui/card";
 import { BlogPost } from "@/types";
 import Button from "@/components/ui/button";
@@ -44,10 +43,6 @@ export default function BlogLandingPage() {
   if (blogs.length === 0) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 relative font-sans">
-        {/* Admin shortcut for when the page is empty */}
-        <a href="/admin" className="absolute top-6 right-6 p-2 bg-white rounded-full shadow-sm text-gray-400 hover:text-teal-600 transition-colors" title="Admin Portal">
-          <Settings size={24} />
-        </a>
         <h2 className="text-2xl font-bold text-gray-800 mb-2">No articles published yet</h2>
         <p className="text-gray-600">Check back soon for new content!</p>
       </div>
@@ -71,16 +66,9 @@ export default function BlogLandingPage() {
     <>
       <main className="min-h-screen bg-gray-50 py-12 px-6 text-gray-900 font-sans">
         <div className="max-w-6xl mx-auto">
-        {/* Header with Admin Button */}
-        <div className="relative mb-10 text-center flex items-center justify-center">
+        {/* Header */}
+        <div className="mb-10 text-center">
           <h1 className="text-4xl font-bold tracking-tight">Insights</h1>
-          <a 
-            href="/admin" 
-            className="absolute right-0 p-2 text-gray-400 hover:text-teal-600 transition-colors" 
-            title="Admin Portal"
-          >
-            <Settings size={24} />
-          </a>
         </div>
         {/* New Subtitle Line */}
         <p className="text-center text-gray-600 italic mb-8 -mt-6">
@@ -95,7 +83,7 @@ export default function BlogLandingPage() {
               
               <Card className="relative overflow-hidden group hover:shadow-xl transition-shadow cursor-pointer p-0 border-none shadow-md">
                   
-                {/* Corner decorator - Updated to z-30 to float above the text container */}
+                {/* Corner decorator */}
                 <div
                   className="absolute top-0 right-0 w-24 h-24 -mr-12 -mt-12 rounded-full opacity-10 bg-teal-500 pointer-events-none z-30"
                 />
@@ -140,7 +128,6 @@ export default function BlogLandingPage() {
               <a key={blog.slug || idx} href={`/blog/${blog.slug}`} className="block h-full">
                 <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} className="h-full">
                   
-                  {/* Added "relative" to this className */}
                   <Card className="relative h-full overflow-hidden group hover:shadow-xl transition-shadow cursor-pointer flex flex-col p-0 bg-white border-none shadow-sm">
                     
                     {/* Dynamic Corner decorator right here */}
@@ -159,7 +146,6 @@ export default function BlogLandingPage() {
                       )}
                     </div>
                     
-                    {/* Added "relative z-20" to this className */}
                     <CardContent className="relative z-20 p-6 flex-grow flex flex-col justify-between h-full">
                       <div>
                         <h3 className="text-xl font-bold mb-3 text-gray-900 group-hover:text-teal-700 transition-colors line-clamp-2 leading-snug">{blog.title}</h3>

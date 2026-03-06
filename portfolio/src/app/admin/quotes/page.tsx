@@ -33,7 +33,8 @@ export default function QuotesPage() {
 
   const fetchQuotes = async () => {
     try {
-      const res = await fetch("/api/quote");
+      // Updated to fetch from the secure admin route
+      const res = await fetch("/api/admin/quotes"); 
       if (res.ok) {
         setQuotes(await res.json());
       }
@@ -46,7 +47,8 @@ export default function QuotesPage() {
 
   const updateStatus = async (id: string, newStatus: Quote['status']) => {
     try {
-      const res = await fetch("/api/quote", {
+      // Updated to patch to the secure admin route
+      const res = await fetch("/api/admin/quotes", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, status: newStatus }),
