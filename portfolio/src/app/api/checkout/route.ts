@@ -5,6 +5,8 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { email, amount, currency, invoiceId } = body;
 
+    // Inside src/app/api/checkout/route.ts
+
     const response = await fetch('https://api.paystack.co/transaction/initialize', {
       method: 'POST',
       headers: {
@@ -13,10 +15,11 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         email,
-        amount: Math.round(amount * 100), // Paystack requires the amount in cents
+        amount: Math.round(amount * 100),
         currency,
         reference: `INV_${invoiceId}_${Date.now()}`,
-        callback_url: `${process.env.NEXT_PUBLIC_BASE_URL}/verify?reference=`, 
+        // UPDATE THIS LINE:
+        callback_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment-success`, 
       }),
     });
 
