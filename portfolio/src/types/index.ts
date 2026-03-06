@@ -27,6 +27,7 @@ export interface CaseStudyDetails {
 }
 
 export interface Showcase {
+  _id?: string;
   title: string;
   category: string;
   description: string;

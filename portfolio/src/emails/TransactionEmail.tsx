@@ -1,4 +1,4 @@
-import { Html, Head, Body, Container, Text, Section, Row, Column, Hr } from '@react-email/components';
+import { Html, Head, Body, Container, Text, Section, Row, Column, Hr, Button } from '@react-email/components';
 import * as React from 'react';
 
 interface TransactionEmailProps {
@@ -7,9 +7,19 @@ interface TransactionEmailProps {
   description: string;
   type: 'invoice' | 'receipt';
   referenceNumber: string;
+  downloadLink: string;
+  mpesaMessage?: string;
 }
 
-export default function TransactionEmail({ clientName, amount, description, type, referenceNumber }: TransactionEmailProps) {
+export default function TransactionEmail({
+  clientName,
+  amount,
+  description,
+  type,
+  referenceNumber,
+  downloadLink,
+  mpesaMessage,
+}: TransactionEmailProps) {
   const isInvoice = type === 'invoice';
   
   return (
@@ -46,8 +56,23 @@ export default function TransactionEmail({ clientName, amount, description, type
               <Hr style={divider} />
               <Row style={totalRow}>
                 <Column><Text style={totalLabel}>Total Amount:</Text></Column>
-                <Column><Text style={totalValue}>€{amount.toFixed(2)}</Text></Column>
+                <Column><Text style={totalValue}>€{Number(amount).toFixed(2)}</Text></Column>
               </Row>
+            </Section>
+
+            {/* M-Pesa Message Box */}
+            {!isInvoice && mpesaMessage && (
+              <Section style={mpesaBox}>
+                <Text style={detailLabel}>Payment Confirmation:</Text>
+                <Text style={mpesaText}>{mpesaMessage}</Text>
+              </Section>
+            )}
+
+            {/* Download PDF Button */}
+            <Section style={buttonContainer}>
+              <Button style={downloadButton} href={downloadLink}>
+                Download {isInvoice ? 'Invoice' : 'Receipt'} PDF
+              </Button>
             </Section>
 
             {isInvoice && (
@@ -85,3 +110,9 @@ const totalLabel = { fontSize: "16px", color: "#111827", fontWeight: "bold", mar
 const totalValue = { fontSize: "18px", color: "#0d9488", fontWeight: "bold", margin: "0", textAlign: "right" as const };
 const paymentTerms = { fontSize: "14px", color: "#6b7280", fontStyle: "italic", margin: "0 0 24px", padding: "16px", backgroundColor: "#fffbeb", borderRadius: "8px", border: "1px solid #fef3c7" };
 const signOff = { fontSize: "15px", color: "#374151", margin: "0" };
+
+// New Styles
+const mpesaBox = { backgroundColor: "#ecfdf5", padding: "16px", borderRadius: "8px", marginBottom: "24px", border: "1px solid #d1fae5" };
+const mpesaText = { fontSize: "14px", color: "#065f46", margin: "8px 0 0", lineHeight: "20px" };
+const buttonContainer = { textAlign: "center" as const, margin: "32px 0" };
+const downloadButton = { backgroundColor: "#111827", color: "#ffffff", padding: "12px 24px", borderRadius: "8px", textDecoration: "none", fontWeight: "bold", fontSize: "16px", display: "inline-block" };

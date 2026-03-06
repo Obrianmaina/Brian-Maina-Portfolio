@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { SiLinkedin, SiGithub, SiBehance } from "react-icons/si";
 import Image from 'next/image';
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Info } from "lucide-react"; 
+import { X, Info, Loader2 } from "lucide-react"; 
 import { Showcase, CompanyProject } from "@/types";
 
 import Button from "@/components/ui/button";
@@ -12,14 +12,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import MediaDisplay from "@/components/MediaDisplay";
 import ThumbnailPreview from "@/components/ThumbnailPreview";
 
-import { showcases } from "./showcaseData";
-import { companyProjects } from "./corporateData";
-
-// NEW COMPONENT: Dynamic Image Gallery
+// Dynamic Image Gallery Component
 const DynamicImageGallery = ({ images }: { images?: string[] }) => {
   if (!images || images.length === 0) return null;
 
-  // 1 Image: Full width
   if (images.length === 1) {
     return (
       <div className="mt-6 w-full rounded-2xl overflow-hidden shadow-sm bg-gray-100">
@@ -28,7 +24,6 @@ const DynamicImageGallery = ({ images }: { images?: string[] }) => {
     );
   }
 
-  // 2 Images: 2 Columns sharing width
   if (images.length === 2) {
     return (
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -41,7 +36,6 @@ const DynamicImageGallery = ({ images }: { images?: string[] }) => {
     );
   }
 
-  // 3 Images: 3 Columns sharing width
   if (images.length === 3) {
     return (
       <div className="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -54,7 +48,6 @@ const DynamicImageGallery = ({ images }: { images?: string[] }) => {
     );
   }
 
-  // 4 or more Images: Horizontal Scrolling Carousel
   return (
     <div className="mt-6 flex overflow-x-auto snap-x snap-mandatory gap-4 pb-4" style={{ scrollbarWidth: "none" }}>
       {images.map((img, i) => (
@@ -73,10 +66,39 @@ export default function PortfolioPage() {
   const [lightbox, setLightbox] = useState<Showcase | null>(null);
   const [disclaimerProject, setDisclaimerProject] = useState<CompanyProject | null>(null);
   const [companyProjectsToShow, setCompanyProjectsToShow] = useState<Showcase[] | null>(null);
-
-  // NEW STATE: Tracks which mockup is currently clicked/expanded
   const [expandedMockup, setExpandedMockup] = useState<string | null>(null);
 
+  // Dynamic Data States
+  const [showcases, setShowcases] = useState<Showcase[]>([]);
+  const [corporateData, setCorporateData] = useState<CompanyProject[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch projects from the database on mount
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const [showcasesRes, corporateRes] = await Promise.all([
+          fetch("/api/admin/portfolio"),
+          fetch("/api/admin/corporate")
+        ]);
+
+        if (showcasesRes.ok) {
+          setShowcases(await showcasesRes.json());
+        }
+        if (corporateRes.ok) {
+          setCorporateData(await corporateRes.json());
+        }
+      } catch (error) {
+        console.error("Failed to fetch portfolio projects", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
+  // Filter based on the dynamically fetched data
   const filteredShowcases = activeCategory === "All" ? showcases : showcases.filter((item) => item.category === activeCategory);
 
   useEffect(() => {
@@ -96,6 +118,7 @@ export default function PortfolioPage() {
     <main className="relative bg-gray-50 text-gray-900 min-h-screen overflow-x-hidden pt-24">
       <section id="portfolio" className="relative max-w-6xl mx-auto py-10 px-6">
         <h1 className="text-4xl font-bold mb-10 text-center">Design Showcase</h1>
+        
         <div className="flex flex-wrap gap-4 mb-8 justify-center">
           {categories.map((cat) => (
             <Button key={cat} variant={activeCategory === cat ? "default" : "outline"} onClick={() => setActiveCategory(cat)}>
@@ -103,28 +126,41 @@ export default function PortfolioPage() {
             </Button>
           ))}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredShowcases.map((project, idx) => (
-            <motion.div key={project.title} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.08 }}>
-              <Card className="w-full shadow-lg rounded-2xl group relative overflow-hidden cursor-pointer h-full" onClick={() => setLightbox(project)}>
-                <CardContent>
-                  <div className="h-40 flex items-center justify-center relative bg-gray-100 rounded-lg overflow-hidden">
-                    <ThumbnailPreview project={project} />
-                    <span className="absolute top-2 left-2 bg-teal-500 text-white text-xs px-2 py-1 rounded-full">{project.tag}</span>
-                    <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                      <p className="text-white text-sm mb-2 px-4 text-center">{project.description}</p>
-                      <Button className="bg-teal-500 hover:bg-teal-600">View Project</Button>
+
+        {/* Loading State & Dynamic Grid */}
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+            <Loader2 className="animate-spin mb-4" size={40} />
+            <p className="text-lg font-medium">Loading projects...</p>
+          </div>
+        ) : showcases.length === 0 ? (
+          <div className="text-center py-20 text-gray-500">
+            <p className="text-lg">No projects found. Add some from the Admin Dashboard!</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredShowcases.map((project, idx) => (
+              <motion.div key={project._id || idx} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.08 }}>
+                <Card className="w-full shadow-lg rounded-2xl group relative overflow-hidden cursor-pointer h-full" onClick={() => setLightbox(project)}>
+                  <CardContent>
+                    <div className="h-40 flex items-center justify-center relative bg-gray-100 rounded-lg overflow-hidden">
+                      <ThumbnailPreview project={project} />
+                      <span className="absolute top-2 left-2 bg-teal-500 text-white text-xs px-2 py-1 rounded-full">{project.tag}</span>
+                      <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <p className="text-white text-sm mb-2 px-4 text-center">{project.description}</p>
+                        <Button className="bg-teal-500 hover:bg-teal-600">View Project</Button>
+                      </div>
                     </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="text-xl font-medium">{project.title}</h3>
-                    <p className="text-sm text-gray-600">Category: {project.category}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </motion.div>
-          ))}
-        </div>
+                    <div className="p-4">
+                      <h3 className="text-xl font-medium">{project.title}</h3>
+                      <p className="text-sm text-gray-600">Category: {project.category}</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        )}
       </section>
 
       <section id="corporate-work" className="relative max-w-6xl mx-auto py-20 px-6">
@@ -132,7 +168,7 @@ export default function PortfolioPage() {
         <p className="text-gray-600 mb-8 max-w-3xl mx-auto text-center">This section contains confidential work created for specific companies. Access is granted for portfolio review purposes only after acknowledging the respective disclaimer.</p>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
-          {companyProjects.map((project, idx) => (
+          {corporateData.map((project, idx) => (
             <motion.div key={project.companyName} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.08 }}>
               <Card className="w-full shadow-lg rounded-2xl group relative overflow-hidden cursor-pointer h-full flex flex-col items-center justify-center p-8 bg-gray-100 hover:bg-white transition-colors" onClick={() => setDisclaimerProject(project)}>
                 <Image src={project.companyLogo} alt={`${project.companyName} logo`} width={128} height={64} className="h-16 w-auto mb-4" unoptimized={true} />

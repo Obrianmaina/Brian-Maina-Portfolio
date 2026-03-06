@@ -6,7 +6,6 @@ import TransactionEmail from "@/emails/TransactionEmail";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// NEW: GET method to fetch the ledger
 export async function GET(req: Request) {
   try {
     const cookieStore = await cookies();
@@ -18,8 +17,6 @@ export async function GET(req: Request) {
 
     const client = await clientPromise;
     const db = client.db("portfolio");
-
-    // Fetch all transactions, sorted by newest first
     const transactions = await db.collection("transactions").find({}).sort({ date: -1 }).toArray();
 
     return NextResponse.json(transactions, { status: 200 });
@@ -29,7 +26,6 @@ export async function GET(req: Request) {
   }
 }
 
-// EXISTING: POST method for creating documents
 export async function POST(req: Request) {
   try {
     const cookieStore = await cookies();
@@ -39,7 +35,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
     }
 
-    const { clientName, clientEmail, amount, description, type } = await req.json();
+    const { clientName, clientEmail, amount, description, type, mpesaMessage } = await req.json();
 
     if (!clientName || !clientEmail || !amount || !description || !type) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
@@ -48,23 +44,23 @@ export async function POST(req: Request) {
     const client = await clientPromise;
     const db = client.db("portfolio");
 
-    // Log the transaction in the database
     const transaction = {
       clientName,
       clientEmail,
       amount,
       description,
-      type, // 'invoice' or 'receipt'
+      type,
       status: type === 'invoice' ? 'pending' : 'paid',
       date: new Date(),
+      mpesaMessage: type === 'receipt' ? mpesaMessage : null,
     };
 
     const result = await db.collection("transactions").insertOne(transaction);
-
-    // Generate a clean ID for the reference number
     const referenceNumber = result.insertedId.toString().slice(-6).toUpperCase();
 
-    // Send the email to the client
+    // The download portal link where the client will enter their reference number
+    const downloadLink = `${process.env.NEXT_PUBLIC_BASE_URL}/documents`;
+
     await resend.emails.send({
       from: "Brian Maina <hello@brianmaina.de>",
       to: clientEmail,
@@ -74,7 +70,9 @@ export async function POST(req: Request) {
         amount, 
         description, 
         type, 
-        referenceNumber 
+        referenceNumber,
+        downloadLink,
+        mpesaMessage: type === 'receipt' ? mpesaMessage : undefined
       }),
     });
 
