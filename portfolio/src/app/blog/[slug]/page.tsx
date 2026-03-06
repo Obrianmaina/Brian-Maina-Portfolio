@@ -46,6 +46,17 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
     return `http://localhost:3000${path}`;
   };
 
+
+  useEffect(() => {
+      if (slug) {
+        fetch('/api/analytics', {
+          method: 'POST',
+          body: JSON.stringify({ target: slug, type: 'page_view' }),
+          headers: { 'Content-Type': 'application/json' }
+        });
+      }
+    }, [slug]);
+
   useEffect(() => {
     async function fetchData() {
       if (!slug) return;

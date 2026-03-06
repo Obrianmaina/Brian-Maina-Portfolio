@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { SiLinkedin, SiGithub, SiBehance } from "react-icons/si";
+import { Download } from "lucide-react"; 
 import Button from "@/components/ui/button";
 import Timeline from "@/components/Timeline";
 import { TimelineSection } from "@/types";
+import { SiLinkedin, SiGithub, SiBehance } from "react-icons/si";
 
 export default function ResumePage() {
   const [unlocked, setUnlocked] = useState(false);
@@ -16,13 +17,11 @@ export default function ResumePage() {
   const [unlockLoading, setUnlockLoading] = useState(false);
   const [unlockError, setUnlockError] = useState("");
 
-  // Dynamic Data States
   const [experienceData, setExperienceData] = useState<TimelineSection[]>([]);
   const [educationData, setEducationData] = useState<TimelineSection[]>([]);
   const [skills, setSkills] = useState<string[]>([]);
   const [loadingResume, setLoadingResume] = useState(true);
 
-  // Fetch the data on load
   useEffect(() => {
     const fetchResume = async () => {
       try {
@@ -42,6 +41,27 @@ export default function ResumePage() {
     fetchResume();
   }, []);
 
+  // Handlers for CV Download and Tracking
+  const trackDownload = () => {
+    if (!unlocked) {
+      // If not verified, scroll to the verification section
+      const refSection = document.getElementById("references");
+      refSection?.scrollIntoView({ behavior: "smooth" });
+      setUnlockError("Please verify your email to unlock the download.");
+      return;
+    }
+
+    // Log the download event in your custom analytics
+    fetch('/api/analytics', {
+      method: 'POST',
+      body: JSON.stringify({ target: 'resume-pdf', type: 'download' }),
+      headers: { 'Content-Type': 'application/json' }
+    });
+    
+    // Open your Cloudinary PDF link in a new tab
+    window.open('https://res.cloudinary.com/dsvexizbx/image/upload/v1772809322/Brian_Maina_CV_iwphxv.pdf', '_blank');
+  };
+
   const handleRequestCode = async () => {
     setRequestState('loading');
     setRequestMessage('');
@@ -56,11 +76,7 @@ export default function ResumePage() {
       setRequestState('success');
       setRequestMessage('Success! Please check your email for the access code.');
     } catch (err: unknown) {
-      if (err instanceof Error) {
-        setRequestMessage(err.message);
-      } else {
-        setRequestMessage('An unknown error occurred.');
-      }
+      setRequestMessage(err instanceof Error ? err.message : 'An unknown error occurred.');
       setRequestState('error');
     }
   };
@@ -82,8 +98,7 @@ export default function ResumePage() {
         setUnlockError(data.message || "Incorrect code.");
       }
     } catch (error) {
-      console.error("Unlock error:", error)
-      setUnlockError("An error occurred.");
+      setUnlockError("An error occurred during verification.");
     } finally {
       setUnlockLoading(false);
     }
@@ -98,14 +113,21 @@ export default function ResumePage() {
         </div>
       ) : (
         <section id="cv" className="relative max-w-5xl mx-auto py-10 px-6">
-          <motion.h1 
-            initial={{ opacity: 0, y: -50 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ duration: 0.8 }} 
-            className="text-4xl font-bold mb-10 text-center"
-          >
-            Curriculum Vitae
-          </motion.h1>
+          <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
+            <motion.h1 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="text-4xl font-bold">
+              Curriculum Vitae
+            </motion.h1>
+            
+            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
+              <Button 
+                onClick={trackDownload} 
+                className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-xl shadow-lg transition-all"
+              >
+                <Download size={18} />
+                {unlocked ? "Download CV" : "Verify Email to Download"}
+              </Button>
+            </motion.div>
+          </div>
           
           <motion.div 
             initial={{ opacity: 0, y: 20 }} 
@@ -173,39 +195,48 @@ export default function ResumePage() {
         </section>
       )}
 
-      <motion.section 
-        id="references" 
-        initial={{ opacity: 0, y: 20 }} 
-        whileInView={{ opacity: 1, y: 0 }} 
-        viewport={{ once: true }} 
-        transition={{ duration: 0.6 }} 
-        className="relative max-w-5xl mx-auto py-20 px-6"
-      >
-        <h2 className="text-3xl font-semibold mb-8">References</h2>
+      {/* References Section Gatekeeper */}
+      <motion.section id="references" className="relative max-w-5xl mx-auto py-20 px-6">
+        <h2 className="text-3xl font-semibold mb-8">References & Downloads</h2>
         {!unlocked ? (
-          <>
-            <p className="text-gray-600 mb-6">To protect my references&apos; privacy, please enter your email address to receive a temporary access code.</p>
-            <div className="space-y-4 mb-8 max-w-lg">
-              <div className="flex flex-col sm:flex-row gap-4">
-                <input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email address" className="border border-gray-300 rounded-full p-3 w-full" disabled={requestState === 'loading'} />
-                <Button onClick={handleRequestCode} disabled={requestState === 'loading' || !email} className="whitespace-nowrap">
-                  {requestState === 'loading' ? 'Sending...' : 'Request Code'}
+          <div className="space-y-4 mb-8 max-w-lg">
+            <p className="text-gray-600">Please verify your email to access reference contacts and the PDF download.</p>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <input 
+                type="email" 
+                value={email} 
+                onChange={(e) => setEmail(e.target.value)} 
+                placeholder="Email address" 
+                className="border border-gray-300 rounded-full p-3 w-full" 
+                disabled={requestState === 'loading'} 
+              />
+              <Button onClick={handleRequestCode} disabled={requestState === 'loading' || !email}>
+                {requestState === 'loading' ? 'Sending...' : 'Request Code'}
+              </Button>
+            </div>
+            {requestMessage && <p className={`text-sm ${requestState === 'error' ? 'text-red-500' : 'text-green-600'}`}>{requestMessage}</p>}
+            
+            {requestState === 'success' && (
+              <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t mt-6">
+                <input 
+                  type="text" 
+                  value={code} 
+                  onChange={(e) => setCode(e.target.value)} 
+                  placeholder="6-digit code" 
+                  className="border border-gray-300 rounded-full p-3 w-full" 
+                  onKeyDown={(e) => e.key === 'Enter' && handleUnlock()}
+                />
+                <Button onClick={handleUnlock} disabled={unlockLoading || !code}>
+                  {unlockLoading ? 'Verifying...' : 'Verify'}
                 </Button>
               </div>
-              {requestMessage && <p className={`text-sm ${requestState === 'error' ? 'text-red-500' : 'text-green-600'}`}>{requestMessage}</p>}
-              {requestState === 'success' && (
-                <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t mt-6">
-                  <input id="refCode" type="text" value={code} onChange={(e) => setCode(e.target.value)} placeholder="Enter 6-digit code from email" className="border border-gray-300 rounded-full p-3 w-full" onKeyDown={(e) => e.key === 'Enter' && handleUnlock()} />
-                  <Button onClick={handleUnlock} disabled={unlockLoading || !code}>{unlockLoading ? 'Verifying...' : 'Unlock'}</Button>
-                </div>
-              )}
-              {unlockError && <p className="text-red-500 text-sm" role="alert">{unlockError}</p>}
-            </div>
-          </>
+            )}
+            {unlockError && <p className="text-red-500 text-sm">{unlockError}</p>}
+          </div>
         ) : (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-            <p className="text-gray-600 mb-6">Contact details are now visible. Thank you for verifying.</p>
-            <ul className="space-y-6">
+            <p className="text-green-600 mb-6 font-medium">Verification successful! Reference details are now visible and your download is unlocked.</p>
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <li><h4 className="font-medium">Oliver Gutzeit - Manager at SAP SE</h4><p className="text-sm text-gray-600">Email: oliver.gutzeit@sap.com | Phone: +49 622 774 2260</p></li>
               <li><h4 className="font-medium">Ilka Wiskemann - Global HR Business Partner SAP SE</h4><p className="text-sm text-gray-600">Email: ilka.wiskemann@sap.com | Phone: +49 622 776 2638</p></li>
               <li><h4 className="font-medium">Milena Schmidt - Corporate Learning Senior Specialist SAP SE</h4><p className="text-sm text-gray-600">Email: milena.schmidt@sap.com | Phone: +49 622 776 2119</p></li>

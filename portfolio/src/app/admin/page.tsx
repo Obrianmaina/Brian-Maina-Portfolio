@@ -12,7 +12,9 @@ import {
   Building2, 
   LogOut, 
   GraduationCap,
-  MessageSquare // NEW: Imported for Comment Moderation
+  MessageSquare,
+  Settings, // Added this import
+  BarChart3  // Added for Analytics tile
 } from "lucide-react";
 import AdminModal from "@/components/AdminModal";
 
@@ -142,7 +144,6 @@ export default function AdminDashboard() {
             <p className="text-gray-500">Write, edit, publish, and manage your articles.</p>
           </div>
 
-          {/* NEW: Comment Moderation Tile */}
           <div onClick={() => router.push('/admin/comments')} className="bg-white p-8 rounded-3xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border border-gray-100 flex flex-col items-center text-center group">
             <div className="w-16 h-16 bg-cyan-100 text-cyan-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><MessageSquare size={32} /></div>
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Moderation</h2>
@@ -189,6 +190,20 @@ export default function AdminDashboard() {
             <div className="w-16 h-16 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><GraduationCap size={32} /></div>
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Resume / CV</h2>
             <p className="text-gray-500">Update your experience, education, and skills.</p>
+          </div>
+
+          {/* NEW: Analytics Tile */}
+          <div onClick={() => router.push('/admin/analytics')} className="bg-white p-8 rounded-3xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border border-gray-100 flex flex-col items-center text-center group">
+            <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><BarChart3 size={32} /></div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Analytics</h2>
+            <p className="text-gray-500">Track page views and resume downloads.</p>
+          </div>
+
+          {/* Corrected: Settings Tile */}
+          <div onClick={() => router.push('/admin/settings')} className="bg-white p-8 rounded-3xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border border-gray-100 flex flex-col items-center text-center group">
+            <div className="w-16 h-16 bg-slate-100 text-slate-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><Settings size={32} /></div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Portal Settings</h2>
+            <p className="text-gray-500">Manage security and admin profile data.</p>
           </div>
 
         </div>
