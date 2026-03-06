@@ -43,7 +43,7 @@ export async function POST(req: Request) {
 
     // Send the quote to yourself
     await resend.emails.send({
-      from: "Portfolio Form <onboarding@resend.dev>", 
+      from: "Portfolio Form <noreply@brianmaina.de>", 
       to: "request@brianmaina.de",
       subject: `New Freelance Inquiry: ${service}`,
       text: `
