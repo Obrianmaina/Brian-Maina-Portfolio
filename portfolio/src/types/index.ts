@@ -74,6 +74,18 @@ export interface BlogComment {
   createdAt: Date;
 }
 
+export interface Invoice {
+  _id?: string;
+  clientName: string;
+  clientEmail: string;
+  amount: number;
+  currency: "USD" | "KES" | "GBP"; 
+  isInternational: boolean;
+  status: "pending" | "paid";
+  createdAt: Date;
+  paidAt?: Date;
+}
+
 // --- UI COMPONENT TYPES ---
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "default" | "outline";
