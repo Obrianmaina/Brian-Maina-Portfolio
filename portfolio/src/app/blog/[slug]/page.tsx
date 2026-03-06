@@ -5,10 +5,21 @@ import Link from "next/link";
 import ReactMarkdown from "react-markdown";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, MessageSquare, Send, Loader2, Share2, Mail, X } from "lucide-react";
-import { BlogPost, BlogComment } from "@/types";
+import { BlogPost } from "@/types";
 import Button from "@/components/ui/button";
 import { SiLinkedin, SiGithub, SiX, SiInstagram, SiBehance } from "react-icons/si";
 import BlogSubscribe from "@/components/BlogSubscribe";
+
+// Updated local interface to include adminReply
+interface BlogComment {
+  _id: string;
+  postSlug: string;
+  text: string;
+  animalIdentity: string;
+  animalIcon: string;
+  createdAt: string;
+  adminReply?: string | null; // Added this field
+}
 
 export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: string }> }) {
   const resolvedParams = params ? use(params) : null;
@@ -20,7 +31,6 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
-  // NEW: State for Modal and Toast
   const [isSubscribeModalOpen, setIsSubscribeModalOpen] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [hasDismissedToast, setHasDismissedToast] = useState(false);
@@ -61,7 +71,6 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
     fetchData();
   }, [slug]);
 
-  // NEW: Intersection Observer to detect when user reaches the end of the article
   useEffect(() => {
     if (loading || !blog) return;
 
@@ -148,7 +157,6 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
 
   return (
     <>
-      {/* NEW: Full Screen Subscription Modal */}
       <AnimatePresence>
         {isSubscribeModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
@@ -173,7 +181,6 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
         )}
       </AnimatePresence>
 
-      {/* NEW: Slide-In Toast Notification */}
       <AnimatePresence>
         {showToast && !isSubscribeModalOpen && (
           <motion.div
@@ -223,7 +230,6 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
               Back to Articles
             </Link>
             
-            {/* NEW: Action Bar updated with Subscribe button */}
             <div className="flex items-center gap-3 w-full sm:w-auto">
               <button
                 onClick={() => setIsSubscribeModalOpen(true)}
@@ -272,17 +278,17 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
           <article className="text-gray-800 mb-20 leading-relaxed">
             <ReactMarkdown
               components={{
-                h1: ({ node, ...props }) => <h1 className="text-4xl font-extrabold mt-12 mb-6 text-gray-900 leading-tight" {...props} />,
-                h2: ({ node, ...props }) => <h2 className="text-3xl font-bold mt-10 mb-4 text-gray-900 leading-tight" {...props} />,
-                h3: ({ node, ...props }) => <h3 className="text-2xl font-bold mt-8 mb-4 text-gray-900 leading-snug" {...props} />,
-                p:  ({ node, ...props }) => <p className="mb-6 text-lg text-gray-700" {...props} />,
-                ul: ({ node, ...props }) => <ul className="list-disc ml-6 mb-6 space-y-2 text-lg text-gray-700 marker:text-teal-500" {...props} />,
-                ol: ({ node, ...props }) => <ol className="list-decimal ml-6 mb-6 space-y-2 text-lg text-gray-700 marker:text-teal-500" {...props} />,
-                li: ({ node, ...props }) => <li className="pl-2" {...props} />,
-                a:  ({ node, ...props }) => <a className="text-teal-600 underline decoration-teal-300 underline-offset-4 hover:text-teal-700 hover:decoration-teal-500 transition-colors font-medium" {...props} />,
-                strong: ({ node, ...props }) => <strong className="font-bold text-gray-900" {...props} />,
-                blockquote: ({ node, ...props }) => <blockquote className="border-l-4 border-teal-500 pl-6 py-2 my-8 italic text-gray-600 bg-gray-50 rounded-r-xl" {...props} />,
-                code: ({ node, className, children, ...props }: React.HTMLAttributes<HTMLElement> & { node?: unknown }) => {
+                h1: ({ ...props }) => <h1 className="text-4xl font-extrabold mt-12 mb-6 text-gray-900 leading-tight" {...props} />,
+                h2: ({ ...props }) => <h2 className="text-3xl font-bold mt-10 mb-4 text-gray-900 leading-tight" {...props} />,
+                h3: ({ ...props }) => <h3 className="text-2xl font-bold mt-8 mb-4 text-gray-900 leading-snug" {...props} />,
+                p:  ({ ...props }) => <p className="mb-6 text-lg text-gray-700" {...props} />,
+                ul: ({ ...props }) => <ul className="list-disc ml-6 mb-6 space-y-2 text-lg text-gray-700 marker:text-teal-500" {...props} />,
+                ol: ({ ...props }) => <ol className="list-decimal ml-6 mb-6 space-y-2 text-lg text-gray-700 marker:text-teal-500" {...props} />,
+                li: ({ ...props }) => <li className="pl-2" {...props} />,
+                a:  ({ ...props }) => <a className="text-teal-600 underline decoration-teal-300 underline-offset-4 hover:text-teal-700 hover:decoration-teal-500 transition-colors font-medium" {...props} />,
+                strong: ({ ...props }) => <strong className="font-bold text-gray-900" {...props} />,
+                blockquote: ({ ...props }) => <blockquote className="border-l-4 border-teal-500 pl-6 py-2 my-8 italic text-gray-600 bg-gray-50 rounded-r-xl" {...props} />,
+                code: ({ className, children, ...props }: React.HTMLAttributes<HTMLElement>) => {
                   const match = /language-(\w+)/.exec(className || "");
                   const isInline = !match;
                   return isInline ? (
@@ -299,18 +305,16 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
                     </div>
                   );
                 },
-                img: ({ node, ...props }) => <img className="rounded-2xl shadow-md my-10 w-full object-cover border border-gray-100" {...props} />,
-                hr:  ({ node, ...props }) => <hr className="my-12 border-gray-200" {...props} />,
+                img: ({ ...props }) => <img className="rounded-2xl shadow-md my-10 w-full object-cover border border-gray-100" {...props} />,
+                hr:  ({ ...props }) => <hr className="my-12 border-gray-200" {...props} />,
               }}
             >
               {blog.content}
             </ReactMarkdown>
 
-            {/* NEW: This hidden div tells the observer we reached the end of the post */}
             <div ref={articleEndRef} className="h-1 w-full mt-10"></div>
           </article>
 
-          {/* THE COMMENT THREAD UI */}
           <section className="border-t border-gray-100 pt-16">
             <div className="flex items-center justify-between mb-10">
               <div className="flex items-center">
@@ -333,7 +337,7 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
                   required
                 />
                 <div className="flex justify-between items-center p-3 bg-gray-50 rounded-xl m-1">
-                  <p className="text-[12px] sentencecase tracking-wider  text-gray-400 pl-2">
+                  <p className="text-[12px] sentencecase tracking-wider text-gray-400 pl-2">
                     Random Animal Identity Assigned on Post
                   </p>
                   <button
@@ -360,22 +364,43 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: idx * 0.05 }}
-                      className="flex gap-4 group"
+                      className="flex gap-4 group flex-col"
                     >
-                      <div className="w-12 h-12 rounded-2xl bg-white border-2 border-gray-100 flex items-center justify-center text-2xl shrink-0 shadow-sm">
-                        {comment.animalIcon}
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <span className="font-bold text-gray-900">
-                            Anonymous {comment.animalIdentity}
-                          </span>
-                          <span className="text-[10px] uppercase font-bold text-gray-300">
-                            {new Date(comment.createdAt).toLocaleDateString()}
-                          </span>
+                      <div className="flex gap-4">
+                        <div className="w-12 h-12 rounded-2xl bg-white border-2 border-gray-100 flex items-center justify-center text-2xl shrink-0 shadow-sm">
+                          {comment.animalIcon}
                         </div>
-                        <div className="bg-gray-50/80 p-5 rounded-2xl rounded-tl-none border border-gray-100 text-gray-700 leading-relaxed">
-                          {comment.text}
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-2">
+                            <span className="font-bold text-gray-900">
+                              Anonymous {comment.animalIdentity}
+                            </span>
+                            <span className="text-[10px] uppercase font-bold text-gray-300">
+                              {new Date(comment.createdAt).toLocaleDateString()}
+                            </span>
+                          </div>
+                          <div className="bg-gray-50/80 p-5 rounded-2xl rounded-tl-none border border-gray-100 text-gray-700 leading-relaxed">
+                            {comment.text}
+                          </div>
+                          
+                          {/* Threaded Admin Reply Integration */}
+                          {comment.adminReply && (
+                            <div className="mt-4 ml-4 sm:ml-8 flex gap-3">
+                               <div className="w-8 h-8 rounded-xl bg-teal-600 flex items-center justify-center text-white shrink-0 shadow-sm">
+                                <Send size={14} className="rotate-45" />
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex items-center gap-2 mb-1">
+                                  <span className="font-bold text-teal-700 text-sm">
+                                    Brian (Admin)
+                                  </span>
+                                </div>
+                                <div className="bg-teal-50/50 p-4 rounded-2xl rounded-tl-none border border-teal-100 text-gray-700 text-sm leading-relaxed italic">
+                                  {comment.adminReply}
+                                </div>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </motion.div>
@@ -387,7 +412,6 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
         </div>
       </main>
 
-      {/* FOOTER COMPONENT */}
       <footer className="relative bg-gray-900 text-white py-20 px-6 text-center">
         <h2 className="text-3xl font-semibold mb-6">Get In Touch</h2>
         <p className="mb-6">Feel free to reach out for collaborations or opportunities.</p>

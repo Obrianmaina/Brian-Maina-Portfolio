@@ -2,7 +2,18 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { FileText, Megaphone, Receipt, Inbox, Users, Briefcase, Building2, LogOut, GraduationCap } from "lucide-react";
+import { 
+  FileText, 
+  Megaphone, 
+  Receipt, 
+  Inbox, 
+  Users, 
+  Briefcase, 
+  Building2, 
+  LogOut, 
+  GraduationCap,
+  MessageSquare // NEW: Imported for Comment Moderation
+} from "lucide-react";
 import AdminModal from "@/components/AdminModal";
 
 export default function AdminDashboard() {
@@ -63,7 +74,6 @@ export default function AdminDashboard() {
     }
   };
 
-  // Securely log the user out and reset state
   const handleLogout = async () => {
     try {
       await fetch("/api/admin/logout", { method: "POST" });
@@ -114,7 +124,6 @@ export default function AdminDashboard() {
     <main className="min-h-screen bg-gray-50 py-12 px-6">
       <div className="max-w-6xl mx-auto">
         
-        {/* Header with Logout Button */}
         <div className="relative mb-8 flex items-center justify-center">
           <h1 className="text-4xl font-bold text-gray-800">Command Center</h1>
           <button
@@ -131,6 +140,13 @@ export default function AdminDashboard() {
             <div className="w-16 h-16 bg-teal-100 text-teal-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><FileText size={32} /></div>
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Manage Blogs</h2>
             <p className="text-gray-500">Write, edit, publish, and manage your articles.</p>
+          </div>
+
+          {/* NEW: Comment Moderation Tile */}
+          <div onClick={() => router.push('/admin/comments')} className="bg-white p-8 rounded-3xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border border-gray-100 flex flex-col items-center text-center group">
+            <div className="w-16 h-16 bg-cyan-100 text-cyan-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><MessageSquare size={32} /></div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Moderation</h2>
+            <p className="text-gray-500">Review, approve, or delete blog comments and replies.</p>
           </div>
 
           <div onClick={() => router.push('/admin/broadcast')} className="bg-white p-8 rounded-3xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border border-gray-100 flex flex-col items-center text-center group">
@@ -169,7 +185,6 @@ export default function AdminDashboard() {
             <p className="text-gray-500">Manage agency/corporate projects and NDAs.</p>
           </div>
 
-          {/* NEW CV CMS TILE */}
           <div onClick={() => router.push('/admin/resume')} className="bg-white p-8 rounded-3xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border border-gray-100 flex flex-col items-center text-center group">
             <div className="w-16 h-16 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><GraduationCap size={32} /></div>
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Resume / CV</h2>
