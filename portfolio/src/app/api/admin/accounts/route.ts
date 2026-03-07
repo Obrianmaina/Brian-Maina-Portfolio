@@ -7,6 +7,34 @@ import crypto from 'crypto';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// GET: Fetches all transactions to display on the dashboard
+export async function GET(req: Request) {
+  try {
+    const cookieStore = await cookies();
+    const adminCookie = cookieStore.get("admin_session");
+
+    if (!adminCookie) {
+      return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
+    }
+
+    const client = await clientPromise;
+    const db = client.db("portfolio");
+
+    // Fetch all transactions, sorted by newest first
+    const transactions = await db
+      .collection("transactions")
+      .find({})
+      .sort({ date: -1 })
+      .toArray();
+
+    return NextResponse.json(transactions, { status: 200 });
+  } catch (error) {
+    console.error("Fetch Transactions Error:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+}
+
+// POST: Creates a new transaction and sends the email
 export async function POST(req: Request) {
   try {
     const cookieStore = await cookies();
@@ -16,7 +44,6 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
     }
 
-    // ADDED 'currency' right here to extract it from the frontend request
     const { clientName, clientEmail, amount, currency, description, type, mpesaMessage } = await req.json();
 
     if (!clientName || !clientEmail || !amount || !description || !type) {
@@ -32,7 +59,7 @@ export async function POST(req: Request) {
       clientName,
       clientEmail,
       amount,
-      currency: currency || "EUR", // Save it to the database with a fallback
+      currency: currency || "EUR", 
       description,
       type,
       referenceNumber,
@@ -52,7 +79,7 @@ export async function POST(req: Request) {
       react: TransactionEmail({ 
         clientName, 
         amount, 
-        currency: currency || "EUR", // Now it knows what currency is!
+        currency: currency || "EUR", 
         description, 
         type, 
         referenceNumber,
