@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 
     // Use the secure amount and currency directly from the database record
     const secureAmount = transaction.amount;
-    const secureCurrency = transaction.currency || 'KES';
+    const secureCurrency = transaction.currency || 'USD';
 
     const response = await fetch('https://api.paystack.co/transaction/initialize', {
       method: 'POST',
