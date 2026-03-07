@@ -14,12 +14,17 @@ export const config = {
     '/api/verify-code', 
     '/api/admin-login', 
     '/api/comments',
-    '/api/blogs' // We only want to rate limit write/delete ops, handled inside or via matcher
+    '/api/blogs' 
   ],
 };
 
 export default async function middleware(request: NextRequest) {
-  const ip = request.headers.get('x-forwarded-for') ?? '127.0.0.1';
+  // Rely on headers provided by Vercel/proxies since request.ip is deprecated
+  const forwardedFor = request.headers.get('x-forwarded-for');
+  const realIp = request.headers.get('x-real-ip');
+
+  // Prioritize x-real-ip, fallback to the first IP in x-forwarded-for, then localhost
+  const ip = realIp || (forwardedFor ? forwardedFor.split(',')[0].trim() : '127.0.0.1');
   
   // Apply rate limiting to all matched routes
   // For /api/blogs, we generally want to allow GET but limit POST/PUT/DELETE

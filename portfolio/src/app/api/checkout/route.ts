@@ -1,11 +1,32 @@
 import { NextResponse } from 'next/server';
+import clientPromise from '@/lib/mongodb';
+import { ObjectId } from 'mongodb';
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, amount, currency, invoiceId } = body;
+    
+    // We only trust the email and invoiceId from the client
+    const { email, invoiceId } = body;
 
-    // Inside src/app/api/checkout/route.ts
+    if (!invoiceId) {
+        return NextResponse.json({ error: 'Invoice ID is required' }, { status: 400 });
+    }
+
+    // Connect to the database to securely fetch the true transaction details
+    const client = await clientPromise;
+    const db = client.db("portfolio");
+    const transaction = await db.collection('transactions').findOne({ 
+      _id: new ObjectId(invoiceId) 
+    });
+
+    if (!transaction) {
+      return NextResponse.json({ error: 'Transaction not found' }, { status: 404 });
+    }
+
+    // Use the secure amount and currency directly from the database record
+    const secureAmount = transaction.amount;
+    const secureCurrency = transaction.currency || 'KES';
 
     const response = await fetch('https://api.paystack.co/transaction/initialize', {
       method: 'POST',
@@ -15,10 +36,9 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         email,
-        amount: Math.round(amount * 100),
-        currency,
+        amount: Math.round(secureAmount * 100),
+        currency: secureCurrency,
         reference: `INV_${invoiceId}_${Date.now()}`,
-        // UPDATE THIS LINE:
         callback_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment-success`, 
       }),
     });

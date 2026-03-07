@@ -2,6 +2,21 @@ import { NextResponse } from "next/server";
 import clientPromise from "@/lib/mongodb";
 import { cookies } from "next/headers";
 import { ObjectId } from "mongodb";
+import crypto from "crypto";
+
+// Helper function to securely validate the session token
+async function isAuthenticated() {
+  const cookieStore = await cookies();
+  const sessionCookie = cookieStore.get("admin_session")?.value;
+  const expectedToken = process.env.ADMIN_SESSION_TOKEN;
+
+  if (!sessionCookie || !expectedToken) return false;
+
+  const cookieBuffer = Buffer.from(sessionCookie);
+  const tokenBuffer = Buffer.from(expectedToken);
+
+  return cookieBuffer.length === tokenBuffer.length && crypto.timingSafeEqual(cookieBuffer, tokenBuffer);
+}
 
 // GET all portfolio items
 export async function GET(req: Request) {
@@ -19,8 +34,9 @@ export async function GET(req: Request) {
 // POST a new portfolio item
 export async function POST(req: Request) {
   try {
-    const cookieStore = await cookies();
-    if (!cookieStore.get("admin_session")) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!(await isAuthenticated())) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     const data = await req.json();
     const client = await clientPromise;
@@ -37,8 +53,9 @@ export async function POST(req: Request) {
 // PUT (edit) an existing portfolio item
 export async function PUT(req: Request) {
   try {
-    const cookieStore = await cookies();
-    if (!cookieStore.get("admin_session")) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!(await isAuthenticated())) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     const { id, ...data } = await req.json();
     if (!id) return NextResponse.json({ error: "Missing project ID" }, { status: 400 });
@@ -65,8 +82,9 @@ export async function PUT(req: Request) {
 // DELETE a portfolio item
 export async function DELETE(req: Request) {
   try {
-    const cookieStore = await cookies();
-    if (!cookieStore.get("admin_session")) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!(await isAuthenticated())) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
     const { id } = await req.json();
     const client = await clientPromise;

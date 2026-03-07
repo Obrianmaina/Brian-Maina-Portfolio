@@ -6,8 +6,9 @@ export async function POST(req: Request) {
   try {
     const { password } = await req.json();
     const correctPassword = process.env.ADMIN_PASSWORD;
+    const sessionToken = process.env.ADMIN_SESSION_TOKEN;
 
-    if (!correctPassword) {
+    if (!correctPassword || !sessionToken) {
       return NextResponse.json({ success: false, message: "Server configuration error" }, { status: 500 });
     }
 
@@ -18,11 +19,8 @@ export async function POST(req: Request) {
     if (inputBuffer.length === secretBuffer.length && crypto.timingSafeEqual(inputBuffer, secretBuffer)) {
       const response = NextResponse.json({ success: true });
       
-      // Set a secure, HTTP-only session cookie
-      // In a real production app, consider using a JWT or signed session ID
-      // For this implementation, we use the password as a simple token check 
-      // (Better: use a specific ADMIN_TOKEN secret)
-      (await cookies()).set('admin_session', correctPassword, {
+      // Set the secure session token instead of the password
+      (await cookies()).set('admin_session', sessionToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
