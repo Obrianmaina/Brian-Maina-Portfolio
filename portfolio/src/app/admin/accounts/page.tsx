@@ -368,23 +368,24 @@ export default function AccountsPage() {
                             </select>
                         </div>
 
-                      <div className="space-y-1 md:col-span-2">
-                        <label className="text-sm font-semibold text-gray-700 ml-1">Amount</label>
-                        <div className="relative">
-                          <span className="absolute left-4 top-3 text-gray-500 font-bold">
-                            {getCurrencySymbol(currency)}
-                          </span>
-                          <input 
-                            type="number" 
-                            step="0.01" 
-                            required 
-                            value={amount} 
-                            onChange={(e) => setAmount(e.target.value)} 
-                            className="w-full p-3 pl-10 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-amber-500" 
-                            placeholder="0.00" 
-                          />
+                        <div className="space-y-1 md:col-span-2">
+                            <label className="text-sm font-semibold text-gray-700 ml-1">Amount</label>
+                                <div className="flex items-center w-full p-3 border border-gray-300 rounded-xl focus-within:ring-2 focus-within:ring-amber-500 transition-all bg-white">
+    <span className="text-gray-500 font-bold select-none mr-2 whitespace-nowrap">
+      {getCurrencySymbol(currency)}
+    </span>
+    <input 
+      type="number" 
+      step="0.01" 
+      required 
+      value={amount} 
+      onChange={(e) => setAmount(e.target.value)} 
+      className="w-full outline-none bg-transparent" 
+      placeholder="0.00" 
+    />
+                                
+                            </div>
                         </div>
-                      </div>
                     </div>
 
                     <div className="bg-blue-50/50 p-4 border border-blue-100 rounded-xl flex items-center justify-between">
