@@ -15,9 +15,10 @@ export default function Navbar() {
     <>
       <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 shadow-sm">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          
-          <Link 
-            href="/" 
+
+          {/* Left: Home */}
+          <Link
+            href="/"
             className="text-gray-800 hover:text-teal-600 transition-colors"
             aria-label="Home"
             title="Home"
@@ -25,10 +26,11 @@ export default function Navbar() {
             <Home className="w-5 h-5" />
           </Link>
 
-          <div className="flex space-x-6 items-center">
-            
-            <Link 
-              href="/portfolio" 
+          {/* Right: all other nav items with equal spacing */}
+          <div className="flex items-center gap-8">
+
+            <Link
+              href="/portfolio"
               className="relative text-gray-900 hover:text-teal-600 transition-colors flex items-center justify-center"
               aria-label="Portfolio"
               title="Portfolio"
@@ -39,8 +41,8 @@ export default function Navbar() {
               )}
             </Link>
 
-            <Link 
-              href="/resume" 
+            <Link
+              href="/resume"
               className="relative text-gray-900 hover:text-teal-600 transition-colors flex items-center justify-center"
               aria-label="CV / Resume"
               title="CV / Resume"
@@ -51,8 +53,8 @@ export default function Navbar() {
               )}
             </Link>
 
-            <Link 
-              href="/blog" 
+            <Link
+              href="/blog"
               className="relative text-gray-900 hover:text-teal-600 transition-colors flex items-center justify-center"
               aria-label="Blog"
               title="Blog"
@@ -62,31 +64,29 @@ export default function Navbar() {
                 <motion.div layoutId="underline" className="absolute left-0 top-full mt-2 w-full h-0.5 bg-teal-500 rounded-full" />
               )}
             </Link>
-            
-            {/* Get Quote Button */}
-            <button 
+
+            <button
               onClick={() => setIsModalOpen(true)}
-              className="text-gray-900 hover:text-teal-600 transition-colors ml-4"
+              className="text-gray-900 hover:text-teal-600 transition-colors"
               aria-label="Get a Quote"
               title="Get a Quote"
             >
               <PenTool className="w-5 h-5" />
             </button>
 
-            {/* Admin Portal Button */}
-            <Link 
+            <Link
               href="/admin"
-              className="text-gray-900 hover:text-teal-600 transition-colors ml-4"
+              className="text-gray-900 hover:text-teal-600 transition-colors"
               aria-label="Admin Portal"
               title="Admin Portal"
             >
               <Settings className="w-5 h-5" />
             </Link>
+
           </div>
         </div>
       </nav>
 
-      {/* Render Modal */}
       {isModalOpen && <GetQuoteModal onClose={() => setIsModalOpen(false)} />}
     </>
   );

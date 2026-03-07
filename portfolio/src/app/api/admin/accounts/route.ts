@@ -4,6 +4,7 @@ import clientPromise from "@/lib/mongodb";
 import { cookies } from "next/headers";
 import TransactionEmail from "@/emails/TransactionEmail";
 import crypto from 'crypto';
+import { ObjectId } from 'mongodb'; // Needed to find the specific database item
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -20,7 +21,6 @@ export async function GET(req: Request) {
     const client = await clientPromise;
     const db = client.db("portfolio");
 
-    // Fetch all transactions, sorted by newest first
     const transactions = await db
       .collection("transactions")
       .find({})
@@ -92,6 +92,43 @@ export async function POST(req: Request) {
 
   } catch (error) {
     console.error("Accounts API Error:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+}
+
+// PUT: Manually marks a transaction as paid
+export async function PUT(req: Request) {
+  try {
+    const cookieStore = await cookies();
+    const adminCookie = cookieStore.get("admin_session");
+
+    if (!adminCookie) {
+      return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
+    }
+
+    const { id } = await req.json();
+
+    if (!id) {
+      return NextResponse.json({ error: "Transaction ID is required" }, { status: 400 });
+    }
+
+    const client = await clientPromise;
+    const db = client.db("portfolio");
+
+    await db.collection("transactions").updateOne(
+      { _id: new ObjectId(id) },
+      { 
+        $set: { 
+          status: 'paid',
+          paidAt: new Date()
+        } 
+      }
+    );
+
+    return NextResponse.json({ success: true }, { status: 200 });
+
+  } catch (error) {
+    console.error("Update Transaction Error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

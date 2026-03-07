@@ -1,11 +1,13 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation'; // Added
+import { ArrowLeft, ShieldCheck, UserCog } from 'lucide-react'; // Added ArrowLeft
 import Button from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { ShieldCheck, UserCog } from 'lucide-react';
 
 export default function SettingsPage() {
+  const router = useRouter(); // Initialize router
   const [form, setForm] = useState({ email: '', bio: '', newPassword: '' });
   const [loading, setLoading] = useState(false);
 
@@ -22,6 +24,14 @@ export default function SettingsPage() {
 
   return (
     <div className="p-8 max-w-2xl mx-auto font-sans">
+      {/* Added Back Button */}
+      <button 
+        onClick={() => router.push('/admin')} 
+        className="flex items-center text-gray-500 hover:text-gray-900 transition-colors font-medium mb-6"
+      >
+        <ArrowLeft size={20} className="mr-2" /> Back to Hub
+      </button>
+
       <h1 className="text-3xl font-bold mb-8">Admin Settings</h1>
       
       <Card className="p-6 mb-6">

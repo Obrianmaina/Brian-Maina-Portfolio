@@ -30,7 +30,6 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
       <div className="bg-white p-4 border border-gray-100 shadow-xl rounded-xl">
         <p className="text-gray-500 text-sm font-semibold mb-1">{label}</p>
         <p className="text-emerald-600 font-bold text-lg">
-          {/* Note: If you process multiple currencies, this chart sum assumes a base currency */}
           {Number(payload[0].value).toFixed(2)}
         </p>
       </div>
@@ -39,7 +38,6 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
   return null;
 };
 
-// Helper to get currency symbols
 const getCurrencySymbol = (currencyCode: string) => {
   switch (currencyCode) {
     case 'USD': return '$';
@@ -53,11 +51,10 @@ const getCurrencySymbol = (currencyCode: string) => {
 export default function AccountsPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [markingPaid, setMarkingPaid] = useState<string | null>(null);
 
-  // Tab State
   const [activeTab, setActiveTab] = useState<'dashboard' | 'report'>('dashboard');
 
-  // Document Creation State
   const [clientName, setClientName] = useState("");
   const [clientEmail, setClientEmail] = useState("");
   const [amount, setAmount] = useState("");
@@ -67,11 +64,9 @@ export default function AccountsPage() {
   const [docType, setDocType] = useState<'invoice' | 'receipt'>('invoice');
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
-  // Currency Converter State
   const [exchangeRate, setExchangeRate] = useState<number>(1);
   const [isFetchingRate, setIsFetchingRate] = useState(false);
 
-  // Report State (defaults to current month YYYY-MM)
   const [reportMonth, setReportMonth] = useState(() => {
     const d = new Date();
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
@@ -87,7 +82,6 @@ export default function AccountsPage() {
 
   useEffect(() => { fetchTransactions(); }, []);
 
-  // Fetch Live Exchange Rate when currency changes
   useEffect(() => {
     if (currency === "KES") {
       setExchangeRate(1);
@@ -97,14 +91,13 @@ export default function AccountsPage() {
     const fetchRate = async () => {
       setIsFetchingRate(true);
       try {
-        // Now calling your own secure backend route
         const res = await fetch(`/api/exchange-rate?base=${currency}`);
         const data = await res.json();
         
         if (data.rate) {
           setExchangeRate(data.rate);
         } else {
-          setExchangeRate(0); // Set to 0 so you know it failed
+          setExchangeRate(0); 
         }
       } catch (error) {
         console.error("Failed to fetch exchange rate", error);
@@ -148,7 +141,7 @@ export default function AccountsPage() {
           clientName,
           clientEmail,
           amount: parseFloat(amount),
-          currency, // Passed to the backend
+          currency, 
           description: serviceDescription,
           type: docType,
           mpesaMessage: docType === 'receipt' ? mpesaMessage : undefined,
@@ -176,17 +169,45 @@ export default function AccountsPage() {
     }
   };
 
-  // Calculate the net estimated payout in KES
+  // Function to manually mark an invoice as paid
+  const handleMarkAsPaid = async (id: string) => {
+    showModal(
+      'confirm', 
+      'Update Payment Status', // Updated Title
+      'Are you sure you want to mark this invoice as paid? This will update your financial records immediately.', // Updated Message
+      async () => {
+        setMarkingPaid(id);
+        try {
+          const res = await fetch("/api/admin/accounts", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id })
+          });
+          
+          if (res.ok) {
+            fetchTransactions();
+            showModal('success', 'Update Successful', 'The invoice has been marked as paid.');
+          } else {
+            showModal('error', 'Update Failed', 'Could not update the invoice status.');
+          }
+        } catch (error) {
+          showModal('error', 'Error', 'An unexpected error occurred.');
+        } finally {
+          setMarkingPaid(null);
+        }
+      }
+    );
+  };
+
+
   const estimatedPayoutKES = useMemo(() => {
     const rawAmount = parseFloat(amount) || 0;
     const grossKES = rawAmount * exchangeRate;
-    // Paystack fee: 3.8% for intl (USD/EUR/GBP), 1.5% for local KES
     const feePercentage = currency === "KES" ? 0.015 : 0.038;
     const netKES = grossKES - (grossKES * feePercentage);
     return netKES;
   }, [amount, exchangeRate, currency]);
 
-  // DATA PROCESSING FOR DASHBOARD
   const allChartData = useMemo(() => {
     const paidTransactions = transactions.filter(t => t.status === 'paid');
     const grouped = paidTransactions.reduce((acc: Record<string, number>, curr) => {
@@ -199,7 +220,6 @@ export default function AccountsPage() {
     return Object.keys(grouped).map(date => ({ date, revenue: grouped[date] })).reverse(); 
   }, [transactions]);
 
-  // DATA PROCESSING FOR MONTHLY REPORT
   const monthlyTransactions = useMemo(() => {
     return transactions.filter(tx => {
       const txDate = new Date(tx.date);
@@ -223,17 +243,27 @@ export default function AccountsPage() {
   const monthlyStats = useMemo(() => {
     let billed = 0;
     let collected = 0;
+    let pending = 0;
     
     monthlyTransactions.forEach(tx => {
       const amt = parseFloat(String(tx.amount));
-      if (tx.type === 'invoice') billed += amt;
-      if (tx.status === 'paid' && tx.type === 'receipt') collected += amt;
+      
+      if (tx.type === 'invoice') {
+        billed += amt;
+        if (tx.status === 'pending') {
+          pending += amt;
+        }
+      }
+      
+      if (tx.status === 'paid') {
+        collected += amt;
+      }
     });
 
     return { 
       billed, 
       collected, 
-      pending: billed > collected ? billed - collected : 0 
+      pending 
     };
   }, [monthlyTransactions]);
 
@@ -320,10 +350,9 @@ export default function AccountsPage() {
 
                     <div className="space-y-1">
                       <label className="text-sm font-semibold text-gray-700 ml-1">Service Description</label>
-                      <input type="text" required value={serviceDescription} onChange={(e) => setServiceDescription(e.target.value)} className="w-full p-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-amber-500" placeholder="e.g., Website Redesign Phase 1" />
+                      <input type="text" required value={serviceDescription} onChange={(e) => setServiceDescription(e.target.value)} className="w-full p-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-amber-500" placeholder="e.g. Website Redesign Phase 1" />
                     </div>
 
-                    {/* NEW CURRENCY & AMOUNT SECTION */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="space-y-1 md:col-span-1">
                             <label className="text-sm font-semibold text-gray-700 ml-1">Currency</label>
@@ -358,7 +387,6 @@ export default function AccountsPage() {
                       </div>
                     </div>
 
-                    {/* LIVE CONVERSION CARD */}
                     <div className="bg-blue-50/50 p-4 border border-blue-100 rounded-xl flex items-center justify-between">
                       <div>
                         <p className="text-xs font-bold text-gray-500 uppercase flex items-center">
@@ -419,8 +447,8 @@ export default function AccountsPage() {
                           <p className="text-xs text-gray-400 flex items-center gap-1">
                             <span>{new Date(tx.date).toLocaleDateString()}</span>
                             <span>•</span>
-                            <span className={tx.type === 'receipt' ? 'text-green-400' : 'text-amber-400'}>
-                              {tx.type.toUpperCase()}
+                            <span className={tx.status === 'paid' ? 'text-green-400' : 'text-amber-400'}>
+                              {tx.status.toUpperCase()}
                             </span>
                           </p>
                         </div>
@@ -428,6 +456,15 @@ export default function AccountsPage() {
                           <p className={`font-bold ${tx.type === 'receipt' ? 'text-green-400' : 'text-gray-100'}`}>
                             {tx.type === 'receipt' ? '+' : ''}{getCurrencySymbol(tx.currency || 'EUR')}{parseFloat(String(tx.amount)).toFixed(2)}
                           </p>
+                          {tx.type === 'invoice' && tx.status === 'pending' && (
+                            <button 
+                              onClick={() => handleMarkAsPaid(tx._id)}
+                              disabled={markingPaid === tx._id}
+                              className="text-[10px] mt-1 bg-gray-700 hover:bg-gray-600 text-gray-200 px-2 py-0.5 rounded transition-colors disabled:opacity-50 inline-block"
+                            >
+                              {markingPaid === tx._id ? "..." : "Mark Paid"}
+                            </button>
+                          )}
                         </div>
                       </div>
                     ))
@@ -525,7 +562,7 @@ export default function AccountsPage() {
                          <th className="px-4 py-3 rounded-l-lg">Date</th>
                          <th className="px-4 py-3">Client</th>
                          <th className="px-4 py-3">Description</th>
-                         <th className="px-4 py-3">Type</th>
+                         <th className="px-4 py-3">Status</th>
                          <th className="px-4 py-3 text-right rounded-r-lg">Amount</th>
                        </tr>
                      </thead>
@@ -536,12 +573,25 @@ export default function AccountsPage() {
                            <td className="px-4 py-3 font-medium text-gray-900">{tx.clientName}</td>
                            <td className="px-4 py-3">{tx.description}</td>
                            <td className="px-4 py-3">
-                             <span className={`px-2 py-1 rounded-full text-xs font-bold ${tx.type === 'receipt' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
-                               {tx.type.toUpperCase()}
+                             <span className={`px-2 py-1 rounded-full text-xs font-bold ${tx.status === 'paid' ? 'bg-green-100 text-green-700' : 'bg-amber-100 text-amber-700'}`}>
+                               {tx.status.toUpperCase()}
                              </span>
                            </td>
-                           <td className={`px-4 py-3 text-right font-bold ${tx.type === 'receipt' ? 'text-green-600' : 'text-gray-900'}`}>
-                             {getCurrencySymbol(tx.currency || 'EUR')}{parseFloat(String(tx.amount)).toFixed(2)}
+                           <td className="px-4 py-3 text-right">
+                             <div className="flex items-center justify-end gap-3">
+                               <span className={`font-bold ${tx.type === 'receipt' ? 'text-green-600' : 'text-gray-900'}`}>
+                                 {getCurrencySymbol(tx.currency || 'EUR')}{parseFloat(String(tx.amount)).toFixed(2)}
+                               </span>
+                               {tx.type === 'invoice' && tx.status === 'pending' && (
+                                 <button 
+                                   onClick={() => handleMarkAsPaid(tx._id)}
+                                   disabled={markingPaid === tx._id}
+                                   className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-1 rounded font-semibold transition-colors disabled:opacity-50"
+                                 >
+                                   {markingPaid === tx._id ? "..." : "Mark Paid"}
+                                 </button>
+                               )}
+                             </div>
                            </td>
                          </tr>
                        ))}
