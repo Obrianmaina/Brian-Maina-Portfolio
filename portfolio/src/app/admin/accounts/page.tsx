@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Send, Receipt, TrendingUp, Calendar, FileText, CheckCircle, Clock } from "lucide-react";
+import { ArrowLeft, Send, Receipt, TrendingUp, Calendar, FileText, CheckCircle, Clock, RefreshCw } from "lucide-react";
 import AdminModal from "@/components/AdminModal";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
@@ -12,6 +12,7 @@ type Transaction = {
   date: string;
   type: 'invoice' | 'receipt';
   amount: string | number;
+  currency?: string;
   status: 'paid' | 'pending';
   description: string;
   mpesaMessage?: string;
@@ -29,12 +30,24 @@ const CustomTooltip = ({ active, payload, label }: CustomTooltipProps) => {
       <div className="bg-white p-4 border border-gray-100 shadow-xl rounded-xl">
         <p className="text-gray-500 text-sm font-semibold mb-1">{label}</p>
         <p className="text-emerald-600 font-bold text-lg">
-          €{Number(payload[0].value).toFixed(2)}
+          {/* Note: If you process multiple currencies, this chart sum assumes a base currency */}
+          {Number(payload[0].value).toFixed(2)}
         </p>
       </div>
     );
   }
   return null;
+};
+
+// Helper to get currency symbols
+const getCurrencySymbol = (currencyCode: string) => {
+  switch (currencyCode) {
+    case 'USD': return '$';
+    case 'EUR': return '€';
+    case 'GBP': return '£';
+    case 'KES': return 'KSh';
+    default: return currencyCode;
+  }
 };
 
 export default function AccountsPage() {
@@ -48,10 +61,15 @@ export default function AccountsPage() {
   const [clientName, setClientName] = useState("");
   const [clientEmail, setClientEmail] = useState("");
   const [amount, setAmount] = useState("");
+  const [currency, setCurrency] = useState<"USD" | "EUR" | "GBP" | "KES">("USD");
   const [serviceDescription, setServiceDescription] = useState("");
   const [mpesaMessage, setMpesaMessage] = useState("");
   const [docType, setDocType] = useState<'invoice' | 'receipt'>('invoice');
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  // Currency Converter State
+  const [exchangeRate, setExchangeRate] = useState<number>(1);
+  const [isFetchingRate, setIsFetchingRate] = useState(false);
 
   // Report State (defaults to current month YYYY-MM)
   const [reportMonth, setReportMonth] = useState(() => {
@@ -68,6 +86,36 @@ export default function AccountsPage() {
   }>({ show: false, type: 'success', title: '', message: '' });
 
   useEffect(() => { fetchTransactions(); }, []);
+
+  // Fetch Live Exchange Rate when currency changes
+  useEffect(() => {
+    if (currency === "KES") {
+      setExchangeRate(1);
+      return;
+    }
+
+    const fetchRate = async () => {
+      setIsFetchingRate(true);
+      try {
+        // Now calling your own secure backend route
+        const res = await fetch(`/api/exchange-rate?base=${currency}`);
+        const data = await res.json();
+        
+        if (data.rate) {
+          setExchangeRate(data.rate);
+        } else {
+          setExchangeRate(0); // Set to 0 so you know it failed
+        }
+      } catch (error) {
+        console.error("Failed to fetch exchange rate", error);
+        setExchangeRate(0); 
+      } finally {
+        setIsFetchingRate(false);
+      }
+    };
+
+    fetchRate();
+  }, [currency]);
 
   const fetchTransactions = async () => {
     try {
@@ -100,6 +148,7 @@ export default function AccountsPage() {
           clientName,
           clientEmail,
           amount: parseFloat(amount),
+          currency, // Passed to the backend
           description: serviceDescription,
           type: docType,
           mpesaMessage: docType === 'receipt' ? mpesaMessage : undefined,
@@ -126,6 +175,16 @@ export default function AccountsPage() {
       setLoading(false);
     }
   };
+
+  // Calculate the net estimated payout in KES
+  const estimatedPayoutKES = useMemo(() => {
+    const rawAmount = parseFloat(amount) || 0;
+    const grossKES = rawAmount * exchangeRate;
+    // Paystack fee: 3.8% for intl (USD/EUR/GBP), 1.5% for local KES
+    const feePercentage = currency === "KES" ? 0.015 : 0.038;
+    const netKES = grossKES - (grossKES * feePercentage);
+    return netKES;
+  }, [amount, exchangeRate, currency]);
 
   // DATA PROCESSING FOR DASHBOARD
   const allChartData = useMemo(() => {
@@ -178,7 +237,7 @@ export default function AccountsPage() {
     };
   }, [monthlyTransactions]);
 
-  const formatYAxis = (tickItem: number) => `€${tickItem}`;
+  const formatYAxis = (tickItem: number) => `${tickItem}`;
 
   return (
     <main className="min-h-screen bg-gray-50 py-12 px-6">
@@ -216,7 +275,7 @@ export default function AccountsPage() {
             {allChartData.length > 0 && (
               <div className="mb-8 bg-white p-6 rounded-2xl border border-gray-200 shadow-sm h-80 flex flex-col">
                 <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center">
-                  <TrendingUp size={20} className="mr-2 text-emerald-500" /> All-Time Revenue
+                  <TrendingUp size={20} className="mr-2 text-emerald-500" /> All-Time Revenue Volume
                 </h3>
                 <div className="flex-1 w-full h-full">
                   <ResponsiveContainer width="100%" height="100%">
@@ -264,11 +323,65 @@ export default function AccountsPage() {
                       <input type="text" required value={serviceDescription} onChange={(e) => setServiceDescription(e.target.value)} className="w-full p-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-amber-500" placeholder="e.g., Website Redesign Phase 1" />
                     </div>
 
-                    <div className="space-y-1">
-                      <label className="text-sm font-semibold text-gray-700 ml-1">Amount (EUR)</label>
-                      <div className="relative">
-                        <span className="absolute left-4 top-3 text-gray-500 font-bold">€</span>
-                        <input type="number" step="0.01" required value={amount} onChange={(e) => setAmount(e.target.value)} className="w-full p-3 pl-8 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-amber-500" placeholder="0.00" />
+                    {/* NEW CURRENCY & AMOUNT SECTION */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="space-y-1 md:col-span-1">
+                            <label className="text-sm font-semibold text-gray-700 ml-1">Currency</label>
+                            <select 
+                            value={currency} 
+                            onChange={(e) => setCurrency(e.target.value as "USD" | "EUR" | "GBP" | "KES")}
+                            className="w-full p-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 bg-white"
+                            >
+                            <option value="USD">USD ($)</option>
+                            <option value="EUR">EUR (€)</option>
+                            <option value="GBP">GBP (£)</option>
+                            <option value="KES">KES (KSh)</option>
+                            </select>
+                        </div>
+
+                      <div className="space-y-1 md:col-span-2">
+                        <label className="text-sm font-semibold text-gray-700 ml-1">Amount</label>
+                        <div className="relative">
+                          <span className="absolute left-4 top-3 text-gray-500 font-bold">
+                            {getCurrencySymbol(currency)}
+                          </span>
+                          <input 
+                            type="number" 
+                            step="0.01" 
+                            required 
+                            value={amount} 
+                            onChange={(e) => setAmount(e.target.value)} 
+                            className="w-full p-3 pl-10 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-amber-500" 
+                            placeholder="0.00" 
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* LIVE CONVERSION CARD */}
+                    <div className="bg-blue-50/50 p-4 border border-blue-100 rounded-xl flex items-center justify-between">
+                      <div>
+                        <p className="text-xs font-bold text-gray-500 uppercase flex items-center">
+                          Estimated M-Pesa Payout
+                          {isFetchingRate && <RefreshCw size={12} className="ml-2 animate-spin text-blue-500" />}
+                        </p>
+                        
+                        {exchangeRate === 0 && currency !== 'KES' ? (
+                           <p className="text-sm font-bold text-red-500 mt-1">
+                             No internet connection / Rate failed
+                           </p>
+                        ) : (
+                           <p className="text-xl font-bold text-blue-900 mt-1">
+                             KSh {estimatedPayoutKES.toLocaleString('en-KE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                           </p>
+                        )}
+                      </div>
+                      
+                      <div className="text-right">
+                        {exchangeRate > 0 && currency !== 'KES' && (
+                          <p className="text-[10px] text-gray-400 font-bold">1 {currency} = {exchangeRate} KES</p>
+                        )}
+                        <p className="text-[10px] text-gray-400">& ~{currency === 'KES' ? '1.5%' : '3.8%'} Paystack fee</p>
                       </div>
                     </div>
 
@@ -313,7 +426,7 @@ export default function AccountsPage() {
                         </div>
                         <div className="text-right shrink-0">
                           <p className={`font-bold ${tx.type === 'receipt' ? 'text-green-400' : 'text-gray-100'}`}>
-                            {tx.type === 'receipt' ? '+' : ''}€{parseFloat(String(tx.amount)).toFixed(2)}
+                            {tx.type === 'receipt' ? '+' : ''}{getCurrencySymbol(tx.currency || 'EUR')}{parseFloat(String(tx.amount)).toFixed(2)}
                           </p>
                         </div>
                       </div>
@@ -347,18 +460,18 @@ export default function AccountsPage() {
               <div className="bg-amber-50 border border-amber-200 p-6 rounded-2xl">
                 <div className="flex items-center mb-2">
                   <FileText size={20} className="text-amber-500 mr-2" />
-                  <h4 className="font-semibold text-amber-800">Total Billed</h4>
+                  <h4 className="font-semibold text-amber-800">Total Billed Vol.</h4>
                 </div>
-                <p className="text-3xl font-bold text-amber-600">€{monthlyStats.billed.toFixed(2)}</p>
+                <p className="text-3xl font-bold text-amber-600">{monthlyStats.billed.toFixed(2)}</p>
                 <p className="text-xs text-amber-700/70 mt-2">Invoices sent this month</p>
               </div>
 
               <div className="bg-emerald-50 border border-emerald-200 p-6 rounded-2xl">
                 <div className="flex items-center mb-2">
                   <CheckCircle size={20} className="text-emerald-500 mr-2" />
-                  <h4 className="font-semibold text-emerald-800">Total Collected</h4>
+                  <h4 className="font-semibold text-emerald-800">Total Collected Vol.</h4>
                 </div>
-                <p className="text-3xl font-bold text-emerald-600">€{monthlyStats.collected.toFixed(2)}</p>
+                <p className="text-3xl font-bold text-emerald-600">{monthlyStats.collected.toFixed(2)}</p>
                 <p className="text-xs text-emerald-700/70 mt-2">Receipts issued this month</p>
               </div>
 
@@ -367,7 +480,7 @@ export default function AccountsPage() {
                   <Clock size={20} className="text-blue-500 mr-2" />
                   <h4 className="font-semibold text-blue-800">Pending Value</h4>
                 </div>
-                <p className="text-3xl font-bold text-blue-600">€{monthlyStats.pending.toFixed(2)}</p>
+                <p className="text-3xl font-bold text-blue-600">{monthlyStats.pending.toFixed(2)}</p>
                 <p className="text-xs text-blue-700/70 mt-2">Expected vs Collected</p>
               </div>
             </div>
@@ -382,8 +495,8 @@ export default function AccountsPage() {
                     <AreaChart data={monthlyChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                       <defs>
                         <linearGradient id="colorMonthRevenue" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#10b981" stopOpacity={0.4}/>
-                          <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.4}/>
+                            <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
                         </linearGradient>
                       </defs>
                       <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
@@ -428,7 +541,7 @@ export default function AccountsPage() {
                              </span>
                            </td>
                            <td className={`px-4 py-3 text-right font-bold ${tx.type === 'receipt' ? 'text-green-600' : 'text-gray-900'}`}>
-                             €{parseFloat(String(tx.amount)).toFixed(2)}
+                             {getCurrencySymbol(tx.currency || 'EUR')}{parseFloat(String(tx.amount)).toFixed(2)}
                            </td>
                          </tr>
                        ))}
@@ -440,7 +553,7 @@ export default function AccountsPage() {
                )}
             </div>
           </div>
-        )}
+        )} 
 
       </div>
       <AdminModal modal={modal} close={closeModal} />

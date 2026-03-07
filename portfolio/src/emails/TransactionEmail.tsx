@@ -4,6 +4,7 @@ import * as React from 'react';
 interface TransactionEmailProps {
   clientName: string;
   amount: number;
+  currency?: string; 
   description: string;
   type: 'invoice' | 'receipt';
   referenceNumber: string;
@@ -14,6 +15,7 @@ interface TransactionEmailProps {
 export default function TransactionEmail({
   clientName,
   amount,
+  currency = 'EUR', // Default fallback
   description,
   type,
   referenceNumber,
@@ -22,6 +24,17 @@ export default function TransactionEmail({
 }: TransactionEmailProps) {
   const isInvoice = type === 'invoice';
   
+  // Helper to format the currency symbol dynamically
+  const getCurrencySymbol = (code: string) => {
+    switch (code) {
+      case 'USD': return '$';
+      case 'GBP': return '£';
+      case 'KES': return 'KSh ';
+      case 'EUR': return '€';
+      default: return code + ' ';
+    }
+  };
+
   return (
     <Html>
       <Head />
@@ -56,7 +69,7 @@ export default function TransactionEmail({
               <Hr style={divider} />
               <Row style={totalRow}>
                 <Column><Text style={totalLabel}>Total Amount:</Text></Column>
-                <Column><Text style={totalValue}>€{Number(amount).toFixed(2)}</Text></Column>
+                <Column><Text style={totalValue}>{getCurrencySymbol(currency)}{Number(amount).toFixed(2)}</Text></Column>
               </Row>
             </Section>
 
@@ -68,10 +81,10 @@ export default function TransactionEmail({
               </Section>
             )}
 
-            {/* Download PDF Button */}
+            {/* View & Pay Button */}
             <Section style={buttonContainer}>
               <Button style={downloadButton} href={downloadLink}>
-                Download {isInvoice ? 'Invoice' : 'Receipt'} PDF
+                {isInvoice ? 'View & Pay Invoice' : 'View & Download Receipt'}
               </Button>
             </Section>
 
