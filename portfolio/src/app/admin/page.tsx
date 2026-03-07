@@ -126,11 +126,11 @@ export default function AdminDashboard() {
     <main className="min-h-screen bg-gray-50 py-12 px-6">
       <div className="max-w-6xl mx-auto">
         
-        <div className="relative mb-8 flex items-center justify-center">
-          <h1 className="text-4xl font-bold text-gray-800">Command Center</h1>
+        <div className="flex flex-col md:flex-row items-center justify-between mb-8 gap-4">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-800 text-center md:text-left">Command Center</h1>
           <button
             onClick={handleLogout}
-            className="absolute right-0 flex items-center text-red-500 hover:text-red-700 hover:bg-red-50 px-4 py-2 rounded-lg font-bold transition-colors"
+            className="flex items-center text-red-500 hover:text-red-700 hover:bg-red-50 px-4 py-2 rounded-lg font-bold transition-colors"
           >
             <LogOut size={18} className="mr-2" /> Logout
           </button>
