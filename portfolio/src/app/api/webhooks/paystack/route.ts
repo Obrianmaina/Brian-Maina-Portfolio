@@ -13,12 +13,18 @@ export async function POST(request: Request) {
     const signature = request.headers.get('x-paystack-signature');
 
     // 1. Verify the request came from Paystack
+    if (!process.env.PAYSTACK_SECRET_KEY) {
+      console.error("Missing PAYSTACK_SECRET_KEY in Vercel environment.");
+      return NextResponse.json({ message: 'Server configuration error' }, { status: 500 });
+    }
+
     const hash = crypto
-      .createHmac('sha512', process.env.PAYSTACK_SECRET_KEY!)
+      .createHmac('sha512', process.env.PAYSTACK_SECRET_KEY)
       .update(body)
       .digest('hex');
 
     if (hash !== signature) {
+      console.error("Invalid Paystack Signature. The keys in Vercel might not match the Paystack environment.");
       return NextResponse.json({ message: 'Invalid signature' }, { status: 400 });
     }
 
@@ -29,14 +35,13 @@ export async function POST(request: Request) {
       const paymentData = event.data;
       const reference = paymentData.reference;
       
-      // Extract the MongoDB _id from the reference string
       const invoiceId = reference.split('_')[1]; 
 
       // 3. Connect to MongoDB
       const client = await clientPromise;
       const db = client.db("portfolio"); 
 
-      // 4. Fetch the original pending invoice from the database
+      // 4. Fetch the original pending invoice
       const transaction = await db.collection('transactions').findOne({ 
         _id: new ObjectId(invoiceId) 
       });
@@ -47,27 +52,26 @@ export async function POST(request: Request) {
       }
 
       // 5. Generate an automatic payment confirmation message
-      // Paystack tells us how they paid (e.g., 'card', 'mobile_money') and the last 4 digits
       const channel = paymentData.authorization?.channel || 'secure gateway';
       const last4 = paymentData.authorization?.last4 ? ` ending in ${paymentData.authorization.last4}` : '';
       const autoPaymentMessage = `Payment successfully processed via ${channel.toUpperCase()}${last4}. Transaction Reference: ${paymentData.reference}`;
 
-      // 6. Update the invoice status to paid and save the automated message
+      // 6. Update the invoice status
       await db.collection('transactions').updateOne(
         { _id: new ObjectId(invoiceId) },
         { 
           $set: { 
             status: 'paid',
             paidAt: new Date(),
-            mpesaMessage: autoPaymentMessage // We reuse this field for the auto-message
+            mpesaMessage: autoPaymentMessage
           } 
         }
       );
       
-      // 7. Automatically send the branded receipt email to the client
+      // 7. Send the branded receipt via Resend with strict error catching
       const downloadLink = `${process.env.NEXT_PUBLIC_BASE_URL}/documents`;
 
-      await resend.emails.send({
+      const { data, error } = await resend.emails.send({
         from: "Brian Maina <hello@brianmaina.de>",
         to: transaction.clientEmail,
         subject: `Receipt from Brian Maina (#${transaction.referenceNumber})`,
@@ -76,20 +80,25 @@ export async function POST(request: Request) {
           amount: transaction.amount, 
           currency: transaction.currency || "KES",
           description: transaction.description, 
-          type: 'receipt', // Switch the email type to 'receipt'
+          type: 'receipt',
           referenceNumber: transaction.referenceNumber,
           downloadLink,
-          mpesaMessage: autoPaymentMessage // Pass the automated message to the template
+          mpesaMessage: autoPaymentMessage 
         }),
       });
 
-      console.log('Successfully processed payment and sent automated receipt for:', invoiceId);
+      // If Resend rejected the email, this will log the exact reason why
+      if (error) {
+        console.error("Resend API rejected the email:", error);
+      } else {
+        console.log("Resend successfully dispatched receipt:", data);
+      }
     }
 
     return NextResponse.json({ message: 'Webhook received' }, { status: 200 });
     
   } catch (error) {
-    console.error('Webhook Error:', error);
+    console.error('Fatal Webhook Error:', error);
     return NextResponse.json({ message: 'Webhook error' }, { status: 500 });
   }
 }
