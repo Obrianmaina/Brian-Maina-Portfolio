@@ -15,22 +15,23 @@ export default function PayInvoiceButton({ invoice }: { invoice: Invoice }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: invoice.clientEmail,
-          amount: invoice.amount,
-          currency: invoice.currency,
-          invoiceId: invoice._id,
+          // We only need to send the ID and email now. The backend securely fetches the rest.
+          invoiceId: invoice._id, 
         }),
       });
 
       const data = await res.json();
       
-      if (data.checkoutUrl) {
+      if (res.ok && data.checkoutUrl) {
         // Redirect the client to the Paystack checkout page
         window.location.href = data.checkoutUrl;
       } else {
-        alert('Failed to initiate payment.');
+        // Display the specific error message returned from the backend
+        alert(`Payment Error: ${data.error || data.message || 'Failed to initiate payment'}`);
+        console.error("Checkout API Error Details:", data);
       }
     } catch (error) {
-      console.error(error);
+      console.error("Network error:", error);
       alert('An error occurred while connecting to the payment gateway.');
     } finally {
       setLoading(false);
