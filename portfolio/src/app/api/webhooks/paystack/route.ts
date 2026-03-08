@@ -51,6 +51,13 @@ export async function POST(request: Request) {
         return NextResponse.json({ message: 'Transaction not found' }, { status: 404 });
       }
 
+      // --- ADD THIS IDEMPOTENCY CHECK ---
+      // If the webhook is a duplicate and we already processed it, stop here.
+      if (transaction.status === 'paid') {
+        console.log(`Invoice ${invoiceId} is already marked as paid. Ignoring duplicate webhook.`);
+        return NextResponse.json({ message: 'Webhook already processed' }, { status: 200 });
+      }
+      // ----------------------------------
       // 5. Generate an automatic payment confirmation message
       const channel = paymentData.authorization?.channel || 'secure gateway';
       const last4 = paymentData.authorization?.last4 ? ` ending in ${paymentData.authorization.last4}` : '';
