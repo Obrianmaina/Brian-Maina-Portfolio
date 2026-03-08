@@ -286,12 +286,26 @@ export default function AccountsPage() {
     const grouped = paidTransactions.reduce((acc: Record<string, number>, curr) => {
       const dateStr = new Date(curr.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       if (!acc[dateStr]) acc[dateStr] = 0;
-      acc[dateStr] += parseFloat(String(curr.amount));
+      
+      // Normalize to KES
+      const amt = parseFloat(String(curr.amount));
+      const amountInKES = curr.currency === 'KES' ? amt : amt * exchangeRate;
+      
+      acc[dateStr] += amountInKES;
       return acc;
     }, {} as Record<string, number>); 
 
-    return Object.keys(grouped).map(date => ({ date, revenue: grouped[date] })).reverse(); 
-  }, [transactions]);
+    let data = Object.keys(grouped).map(date => ({ date, revenue: grouped[date] })).reverse(); 
+
+    if (data.length === 1) {
+      const dayBefore = new Date(data[0].date);
+      dayBefore.setDate(dayBefore.getDate() - 1);
+      const prevDateStr = dayBefore.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      data = [{ date: prevDateStr, revenue: 0 }, ...data];
+    }
+
+    return data;
+  }, [transactions, exchangeRate]);
 
   const monthlyTransactions = useMemo(() => {
     return transactions.filter(tx => {
@@ -306,21 +320,23 @@ export default function AccountsPage() {
     const grouped = paidMonthly.reduce((acc: Record<string, number>, curr) => {
       const dateStr = new Date(curr.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       if (!acc[dateStr]) acc[dateStr] = 0;
-      acc[dateStr] += parseFloat(String(curr.amount));
+      
+      // Normalize to KES
+      const amt = parseFloat(String(curr.amount));
+      const amountInKES = curr.currency === 'KES' ? amt : amt * exchangeRate;
+      
+      acc[dateStr] += amountInKES;
       return acc;
     }, {} as Record<string, number>); 
 
     let data = Object.keys(grouped).map(date => ({ date, revenue: grouped[date] })).reverse(); 
 
-    // FIX: Ensure the graph draws even if there is only 1 day of sales in the month
     if (data.length === 1) {
-      const dayBefore = new Date(data[0].date);
-      // Fallback string for month just to give it a starting point
       data = [{ date: "Start", revenue: 0 }, ...data];
     }
 
     return data;
-  }, [monthlyTransactions]);
+  }, [monthlyTransactions, exchangeRate]);
 
   const monthlyStats = useMemo(() => {
     let billed = 0;
@@ -328,27 +344,28 @@ export default function AccountsPage() {
     let pending = 0;
     
     monthlyTransactions.forEach(tx => {
+      // Normalize to KES
       const amt = parseFloat(String(tx.amount));
+      const amountInKES = tx.currency === 'KES' ? amt : amt * exchangeRate;
       
       if (tx.type === 'invoice') {
-        billed += amt;
+        billed += amountInKES;
         if (tx.status === 'pending') {
-          pending += amt;
+          pending += amountInKES;
         }
       }
       
-      // Count BOTH paid receipts AND paid invoices for the total collected
       if (tx.status === 'paid' && tx.type !== 'expense') {
-        collected += amt;
+        collected += amountInKES;
       }
-    }); // <-- Missing closing bracket was here
+    });
 
     return { 
       billed, 
       collected, 
       pending 
     };
-  }, [monthlyTransactions]);
+  }, [monthlyTransactions, exchangeRate]);
 
   const formatYAxis = (tickItem: number) => `${tickItem}`;
 
@@ -679,7 +696,10 @@ export default function AccountsPage() {
                   <FileText size={20} className="text-amber-500 mr-2" />
                   <h4 className="font-semibold text-amber-800">Total Billed Vol.</h4>
                 </div>
-                <p className="text-3xl font-bold text-amber-600">{monthlyStats.billed.toFixed(2)}</p>
+                {/* Updated to show KSh and formatted commas */}
+                <p className="text-3xl font-bold text-amber-600">
+                  KSh {monthlyStats.billed.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </p>
                 <p className="text-xs text-amber-700/70 mt-2">Invoices sent this month</p>
               </div>
 
@@ -688,7 +708,10 @@ export default function AccountsPage() {
                   <CheckCircle size={20} className="text-emerald-500 mr-2" />
                   <h4 className="font-semibold text-emerald-800">Total Collected Vol.</h4>
                 </div>
-                <p className="text-3xl font-bold text-emerald-600">{monthlyStats.collected.toFixed(2)}</p>
+                {/* Updated to show KSh and formatted commas */}
+                <p className="text-3xl font-bold text-emerald-600">
+                  KSh {monthlyStats.collected.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </p>
                 <p className="text-xs text-emerald-700/70 mt-2">Receipts issued this month</p>
               </div>
 
@@ -697,7 +720,10 @@ export default function AccountsPage() {
                   <Clock size={20} className="text-blue-500 mr-2" />
                   <h4 className="font-semibold text-blue-800">Pending Value</h4>
                 </div>
-                <p className="text-3xl font-bold text-blue-600">{monthlyStats.pending.toFixed(2)}</p>
+                {/* Updated to show KSh and formatted commas */}
+                <p className="text-3xl font-bold text-blue-600">
+                  KSh {monthlyStats.pending.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                </p>
                 <p className="text-xs text-blue-700/70 mt-2">Expected vs Collected</p>
               </div>
             </div>
