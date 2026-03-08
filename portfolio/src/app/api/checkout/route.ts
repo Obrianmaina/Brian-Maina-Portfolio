@@ -24,10 +24,36 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Transaction not found' }, { status: 404 });
     }
 
-    // Use the secure amount and currency directly from the database record
-    const secureAmount = transaction.amount;
-    const secureCurrency = 'KES';
+    // Retrieve original amount and currency from the database
+    const originalAmount = transaction.amount;
+    const originalCurrency = transaction.currency || 'KES';
+    
+    let amountInKES = originalAmount;
+    let conversionMessage = undefined; // Will remain undefined if the currency is already KES
 
+    // If the currency is not KES, fetch the live exchange rate and create a message
+    if (originalCurrency !== 'KES') {
+      try {
+        const rateRes = await fetch(`https://api.exchangerate-api.com/v4/latest/${originalCurrency}`);
+        const rateData = await rateRes.json();
+        
+        if (rateData && rateData.rates && rateData.rates.KES) {
+          const conversionRate = rateData.rates.KES;
+          amountInKES = originalAmount * conversionRate;
+          
+          // Create the transparency message for the frontend
+          conversionMessage = `Your invoice of ${originalCurrency} ${originalAmount} will be processed as KES ${amountInKES.toFixed(2)}.\n\nExchange Rate used: 1 ${originalCurrency} = ${conversionRate} KES.`;
+        } else {
+          console.error("Exchange rate not found in API response");
+          return NextResponse.json({ error: 'Currency conversion failed' }, { status: 500 });
+        }
+      } catch (error) {
+        console.error('Failed to fetch exchange rate during checkout:', error);
+        return NextResponse.json({ error: 'Failed to process currency conversion' }, { status: 500 });
+      }
+    }
+
+    // Initialize Paystack transaction STRICTLY in KES
     const response = await fetch('https://api.paystack.co/transaction/initialize', {
       method: 'POST',
       headers: {
@@ -36,8 +62,8 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         email,
-        amount: Math.round(secureAmount * 100),
-        currency: secureCurrency,
+        amount: Math.round(amountInKES * 100), // Paystack requires the lowest denomination
+        currency: 'KES', 
         reference: `INV_${invoiceId}_${Date.now()}`,
         callback_url: `${process.env.NEXT_PUBLIC_BASE_URL}/payment-success`, 
       }),
@@ -46,7 +72,10 @@ export async function POST(request: Request) {
     const data = await response.json();
 
     if (data.status) {
-      return NextResponse.json({ checkoutUrl: data.data.authorization_url });
+      return NextResponse.json({ 
+        checkoutUrl: data.data.authorization_url,
+        conversionMessage // Pass the transparency message to the client
+      });
     }
 
     return NextResponse.json({ error: data.message }, { status: 400 });

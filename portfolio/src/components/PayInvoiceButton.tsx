@@ -15,7 +15,6 @@ export default function PayInvoiceButton({ invoice }: { invoice: Invoice }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           email: invoice.clientEmail,
-          // We only need to send the ID and email now. The backend securely fetches the rest.
           invoiceId: invoice._id, 
         }),
       });
@@ -23,10 +22,22 @@ export default function PayInvoiceButton({ invoice }: { invoice: Invoice }) {
       const data = await res.json();
       
       if (res.ok && data.checkoutUrl) {
+        
+        // Check if the backend sent a currency conversion message
+        if (data.conversionMessage) {
+          // Display the rate and amount to the user for confirmation
+          const proceed = window.confirm(`${data.conversionMessage}\n\nClick OK to proceed to the secure payment gateway.`);
+          
+          if (!proceed) {
+            // User canceled the transaction after seeing the exchange rate
+            setLoading(false);
+            return; 
+          }
+        }
+
         // Redirect the client to the Paystack checkout page
         window.location.href = data.checkoutUrl;
       } else {
-        // Display the specific error message returned from the backend
         alert(`Payment Error: ${data.error || data.message || 'Failed to initiate payment'}`);
         console.error("Checkout API Error Details:", data);
       }
