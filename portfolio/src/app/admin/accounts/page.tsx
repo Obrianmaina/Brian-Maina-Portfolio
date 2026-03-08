@@ -246,7 +246,7 @@ export default function AccountsPage() {
       const whtAmount = tx.withholdingTax ? parseFloat(String(tx.withholdingTax)) : 0;
       const whtInKES = tx.currency === 'KES' ? whtAmount : whtAmount * exchangeRate;
   
-      if (tx.status === 'paid' && tx.type === 'receipt') {
+      if (tx.status === 'paid' && tx.type !== 'expense') {
         grossRevenueKES += amountInKES;
         totalWithheldTaxKES += whtInKES;
       } else if (tx.type === 'expense') {
@@ -310,7 +310,16 @@ export default function AccountsPage() {
       return acc;
     }, {} as Record<string, number>); 
 
-    return Object.keys(grouped).map(date => ({ date, revenue: grouped[date] })).reverse(); 
+    let data = Object.keys(grouped).map(date => ({ date, revenue: grouped[date] })).reverse(); 
+
+    // FIX: Ensure the graph draws even if there is only 1 day of sales in the month
+    if (data.length === 1) {
+      const dayBefore = new Date(data[0].date);
+      // Fallback string for month just to give it a starting point
+      data = [{ date: "Start", revenue: 0 }, ...data];
+    }
+
+    return data;
   }, [monthlyTransactions]);
 
   const monthlyStats = useMemo(() => {
@@ -328,10 +337,11 @@ export default function AccountsPage() {
         }
       }
       
-      if (tx.status === 'paid' && tx.type === 'receipt') {
+      // Count BOTH paid receipts AND paid invoices for the total collected
+      if (tx.status === 'paid' && tx.type !== 'expense') {
         collected += amt;
       }
-    });
+    }); // <-- Missing closing bracket was here
 
     return { 
       billed, 
@@ -691,6 +701,33 @@ export default function AccountsPage() {
                 <p className="text-xs text-blue-700/70 mt-2">Expected vs Collected</p>
               </div>
             </div>
+
+            {/* ---> INSERT THIS NEW GRAPH BLOCK HERE <--- */}
+            {monthlyChartData.length > 0 && (
+              <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm mt-8 h-80 flex flex-col">
+                <h3 className="text-lg font-bold text-gray-800 mb-6 flex items-center">
+                  <TrendingUp size={20} className="mr-2 text-blue-500" /> Monthly Revenue Trend
+                </h3>
+                <div className="flex-1 w-full h-full min-h-[250px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <AreaChart data={monthlyChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                      <defs>
+                        <linearGradient id="colorMonthlyRevenue" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3}/>
+                          <stop offset="95%" stopColor="#3b82f6" stopOpacity={0}/>
+                        </linearGradient>
+                      </defs>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f3f4f6" />
+                      <XAxis dataKey="date" tick={{fontSize: 12, fill: '#6b7280'}} axisLine={false} tickLine={false} dy={10} />
+                      <YAxis tickFormatter={formatYAxis} tick={{fontSize: 12, fill: '#6b7280'}} axisLine={false} tickLine={false} />
+                      <Tooltip content={<CustomTooltip />} />
+                      <Area type="monotone" dataKey="revenue" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorMonthlyRevenue)" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+            )}
+            {/* ---> END OF NEW GRAPH BLOCK <--- */}
 
             <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm">
                <h3 className="text-xl font-bold text-gray-800 mb-6 border-b pb-4">Monthly Ledger</h3>
