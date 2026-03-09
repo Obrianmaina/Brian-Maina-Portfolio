@@ -226,10 +226,10 @@ export default function ReportsTab({
                                     </td>
                                 </tr>
                                 <tr className="border-t border-gray-200 bg-gray-100">
-                                    <td colSpan={4} className="px-4 py-3 text-right uppercase text-sm tracking-wider font-black text-gray-900">
+                                    <td colSpan={4} className="px-4 py-3 text-right uppercase text-sm tracking-wider font-normal text-gray-900">
                                         Net Monthly Result
                                     </td>
-                                    <td colSpan={2} className={`px-4 py-3 text-right text-lg font-black ${netMonthly >= 0 ? 'text-blue-600' : 'text-rose-600'}`}>
+                                    <td colSpan={2} className={`px-4 py-3 text-right text-lg font-normal ${netMonthly >= 0 ? 'text-blue-600' : 'text-rose-600'}`}>
                                         KSh {fmt(netMonthly)}
                                     </td>
                                 </tr>
@@ -267,18 +267,18 @@ export default function ReportsTab({
                                     </td>
                                 </tr>
                                 <tr className="border-t border-amber-200 bg-purple-50">
-                                    <td colSpan={4} className="px-4 py-3 text-right uppercase text-xs tracking-wider font-black text-purple-900">
+                                    <td colSpan={4} className="px-4 py-3 text-right uppercase text-xs tracking-wider font-normal text-purple-900">
                                         10% Tithe Allocation
                                     </td>
-                                    <td colSpan={2} className="px-4 py-3 text-right text-base font-black text-purple-700">
+                                    <td colSpan={2} className="px-4 py-3 text-right text-base font-normal text-purple-700">
                                         KSh {fmt(monthlyStats.tithe)}
                                     </td>
                                 </tr>
                                 <tr className="border-t border-purple-200 bg-emerald-100">
-                                    <td colSpan={4} className="px-4 py-4 text-right uppercase text-sm tracking-wider font-black text-emerald-900">
+                                    <td colSpan={4} className="px-4 py-4 text-right uppercase text-sm tracking-wider font-normal text-emerald-900">
                                         Free to Spend
                                     </td>
-                                    <td colSpan={2} className="px-4 py-4 text-right text-xl font-black text-emerald-700">
+                                    <td colSpan={2} className="px-4 py-4 text-right text-xl font-normal text-emerald-700">
                                         KSh {fmt(monthlyStats.freeToSpend)}
                                     </td>
                                 </tr>
@@ -319,19 +319,19 @@ export default function ReportsTab({
                                 <div className="mt-2 flex flex-col sm:flex-row gap-2">
                                     <div className="flex-1 bg-white border border-amber-200 rounded-lg px-3 py-2">
                                         <p className="text-[10px] font-bold text-amber-600 uppercase tracking-wider mb-0.5">Monthly Provision</p>
-                                        <p className="text-sm font-black text-amber-700">KSh {fmt(monthlyStats.estimatedTax)}</p>
+                                        <p className="text-sm font-normal text-amber-700">KSh {fmt(monthlyStats.estimatedTax)}</p>
                                         <p className="text-[10px] text-amber-500 mt-0.5">Set aside this month</p>
                                     </div>
                                     <div className="flex items-center justify-center text-amber-400 font-bold text-sm px-1">vs</div>
                                     <div className="flex-1 bg-white border border-amber-200 rounded-lg px-3 py-2">
                                         <p className="text-[10px] font-bold text-amber-600 uppercase tracking-wider mb-0.5">Annual ÷ 12</p>
-                                        <p className="text-sm font-black text-amber-700">KSh {fmt(annualTrueTax / 12)}</p>
+                                        <p className="text-sm font-normal text-amber-700">KSh {fmt(annualTrueTax / 12)}</p>
                                         <p className="text-[10px] text-amber-500 mt-0.5">True KRA liability per month</p>
                                     </div>
                                     <div className="flex items-center justify-center text-amber-400 font-bold text-sm px-1">=</div>
                                     <div className="flex-1 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2">
                                         <p className="text-[10px] font-bold text-emerald-600 uppercase tracking-wider mb-0.5">Buffer Saved</p>
-                                        <p className="text-sm font-black text-emerald-700">KSh {fmt(savingsBuffer)}</p>
+                                        <p className="text-sm font-normal text-emerald-700">KSh {fmt(savingsBuffer)}</p>
                                         <p className="text-[10px] text-emerald-500 mt-0.5">Extra cushion vs KRA bill</p>
                                     </div>
                                 </div>
