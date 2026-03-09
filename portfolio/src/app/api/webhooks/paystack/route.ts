@@ -63,6 +63,9 @@ export async function POST(request: Request) {
       const last4 = paymentData.authorization?.last4 ? ` ending in ${paymentData.authorization.last4}` : '';
       const autoPaymentMessage = `Payment successfully processed via ${channel.toUpperCase()}${last4}. Transaction Reference: ${paymentData.reference}`;
 
+      // Convert Paystack cents back to the exact KES amount charged
+      const actualAmountPaidKES = paymentData.amount / 100;
+
       // 6. Update the invoice status
       await db.collection('transactions').updateOne(
         { _id: new ObjectId(invoiceId) },
@@ -70,7 +73,8 @@ export async function POST(request: Request) {
           $set: { 
             status: 'paid',
             paidAt: new Date(),
-            mpesaMessage: autoPaymentMessage
+            mpesaMessage: autoPaymentMessage,
+            amountPaidKES: actualAmountPaidKES // Lock in the final KES value
           } 
         }
       );

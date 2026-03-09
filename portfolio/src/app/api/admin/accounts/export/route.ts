@@ -30,6 +30,24 @@ export async function GET(req: Request) {
       .sort({ date: 1 })
       .toArray();
 
+    // Fetch live exchange rates for fallback calculations on old transactions
+    const [usdRes, eurRes, gbpRes] = await Promise.all([
+      fetch('https://api.exchangerate-api.com/v4/latest/USD'),
+      fetch('https://api.exchangerate-api.com/v4/latest/EUR'),
+      fetch('https://api.exchangerate-api.com/v4/latest/GBP')
+    ]);
+    
+    const usd = await usdRes.json();
+    const eur = await eurRes.json();
+    const gbp = await gbpRes.json();
+
+    const rates: Record<string, number> = {
+      USD: usd.rates?.KES || 1,
+      EUR: eur.rates?.KES || 1,
+      GBP: gbp.rates?.KES || 1,
+      KES: 1
+    };
+
     // Define KRA CSV Headers
     const headers = [
       "Date", 
@@ -37,10 +55,16 @@ export async function GET(req: Request) {
       "Client / Vendor Name", 
       "Description", 
       "Expense Category", 
-      "Currency", 
-      "Gross Amount",
-      "Withholding Tax (WHT)" 
+      "Original Currency", 
+      "Original Amount",
+      "Amount (KES)",
+      "Original WHT",
+      "WHT (KES)"
     ];
+
+    let totalGrossIncomeKES = 0;
+    let totalExpensesKES = 0;
+    let totalWhtKES = 0;
 
     // Map transactions to CSV rows
     const rows = transactions.map(tx => {
@@ -52,13 +76,55 @@ export async function GET(req: Request) {
       
       const cat = tx.type === 'expense' ? (tx.expenseCategory || 'General') : 'Service Revenue';
       const currency = tx.currency || 'EUR';
-      const amount = tx.amount;
-      const wht = tx.withholdingTax || 0; 
+      const originalAmount = parseFloat(tx.amount || 0);
+      const originalWht = parseFloat(tx.withholdingTax || 0); 
+      
+      const txRate = rates[currency] || 1;
+      
+      // Use locked KES amount if available, otherwise calculate using the rate
+      const amountKES = tx.amountPaidKES ? tx.amountPaidKES : (originalAmount * txRate);
+      const whtKES = originalWht * txRate;
 
-      return [txDate, type, name, desc, cat, currency, amount, wht].join(",");
+      // Add to running totals
+      if (tx.type === 'expense') {
+        totalExpensesKES += amountKES;
+      } else {
+        totalGrossIncomeKES += amountKES;
+        totalWhtKES += whtKES;
+      }
+
+      return [
+        txDate, 
+        type, 
+        name, 
+        desc, 
+        cat, 
+        currency, 
+        originalAmount.toFixed(2), 
+        amountKES.toFixed(2), 
+        originalWht.toFixed(2), 
+        whtKES.toFixed(2)
+      ].join(",");
     });
 
-    const csvContent = [headers.join(","), ...rows].join("\n");
+    // Calculate final tax figures matching your dashboard logic
+    const netProfit = totalGrossIncomeKES - totalExpensesKES;
+    const TAX_EXEMPT_CLAUSE = 288000; // Updated to 24,000 * 12
+    const taxableIncome = Math.max(0, netProfit - TAX_EXEMPT_CLAUSE);
+    const grossTax = taxableIncome * 0.30; 
+    const estimatedTaxDue = Math.max(0, grossTax - totalWhtKES);
+
+    // Create summary rows at the bottom of the CSV
+    const summaryRows = [
+      "", // Empty row for visual spacing
+      [",,,,,,", "TOTAL GROSS INCOME (KES)", totalGrossIncomeKES.toFixed(2), ""].join(","),
+      [",,,,,,", "TOTAL DEDUCTIBLE EXPENSES (KES)", totalExpensesKES.toFixed(2), ""].join(","),
+      [",,,,,,", "TOTAL WHT CREDITS (KES)", totalWhtKES.toFixed(2), ""].join(","),
+      [",,,,,,", "NET TAXABLE INCOME (KES)", taxableIncome.toFixed(2), ""].join(","),
+      [",,,,,,", "ESTIMATED FINAL TAX DUE (KES)", estimatedTaxDue.toFixed(2), ""].join(",")
+    ];
+
+    const csvContent = [headers.join(","), ...rows, ...summaryRows].join("\n");
 
     return new NextResponse(csvContent, {
       status: 200,
