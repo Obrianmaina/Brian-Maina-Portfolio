@@ -43,7 +43,9 @@ export type MonthlyStats = {
     collected: number;
     pending: number;
     expenses: number;
-    estimatedTax: number;
+    wht: number;           // WHT already deducted by clients this month
+    spendableNet: number;  // netProfit minus WHT (cash actually received)
+    estimatedTax: number;  // progressive tax provision (advisory)
     tithe: number;
     freeToSpend: number;
 };

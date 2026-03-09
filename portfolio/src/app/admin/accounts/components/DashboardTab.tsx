@@ -3,11 +3,13 @@
 import RevenueChart from "./RevenueChart";
 import CreateRecordForm from "./CreateRecordForm";
 import GeneralLedger from "./GeneralLedger";
-import { Transaction, DocType, CurrencyCode, Rates, ChartDataPoint } from "../types";
+import YearHealthBar from "./YearHealthBar";
+import { Transaction, DocType, CurrencyCode, Rates, ChartDataPoint, TaxSummary } from "../types";
 
 interface DashboardTabProps {
     allChartData: ChartDataPoint[];
     transactions: Transaction[];
+    taxSummary: TaxSummary;
     markingPaid: string | null;
     onMarkAsPaid: (id: string) => void;
     // Form props
@@ -28,11 +30,15 @@ interface DashboardTabProps {
 }
 
 export default function DashboardTab({
-    allChartData, transactions, markingPaid, onMarkAsPaid,
+    allChartData, transactions, taxSummary, markingPaid, onMarkAsPaid,
     ...formProps
 }: DashboardTabProps) {
     return (
         <>
+            {/* Annual tax health — always shown once there's revenue */}
+            <YearHealthBar taxSummary={taxSummary} />
+
+            {/* All-time revenue chart */}
             {allChartData.length > 0 && (
                 <div className="mb-8">
                     <RevenueChart

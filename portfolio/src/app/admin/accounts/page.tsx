@@ -161,6 +161,7 @@ export default function AccountsPage() {
                     <DashboardTab
                         allChartData={allChartData}
                         transactions={transactions}
+                        taxSummary={taxSummary}
                         {...markPaidProps}
                         docType={docType} setDocType={setDocType}
                         clientName={clientName} setClientName={setClientName}
