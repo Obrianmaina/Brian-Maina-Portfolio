@@ -32,7 +32,7 @@ export default function HomePage() {
           transition={{ duration: 0.8 }} 
           className="text-4xl sm:text-5xl font-bold mb-4"
         >
-          Brian Maina Nyawira
+          Brian Maina
         </motion.h1>
         
         <motion.p 
