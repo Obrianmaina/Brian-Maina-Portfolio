@@ -2,17 +2,15 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, GraduationCap, Plus, Trash2 } from "lucide-react";
+import { ArrowLeft, GraduationCap, Plus, Trash2, Pencil } from "lucide-react";
 import AdminModal from "@/components/AdminModal";
 import { TimelineSection, TimelineEntry } from "@/types";
 
-// Create an extended type specifically for the admin panel so TypeScript knows _id exists
 type AdminTimelineSection = TimelineSection & { _id: string };
 
 export default function ResumeCMS() {
   const router = useRouter();
   
-  // Use the new AdminTimelineSection type here
   const [experience, setExperience] = useState<AdminTimelineSection[]>([]);
   const [education, setEducation] = useState<AdminTimelineSection[]>([]);
   const [skills, setSkills] = useState<string[]>([]);
@@ -21,12 +19,14 @@ export default function ResumeCMS() {
   // State for forms
   const [activeTab, setActiveTab] = useState<'experience' | 'education' | 'skills'>('experience');
   const [isAdding, setIsAdding] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   
   // Timeline Section Form
   const [heading, setHeading] = useState("");
-  const [entryTitle, setEntryTitle] = useState("");
-  const [entryDate, setEntryDate] = useState("");
-  const [entryDescription, setEntryDescription] = useState(""); 
+  // Now handles multiple roles/entries under one company/school
+  const [entries, setEntries] = useState<{title: string; date: string; description: string}[]>([
+    { title: "", date: "", description: "" }
+  ]);
   
   // Skills Form
   const [newSkill, setNewSkill] = useState("");
@@ -53,40 +53,87 @@ export default function ResumeCMS() {
 
   const closeModal = () => setModal(prev => ({ ...prev, show: false }));
 
+  // Helper to reset the form state entirely
+  const resetForm = () => {
+    setIsAdding(false);
+    setEditingId(null);
+    setHeading("");
+    setEntries([{ title: "", date: "", description: "" }]);
+  };
+
   const handleTimelineSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const descArray = entryDescription.split('\n').map(s => s.trim()).filter(Boolean);
-      const finalDescription = descArray.length === 1 ? descArray[0] : descArray;
+      // Process all entries to handle bullet points
+      const parsedEntries = entries.map(entry => {
+        const descArray = entry.description.split('\n').map(s => s.trim()).filter(Boolean);
+        const finalDescription = descArray.length === 1 ? descArray[0] : descArray;
+        return {
+          title: entry.title,
+          date: entry.date,
+          description: finalDescription
+        };
+      });
 
       const payload = {
+        id: editingId, // Include ID if we are updating
         section: activeTab, 
         heading: heading,
-        entries: [{
-          title: entryTitle,
-          date: entryDate,
-          description: finalDescription
-        }],
+        entries: parsedEntries,
         order: activeTab === 'experience' ? experience.length : education.length
       };
 
+      const method = editingId ? "PUT" : "POST";
+
       const res = await fetch("/api/admin/resume", {
-        method: "POST",
+        method: method,
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
 
       if (res.ok) {
-        setModal({ show: true, type: 'success', title: 'Success', message: `Added to ${activeTab}!` });
-        setIsAdding(false);
-        setHeading(""); setEntryTitle(""); setEntryDate(""); setEntryDescription("");
+        setModal({ show: true, type: 'success', title: 'Success', message: `Successfully ${editingId ? 'updated' : 'added to'} ${activeTab}!` });
+        resetForm();
         fetchResumeData();
       } else {
-        setModal({ show: true, type: 'error', title: 'Error', message: 'Failed to add entry.' });
+        setModal({ show: true, type: 'error', title: 'Error', message: `Failed to ${editingId ? 'update' : 'add'} entry.` });
       }
     } catch (error) {
       setModal({ show: true, type: 'error', title: 'Error', message: 'An unexpected error occurred.' });
     }
+  };
+
+  const handleEditTimeline = (section: AdminTimelineSection) => {
+    setEditingId(section._id);
+    setHeading(section.heading);
+    
+    // Populate form with all entries for this section
+    if (section.entries && section.entries.length > 0) {
+      setEntries(section.entries.map((entry) => ({
+        title: entry.title,
+        date: entry.date,
+        description: Array.isArray(entry.description) ? entry.description.join('\n') : entry.description
+      })));
+    } else {
+      setEntries([{ title: "", date: "", description: "" }]);
+    }
+    
+    setIsAdding(true);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleAddEntryField = () => {
+    setEntries([...entries, { title: "", date: "", description: "" }]);
+  };
+
+  const handleRemoveEntryField = (indexToRemove: number) => {
+    setEntries(entries.filter((_, idx) => idx !== indexToRemove));
+  };
+
+  const updateEntryField = (index: number, field: 'title' | 'date' | 'description', value: string) => {
+    const newEntries = [...entries];
+    newEntries[index][field] = value;
+    setEntries(newEntries);
   };
 
   const handleAddSkill = async (e: React.FormEvent) => {
@@ -129,8 +176,8 @@ export default function ResumeCMS() {
             <ArrowLeft size={20} className="mr-2" /> Back to Hub
           </button>
           {activeTab !== 'skills' && (
-            <button onClick={() => setIsAdding(!isAdding)} className="flex items-center bg-gray-900 text-white px-4 py-2 rounded-lg font-bold hover:bg-gray-800 transition-colors">
-              {isAdding ? "Cancel" : <><Plus size={18} className="mr-2" /> Add Entry</>}
+            <button onClick={() => isAdding ? resetForm() : setIsAdding(true)} className="flex items-center bg-gray-900 text-white px-4 py-2 rounded-lg font-bold hover:bg-gray-800 transition-colors">
+              {isAdding ? (editingId ? "Cancel Edit" : "Cancel") : <><Plus size={18} className="mr-2" /> Add Entry</>}
             </button>
           )}
         </div>
@@ -140,49 +187,71 @@ export default function ResumeCMS() {
           <h2 className="text-3xl font-bold text-gray-800">Resume Manager</h2>
         </div>
 
-        {/* Custom Tabs */}
         <div className="flex space-x-4 mb-8 border-b border-gray-200">
-          <button onClick={() => { setActiveTab('experience'); setIsAdding(false); }} className={`pb-3 font-semibold px-2 transition-colors ${activeTab === 'experience' ? 'text-orange-600 border-b-2 border-orange-600' : 'text-gray-500 hover:text-gray-800'}`}>Experience</button>
-          <button onClick={() => { setActiveTab('education'); setIsAdding(false); }} className={`pb-3 font-semibold px-2 transition-colors ${activeTab === 'education' ? 'text-orange-600 border-b-2 border-orange-600' : 'text-gray-500 hover:text-gray-800'}`}>Education</button>
-          <button onClick={() => { setActiveTab('skills'); setIsAdding(false); }} className={`pb-3 font-semibold px-2 transition-colors ${activeTab === 'skills' ? 'text-orange-600 border-b-2 border-orange-600' : 'text-gray-500 hover:text-gray-800'}`}>Skills</button>
+          <button onClick={() => { setActiveTab('experience'); resetForm(); }} className={`pb-3 font-semibold px-2 transition-colors ${activeTab === 'experience' ? 'text-orange-600 border-b-2 border-orange-600' : 'text-gray-500 hover:text-gray-800'}`}>Experience</button>
+          <button onClick={() => { setActiveTab('education'); resetForm(); }} className={`pb-3 font-semibold px-2 transition-colors ${activeTab === 'education' ? 'text-orange-600 border-b-2 border-orange-600' : 'text-gray-500 hover:text-gray-800'}`}>Education</button>
+          <button onClick={() => { setActiveTab('skills'); resetForm(); }} className={`pb-3 font-semibold px-2 transition-colors ${activeTab === 'skills' ? 'text-orange-600 border-b-2 border-orange-600' : 'text-gray-500 hover:text-gray-800'}`}>Skills</button>
         </div>
 
-        {/* ADD TIMELINE ENTRY FORM */}
         {isAdding && activeTab !== 'skills' && (
           <div className="bg-orange-50/50 p-6 rounded-2xl border border-orange-100 mb-8 fade-in">
             <h3 className="text-xl font-bold text-orange-900 mb-4 flex items-center capitalize">
-              Add New {activeTab} 
+              {editingId ? "Edit" : "Add New"} {activeTab} 
             </h3>
             <p className="text-sm text-orange-600 mb-6">Tip: To create bullet points in the description, press Enter for a new line.</p>
-            <form onSubmit={handleTimelineSubmit} className="space-y-4">
-              <input required type="text" placeholder="Heading (e.g. SAP SE or Moi University)" className="w-full p-3 border rounded-xl" value={heading} onChange={e => setHeading(e.target.value)} />
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <input required type="text" placeholder="Job Title / Degree" className="p-3 border rounded-xl" value={entryTitle} onChange={e => setEntryTitle(e.target.value)} />
-                <input type="text" placeholder="Date (e.g. 2024 Sep - Present)" className="p-3 border rounded-xl" value={entryDate} onChange={e => setEntryDate(e.target.value)} />
+            
+            <form onSubmit={handleTimelineSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-gray-700">Organization / Heading</label>
+                <input required type="text" placeholder="e.g. SAP SE or Moi University" className="w-full p-3 border rounded-xl" value={heading} onChange={e => setHeading(e.target.value)} />
               </div>
-              <textarea required placeholder="Description..." className="w-full p-3 border rounded-xl h-32" value={entryDescription} onChange={e => setEntryDescription(e.target.value)} />
-              <button type="submit" className="w-full bg-orange-600 text-white font-bold py-4 mt-4 rounded-xl hover:bg-orange-700 shadow-md">Save Entry</button>
+
+              <div className="space-y-4">
+                <div className="flex justify-between items-center border-b border-orange-200 pb-2">
+                  <label className="text-sm font-bold text-gray-700">Roles / Degrees</label>
+                  <button type="button" onClick={handleAddEntryField} className="text-sm text-orange-600 hover:text-orange-800 font-bold flex items-center bg-orange-100 px-3 py-1.5 rounded-lg transition-colors">
+                    <Plus size={16} className="mr-1" /> Add Another Role
+                  </button>
+                </div>
+
+                {entries.map((entry, idx) => (
+                  <div key={idx} className="p-4 bg-white border border-orange-100 rounded-xl relative shadow-sm">
+                    {entries.length > 1 && (
+                      <button type="button" onClick={() => handleRemoveEntryField(idx)} className="absolute -top-3 -right-3 bg-red-100 text-red-600 p-2 rounded-full hover:bg-red-200 transition-colors shadow-sm" title="Remove this role">
+                        <Trash2 size={16} />
+                      </button>
+                    )}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                      <input required type="text" placeholder="Job Title / Degree (e.g. Visual Designer)" className="p-3 border rounded-xl w-full" value={entry.title} onChange={e => updateEntryField(idx, 'title', e.target.value)} />
+                      <input type="text" placeholder="Date (e.g. February 2024 - September 2024)" className="p-3 border rounded-xl w-full" value={entry.date} onChange={e => updateEntryField(idx, 'date', e.target.value)} />
+                    </div>
+                    <textarea required placeholder="Description... (Press Enter for bullet points)" className="w-full p-3 border rounded-xl h-32" value={entry.description} onChange={e => updateEntryField(idx, 'description', e.target.value)} />
+                  </div>
+                ))}
+              </div>
+
+              {/* Using !bg-orange-600 and !text-white to force the style and prevent the white-on-white issue */}
+              <button type="submit" className="w-full !bg-orange-600 !text-white font-bold py-4 mt-6 rounded-xl hover:!bg-orange-700 shadow-md transition-colors">
+                {editingId ? "Update Entry" : "Save Entry"}
+              </button>
             </form>
           </div>
         )}
 
-        {/* LIST VIEW */}
         {loading ? (
           <p className="text-gray-500 animate-pulse">Loading {activeTab}...</p>
         ) : (
           <div>
-            {/* TIMELINE RENDERER */}
             {(activeTab === 'experience' || activeTab === 'education') && (
               <div className="space-y-6">
-                {/* Now we don't explicitly type 'section' in the map, TypeScript infers it from the state arrays */}
                 {(activeTab === 'experience' ? experience : education).map((section) => (
-                  <div key={section._id} className="border border-gray-200 rounded-2xl p-6 bg-white flex justify-between group hover:border-orange-200 transition-colors">
-                    <div>
-                      <h4 className="text-xl font-bold text-gray-900 mb-4 border-b pb-2 inline-block">{section.heading}</h4>
+                  <div key={section._id} className="border border-gray-200 rounded-2xl p-6 bg-white flex justify-between group hover:border-orange-200 transition-colors shadow-sm">
+                    <div className="w-full">
+                      <h4 className="text-xl font-bold text-gray-900 mb-6 border-b pb-2 inline-block">{section.heading}</h4>
                       {section.entries.map((entry: TimelineEntry, idx: number) => (
-                        <div key={idx} className="mb-4">
-                          <h5 className="font-semibold text-gray-800">{entry.title}</h5>
-                          <p className="text-sm text-orange-600 mb-2 font-medium">{entry.date}</p>
+                        <div key={idx} className="mb-6 last:mb-0">
+                          <h5 className="font-semibold text-gray-800 text-lg">{entry.title}</h5>
+                          <p className="text-sm text-orange-600 mb-3 font-medium">{entry.date}</p>
                           {Array.isArray(entry.description) ? (
                             <ul className="list-disc pl-5 space-y-1 text-sm text-gray-600">
                               {entry.description.map((item: string, i: number) => <li key={i}>{item}</li>)}
@@ -193,9 +262,14 @@ export default function ResumeCMS() {
                         </div>
                       ))}
                     </div>
-                    <button onClick={() => handleDelete(section._id, activeTab, section.heading)} className="text-gray-300 hover:text-red-500 self-start p-2 rounded-lg hover:bg-red-50 transition-colors">
-                      <Trash2 size={20} />
-                    </button>
+                    <div className="flex gap-2 self-start ml-4 shrink-0">
+                      <button onClick={() => handleEditTimeline(section)} className="text-gray-400 hover:text-blue-500 p-2 rounded-lg hover:bg-blue-50 transition-colors" title="Edit Entry">
+                        <Pencil size={20} />
+                      </button>
+                      <button onClick={() => handleDelete(section._id, activeTab, section.heading)} className="text-gray-400 hover:text-red-500 p-2 rounded-lg hover:bg-red-50 transition-colors" title="Delete Entry">
+                        <Trash2 size={20} />
+                      </button>
+                    </div>
                   </div>
                 ))}
                 {(activeTab === 'experience' ? experience : education).length === 0 && (
@@ -204,7 +278,6 @@ export default function ResumeCMS() {
               </div>
             )}
 
-            {/* SKILLS RENDERER */}
             {activeTab === 'skills' && (
               <div>
                 <form onSubmit={handleAddSkill} className="flex gap-4 mb-8 bg-gray-50 p-4 rounded-xl border border-gray-100">

@@ -46,6 +46,39 @@ export async function POST(req: Request) {
   }
 }
 
+// PUT (Update) an existing entry (Requires admin)
+export async function PUT(req: Request) {
+  try {
+    const cookieStore = await cookies();
+    if (!cookieStore.get("admin_session")) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    const data = await req.json();
+    const { id, section, ...payload } = data;
+    
+    if (!id || !section) {
+      return NextResponse.json({ error: "Missing ID or section" }, { status: 400 });
+    }
+
+    const client = await clientPromise;
+    const db = client.db("portfolio");
+
+    // Update the specific document by its ObjectId
+    const result = await db.collection(section).updateOne(
+      { _id: new ObjectId(id) },
+      { $set: payload }
+    );
+
+    if (result.matchedCount === 0) {
+      return NextResponse.json({ error: "Entry not found" }, { status: 404 });
+    }
+
+    return NextResponse.json({ success: true }, { status: 200 });
+  } catch (error) {
+    console.error("Update Resume Entry API Error:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+}
+
 // DELETE an entry (Requires admin)
 export async function DELETE(req: Request) {
   try {
