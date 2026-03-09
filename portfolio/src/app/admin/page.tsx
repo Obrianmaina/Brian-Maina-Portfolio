@@ -13,8 +13,9 @@ import {
   LogOut, 
   GraduationCap,
   MessageSquare,
-  Settings, // Added this import
-  BarChart3  // Added for Analytics tile
+  Settings, 
+  BarChart3,
+  BadgeDollarSign // Add this for the pricing tile
 } from "lucide-react";
 import AdminModal from "@/components/AdminModal";
 
@@ -190,6 +191,15 @@ export default function AdminDashboard() {
             <div className="w-16 h-16 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><GraduationCap size={32} /></div>
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Resume / CV</h2>
             <p className="text-gray-500">Update your experience, education, and skills.</p>
+          </div>
+
+          {/* Pricing Module Tile */}
+          <div onClick={() => router.push('/admin/pricing')} className="bg-white p-8 rounded-3xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border border-gray-100 flex flex-col items-center text-center group">
+            <div className="w-16 h-16 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+              <BadgeDollarSign size={32} />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">Pricing Lists</h2>
+            <p className="text-gray-500">Create, manage, and send custom pricing lists to clients.</p>
           </div>
 
           {/* NEW: Analytics Tile */}

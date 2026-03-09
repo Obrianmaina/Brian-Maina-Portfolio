@@ -86,6 +86,30 @@ export interface Invoice {
   paidAt?: Date;
 }
 
+
+// src/types/index.ts
+export interface PricingItem {
+  name: string;
+  description?: string;
+  unitPrice: number;
+  quantity: number;
+  total: number;
+}
+
+export interface PricingList {
+  _id?: string;
+  title: string;
+  clientName: string;
+  clientEmail: string;
+  currency: string; // e.g., 'USD', 'KES', 'EUR'
+  items: PricingItem[];
+  subtotal: number;
+  tax: number;
+  totalAmount: number;
+  status: 'draft' | 'sent' | 'viewed' | 'accepted' | 'paid';
+  createdAt: string;
+  updatedAt: string;
+}
 // --- UI COMPONENT TYPES ---
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "default" | "outline";
