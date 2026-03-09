@@ -1,8 +1,8 @@
 "use client"; 
 
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { Download } from "lucide-react"; 
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Download, X, FileText, Lock } from "lucide-react"; 
 import Button from "@/components/ui/button";
 import Timeline from "@/components/Timeline";
 import { TimelineSection } from "@/types";
@@ -21,6 +21,15 @@ export default function ResumePage() {
   const [educationData, setEducationData] = useState<TimelineSection[]>([]);
   const [skills, setSkills] = useState<string[]>([]);
   const [loadingResume, setLoadingResume] = useState(true);
+  
+  // Secure dynamic references state
+  const [references, setReferences] = useState<{name: string, title: string, email?: string, phone?: string}[]>([]);
+
+  // New states for popup and modal
+  const [isVerifyModalOpen, setIsVerifyModalOpen] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [hasDismissedToast, setHasDismissedToast] = useState(false);
+  const scrollTriggerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchResume = async () => {
@@ -41,24 +50,38 @@ export default function ResumePage() {
     fetchResume();
   }, []);
 
-  // Handlers for CV Download and Tracking
+  // Trigger the toast when scrolling down to the skills section
+  useEffect(() => {
+    if (loadingResume) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasDismissedToast) {
+          setShowToast(true);
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (scrollTriggerRef.current) {
+      observer.observe(scrollTriggerRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [loadingResume, hasDismissedToast]);
+
   const trackDownload = () => {
     if (!unlocked) {
-      // If not verified, scroll to the verification section
-      const refSection = document.getElementById("references");
-      refSection?.scrollIntoView({ behavior: "smooth" });
-      setUnlockError("Please verify your email to unlock the download.");
+      setIsVerifyModalOpen(true);
       return;
     }
 
-    // Log the download event in your custom analytics
     fetch('/api/analytics', {
       method: 'POST',
       body: JSON.stringify({ target: 'resume-pdf', type: 'download' }),
       headers: { 'Content-Type': 'application/json' }
     });
     
-    // Open your Cloudinary PDF link in a new tab
     window.open('https://res.cloudinary.com/dsvexizbx/image/upload/v1772809322/Brian_Maina_CV_iwphxv.pdf', '_blank');
   };
 
@@ -91,9 +114,13 @@ export default function ResumePage() {
         body: JSON.stringify({ code }),
       });
       const data = await response.json();
+      
       if (response.ok && data.success) {
         setUnlocked(true);
         setUnlockError("");
+        setReferences(data.references || []); 
+        setIsVerifyModalOpen(false); 
+        setShowToast(true); 
       } else {
         setUnlockError(data.message || "Incorrect code.");
       }
@@ -105,165 +132,255 @@ export default function ResumePage() {
   };
 
   return (
-    <main className="relative bg-gray-50 text-gray-900 min-h-screen overflow-x-hidden pt-24">
-      {loadingResume ? (
-        <div className="flex flex-col items-center justify-center py-32">
-          <div className="w-10 h-10 border-4 border-teal-600 border-t-transparent rounded-full animate-spin mb-4"></div>
-          <p className="text-gray-500 font-medium animate-pulse">Loading Curriculum Vitae...</p>
-        </div>
-      ) : (
-        <section id="cv" className="relative max-w-5xl mx-auto py-10 px-6">
-          <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
-            <motion.h1 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="text-4xl font-bold">
-              Curriculum Vitae
-            </motion.h1>
-            
-            <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
-              <Button 
-                onClick={trackDownload} 
-                className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-xl shadow-lg transition-all"
+    <>
+      <AnimatePresence>
+        {isVerifyModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className="relative w-full max-w-lg bg-white rounded-[2rem] shadow-2xl overflow-hidden p-8"
+            >
+              <button
+                onClick={() => setIsVerifyModalOpen(false)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-800 bg-gray-100 hover:bg-gray-200 p-2 rounded-full transition-colors z-10"
               >
-                <Download size={18} />
-                {unlocked ? "Download CV" : "Verify Email to Download"}
-              </Button>
+                <X size={20} />
+              </button>
+              
+              <div className="text-center mb-6">
+                <div className="w-12 h-12 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FileText size={24} />
+                </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-2">Unlock CV & References</h3>
+                <p className="text-gray-600">Verify your email address to access reference contacts and unlock the PDF download.</p>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <input 
+                    type="email" 
+                    value={email} 
+                    onChange={(e) => setEmail(e.target.value)} 
+                    placeholder="Email address" 
+                    className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-teal-500" 
+                    disabled={requestState === 'loading'} 
+                  />
+                  <Button onClick={handleRequestCode} disabled={requestState === 'loading' || !email}>
+                    {requestState === 'loading' ? 'Sending...' : 'Request Code'}
+                  </Button>
+                </div>
+                {requestMessage && <p className={`text-sm text-center font-medium ${requestState === 'error' ? 'text-red-500' : 'text-green-600'}`}>{requestMessage}</p>}
+                
+                {requestState === 'success' && (
+                  <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex flex-col sm:flex-row gap-4 pt-6 border-t mt-6">
+                    <input 
+                      type="text" 
+                      value={code} 
+                      onChange={(e) => setCode(e.target.value)} 
+                      placeholder="6-digit code" 
+                      className="border border-gray-300 rounded-full p-3 w-full focus:outline-none focus:ring-2 focus:ring-teal-500" 
+                      onKeyDown={(e) => e.key === 'Enter' && handleUnlock()}
+                    />
+                    <Button onClick={handleUnlock} disabled={unlockLoading || !code}>
+                      {unlockLoading ? 'Verifying...' : 'Verify & Unlock'}
+                    </Button>
+                  </motion.div>
+                )}
+                {unlockError && <p className="text-red-500 text-sm text-center font-medium">{unlockError}</p>}
+              </div>
             </motion.div>
           </div>
-          
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ delay: 0.2, duration: 0.5 }} 
-            className="mb-10"
-          >
-            <h3 className="text-2xl font-semibold mb-4">Professional Summary</h3>
-            <p className="mb-4 text-gray-700">
-              Results-oriented Visual Designer and AFRIKA KOMMT! alumni with experience creating compelling visual solutions for global brands like SAP. Skilled in designing UI components, multimedia assets, long-form document layout, editorial design and marketing collateral for diverse campaigns. Complemented by a foundational year of Computer Science study at DHBW Mosbach, which enhances the creation of practical, buildable designs and collaboration with development teams.
-            </p>
-            <ul className="space-y-2 text-gray-700">
-              <li>Address: Kikuyu, Kenya</li>
-              <li>Email: brianmaina.nyawira@gmail.com</li>
-              <li>
-                LinkedIn: <a href="https://www.linkedin.com/in/brian-maina-nyawira" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">linkedin.com/in/brian-maina-nyawira</a>
-              </li>
-              <li>Primary Phone: +254 728 036 420</li>
-              <li>Secondary Phone: +49 15172371222</li>
-              <li>Nationality: Kenyan</li>
-            </ul>
-          </motion.div>
+        )}
+      </AnimatePresence>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ delay: 0.4, duration: 0.5 }} 
-            className="grid md:grid-cols-2 gap-10"
+      <AnimatePresence>
+        {showToast && !isVerifyModalOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: 50, x: 50 }}
+            animate={{ opacity: 1, y: 0, x: 0 }}
+            exit={{ opacity: 0, y: 50, x: 50 }}
+            className="fixed bottom-6 right-6 z-40 bg-white border border-gray-100 shadow-2xl rounded-2xl p-5 max-w-[320px] flex gap-4 items-start"
           >
-            <div>
-              <h3 className="text-2xl font-semibold mb-4">Experience</h3>
-              <Timeline sections={experienceData} />
+            <div className="w-10 h-10 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center shrink-0">
+              <FileText size={20} />
             </div>
-            <div>
-              <h3 className="text-2xl font-semibold mb-4">Education</h3>
-              <Timeline sections={educationData} />
+            <div className="flex-1 pr-4">
+              {unlocked ? (
+                <>
+                  <h4 className="font-bold text-gray-900 mb-1 text-sm">Verification Complete</h4>
+                  <p className="text-xs text-gray-500 mb-3">You can now download the CV PDF.</p>
+                  <button
+                    onClick={trackDownload}
+                    className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors w-full shadow-md shadow-teal-100 flex items-center justify-center gap-2"
+                  >
+                    <Download size={14} /> Download PDF
+                  </button>
+                </>
+              ) : (
+                <>
+                  <h4 className="font-bold text-gray-900 mb-1 text-sm">Want a copy?</h4>
+                  <p className="text-xs text-gray-500 mb-3">Verify your email to download my CV and view references.</p>
+                  <button
+                    onClick={() => {
+                      setShowToast(false);
+                      setIsVerifyModalOpen(true);
+                    }}
+                    className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors w-full shadow-md shadow-teal-100"
+                  >
+                    Verify Email
+                  </button>
+                </>
+              )}
             </div>
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }} 
-            animate={{ opacity: 1, y: 0 }} 
-            transition={{ delay: 0.6, duration: 0.5 }} 
-            className="mt-10"
-          >
-            <h3 className="text-2xl font-semibold mb-4">Skills and Technologies</h3>
-            <ul className="flex flex-wrap gap-3">
-              {skills.map((skill) => (
-                skill === "AI" ? (
-                  <li key={skill} className="relative group px-4 py-2 bg-teal-100 text-teal-800 rounded-full text-sm cursor-pointer font-semibold">
-                    AI
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 p-3 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                      My take on AI is that it is a powerful tool to enhance creativity and productivity, but it cannot replace the human touch in design. I use AI tools to generate ideas and automate tasks, but always ensure my designs are original and aligned with the client&apos;s goals.
-                      <svg className="absolute text-gray-800 h-2 w-full left-0 top-full" x="0px" y="0px" viewBox="0 0 255 255">
-                          <polygon className="fill-current" points="0,0 127.5,127.5 255,0"/>
-                      </svg>
-                    </div>
-                  </li>
-                ) : (
-                  <li key={skill} className="px-4 py-2 bg-gray-200 rounded-full text-sm">{skill}</li>
-                )
-              ))}
-            </ul>
-          </motion.div>
-        </section>
-      )}
-
-      {/* References Section Gatekeeper */}
-      <motion.section id="references" className="relative max-w-5xl mx-auto py-20 px-6">
-        <h2 className="text-3xl font-semibold mb-8">References & Downloads</h2>
-        {!unlocked ? (
-          <div className="space-y-4 mb-8 max-w-lg">
-            <p className="text-gray-600">Please verify your email to access reference contacts and the PDF download.</p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <input 
-                type="email" 
-                value={email} 
-                onChange={(e) => setEmail(e.target.value)} 
-                placeholder="Email address" 
-                className="border border-gray-300 rounded-full p-3 w-full" 
-                disabled={requestState === 'loading'} 
-              />
-              <Button onClick={handleRequestCode} disabled={requestState === 'loading' || !email}>
-                {requestState === 'loading' ? 'Sending...' : 'Request Code'}
-              </Button>
-            </div>
-            {requestMessage && <p className={`text-sm ${requestState === 'error' ? 'text-red-500' : 'text-green-600'}`}>{requestMessage}</p>}
-            
-            {requestState === 'success' && (
-              <div className="flex flex-col sm:flex-row gap-4 pt-6 border-t mt-6">
-                <input 
-                  type="text" 
-                  value={code} 
-                  onChange={(e) => setCode(e.target.value)} 
-                  placeholder="6-digit code" 
-                  className="border border-gray-300 rounded-full p-3 w-full" 
-                  onKeyDown={(e) => e.key === 'Enter' && handleUnlock()}
-                />
-                <Button onClick={handleUnlock} disabled={unlockLoading || !code}>
-                  {unlockLoading ? 'Verifying...' : 'Verify'}
-                </Button>
-              </div>
-            )}
-            {unlockError && <p className="text-red-500 text-sm">{unlockError}</p>}
-          </div>
-        ) : (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-            <p className="text-green-600 mb-6 font-medium">Verification successful! Reference details are now visible and your download is unlocked.</p>
-            <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <li><h4 className="font-medium">Oliver Gutzeit - Manager at SAP SE</h4><p className="text-sm text-gray-600">Email: oliver.gutzeit@sap.com | Phone: +49 622 774 2260</p></li>
-              <li><h4 className="font-medium">Ilka Wiskemann - Global HR Business Partner SAP SE</h4><p className="text-sm text-gray-600">Email: ilka.wiskemann@sap.com | Phone: +49 622 776 2638</p></li>
-              <li><h4 className="font-medium">Milena Schmidt - Corporate Learning Senior Specialist SAP SE</h4><p className="text-sm text-gray-600">Email: milena.schmidt@sap.com | Phone: +49 622 776 2119</p></li>
-              <li><h4 className="font-medium">Britta Lehn - Manager at SAP SE</h4><p className="text-sm text-gray-600">Email: britta.lehn@sap.com | Phone: +49 622 775 4546</p></li>
-              <li><h4 className="font-medium">Carola Ritzenhoff - Marketing and alumni network at AFRIKA KOMMT!</h4><p className="text-sm text-gray-600">Email: carola.ritzenhoff@giz.de | Phone: +49 228 4460 1513 </p></li>
-              <li><h4 className="font-medium">Kim Champion - UI/UX Designer at SAP SE</h4><p className="text-sm text-gray-600">Email: kimchampion.work@gmail.com | Phone: +1 925 413 3896</p></li>
-              <li><h4 className="font-medium">Maria Belov - UI/UX Designer at SAP SE</h4><p className="text-sm text-gray-600">Email: maria.belov@sap.com | Phone: +49 622 776 7055</p></li>
-              <li><h4 className="font-medium">Anja Rosker - SAP Community Advocate</h4><p className="text-sm text-gray-600">Email: anja.rosker@sap.com | Phone: +49 622 777 1743</p></li>
-              <li><h4 className="font-medium">Muhammed Maral - Software Engineer at FairUp</h4><p className="text-sm text-gray-600">Email: mami.maral@icloud.com</p></li>
-              <li><h4 className="font-medium">Irshad Muttar - Head of Operations & IT Letshego Kenya </h4><p className="text-sm text-gray-600">Email: Irshadm@letshego.com | Phone: +254 795 359 049</p></li>
-              <li><h4 className="font-medium">Madam Patricia E. Cheramboss - Corporate Affairs & Protocal Officer Moi University</h4><p className="text-sm text-gray-600">Email: pcheramboss@mu.ac.ke | Phone: +254 720 836 060</p></li>
-              <li><h4 className="font-medium">Arnold Muthama - Manager at Aspira</h4><p className="text-sm text-gray-600">Email: arnoldmutisya@gmail.com | Phone: +254 726 176 272</p></li>
-            </ul>
+            <button
+              onClick={() => {
+                setShowToast(false);
+                setHasDismissedToast(true);
+              }}
+              className="text-gray-400 hover:text-gray-700 absolute top-3 right-3 p-1 rounded-full hover:bg-gray-100 transition-colors"
+            >
+              <X size={14} />
+            </button>
           </motion.div>
         )}
-      </motion.section>
+      </AnimatePresence>
 
-      <footer className="relative bg-gray-900 text-white py-20 px-6 text-center">
-        <h2 className="text-3xl font-semibold mb-6">Get In Touch</h2>
-        <p className="mb-6">Feel free to reach out for collaborations or opportunities.</p>
-        <div className="flex justify-center space-x-6 mb-6">
-          <a href="https://www.linkedin.com/in/brian-maina-nyawira" target="_blank" rel="noopener noreferrer" className="hover:text-[#0077B5] transition-transform transform hover:scale-110" aria-label="LinkedIn"><SiLinkedin size={20} /></a>
-          <a href="https://github.com/Obrienmaina-Mosbach" target="_blank" rel="noopener noreferrer" className="hover:text-[#C06EFF] transition-transform transform hover:scale-110" aria-label="GitHub"><SiGithub size={20} /></a>
-          <a href="https://www.behance.net/brianmaina3" target="_blank" rel="noopener noreferrer" className="hover:text-[#1769FF] transition-transform transform hover:scale-110" aria-label="Behance"><SiBehance size={20} /></a>
-        </div>
-        <Button className="bg-teal-500 hover:bg-teal-600 text-lg px-6 py-3 rounded-2xl" onClick={() => (window.location.href = "mailto:request@brianmaina.de")}>Contact Me</Button>
-      </footer>
-    </main>
+      <main className="relative bg-gray-50 text-gray-900 min-h-screen overflow-x-hidden pt-24">
+        {loadingResume ? (
+          <div className="flex flex-col items-center justify-center py-32">
+            <div className="w-10 h-10 border-4 border-teal-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+            <p className="text-gray-500 font-medium animate-pulse">Loading Curriculum Vitae...</p>
+          </div>
+        ) : (
+          <section id="cv" className="relative max-w-5xl mx-auto py-10 px-6">
+            <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
+              <motion.h1 initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="text-4xl font-bold">
+                Curriculum Vitae
+              </motion.h1>
+              
+              <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
+                <Button 
+                  onClick={trackDownload} 
+                  className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-xl shadow-lg transition-all"
+                >
+                  <Download size={18} />
+                  {unlocked ? "Download CV" : "Verify Email to Download"}
+                </Button>
+              </motion.div>
+            </div>
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              transition={{ delay: 0.2, duration: 0.5 }} 
+              className="mb-10"
+            >
+              <h3 className="text-2xl font-semibold mb-4">Professional Summary</h3>
+              <p className="mb-4 text-gray-700">
+                Results-oriented Visual Designer and AFRIKA KOMMT! alumni with experience creating compelling visual solutions for global brands like SAP. Skilled in designing UI components, multimedia assets, long-form document layout, editorial design and marketing collateral for diverse campaigns. Complemented by a foundational year of Computer Science study at DHBW Mosbach, which enhances the creation of practical, buildable designs and collaboration with development teams.
+              </p>
+              <ul className="space-y-2 text-gray-700">
+                <li>Address: Kikuyu, Kenya</li>
+                <li>Email: brianmaina.nyawira@gmail.com</li>
+                <li>
+                  LinkedIn: <a href="https://www.linkedin.com/in/brian-maina-nyawira" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">linkedin.com/in/brian-maina-nyawira</a>
+                </li>
+                <li>Primary Phone: +254 728 036 420</li>
+                <li>Secondary Phone: +49 15172371222</li>
+                <li>Nationality: Kenyan</li>
+              </ul>
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              transition={{ delay: 0.4, duration: 0.5 }} 
+              className="grid md:grid-cols-2 gap-10"
+            >
+              <div>
+                <h3 className="text-2xl font-semibold mb-4">Experience</h3>
+                <Timeline sections={experienceData} />
+              </div>
+              <div>
+                <h3 className="text-2xl font-semibold mb-4">Education</h3>
+                <Timeline sections={educationData} />
+              </div>
+            </motion.div>
+
+            <motion.div 
+              ref={scrollTriggerRef}
+              initial={{ opacity: 0, y: 20 }} 
+              animate={{ opacity: 1, y: 0 }} 
+              transition={{ delay: 0.6, duration: 0.5 }} 
+              className="mt-10"
+            >
+              <h3 className="text-2xl font-semibold mb-4">Skills and Technologies</h3>
+              <ul className="flex flex-wrap gap-3">
+                {skills.map((skill) => (
+                  skill === "AI" ? (
+                    <li key={skill} className="relative group px-4 py-2 bg-teal-100 text-teal-800 rounded-full text-sm cursor-pointer font-semibold">
+                      AI
+                      <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 p-3 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
+                        My take on AI is that it is a powerful tool to enhance creativity and productivity, but it cannot replace the human touch in design. I use AI tools to generate ideas and automate tasks, but always ensure my designs are original and aligned with the client&apos;s goals.
+                        <svg className="absolute text-gray-800 h-2 w-full left-0 top-full" x="0px" y="0px" viewBox="0 0 255 255">
+                            <polygon className="fill-current" points="0,0 127.5,127.5 255,0"/>
+                        </svg>
+                      </div>
+                    </li>
+                  ) : (
+                    <li key={skill} className="px-4 py-2 bg-gray-200 rounded-full text-sm">{skill}</li>
+                  )
+                ))}
+              </ul>
+            </motion.div>
+          </section>
+        )}
+
+        <motion.section id="references" className="relative max-w-5xl mx-auto py-20 px-6">
+          <h2 className="text-3xl font-semibold mb-8">References & Downloads</h2>
+          {!unlocked ? (
+            <div className="flex flex-col items-center text-center max-w-2xl mx-auto py-12">
+               <div className="w-16 h-16 bg-gray-200/50 text-gray-400 rounded-full flex items-center justify-center mb-6">
+                  <Lock size={32} />
+               </div>
+               <h3 className="text-2xl font-bold text-gray-900 mb-3">References are locked</h3>
+               <p className="text-gray-600 mb-8 text-lg">Please verify your email address to access reference contacts and unlock the PDF download.</p>
+               <Button onClick={() => setIsVerifyModalOpen(true)} className="bg-teal-600 hover:bg-teal-700 text-white px-8 py-3 rounded-xl shadow-md transition-all">
+                 Verify Email to Unlock
+               </Button>
+            </div>
+          ) : (
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+              <p className="text-green-600 mb-6 font-medium">Verification successful! Reference details are now visible and your download is unlocked.</p>
+              <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {references.map((ref, index) => (
+                  <li key={index} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
+                    <h4 className="font-bold text-gray-900 text-lg mb-1">{ref.name}</h4>
+                    <p className="text-sm font-medium text-teal-600 mb-3">{ref.title}</p>
+                    <div className="text-sm text-gray-600 space-y-1">
+                      {ref.email && <p><span className="font-medium text-gray-500">Email:</span> {ref.email}</p>}
+                      {ref.phone && <p><span className="font-medium text-gray-500">Phone:</span> {ref.phone}</p>}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+        </motion.section>
+
+        <footer className="relative bg-gray-900 text-white py-20 px-6 text-center">
+          <h2 className="text-3xl font-semibold mb-6">Get In Touch</h2>
+          <p className="mb-6">Feel free to reach out for collaborations or opportunities.</p>
+          <div className="flex justify-center space-x-6 mb-6">
+            <a href="https://www.linkedin.com/in/brian-maina-nyawira" target="_blank" rel="noopener noreferrer" className="hover:text-[#0077B5] transition-transform transform hover:scale-110" aria-label="LinkedIn"><SiLinkedin size={20} /></a>
+            <a href="https://github.com/Obrienmaina-Mosbach" target="_blank" rel="noopener noreferrer" className="hover:text-[#C06EFF] transition-transform transform hover:scale-110" aria-label="GitHub"><SiGithub size={20} /></a>
+            <a href="https://www.behance.net/brianmaina3" target="_blank" rel="noopener noreferrer" className="hover:text-[#1769FF] transition-transform transform hover:scale-110" aria-label="Behance"><SiBehance size={20} /></a>
+          </div>
+          <Button className="bg-teal-500 hover:bg-teal-600 text-lg px-6 py-3 rounded-2xl" onClick={() => (window.location.href = "mailto:request@brianmaina.de")}>Contact Me</Button>
+        </footer>
+      </main>
+    </>
   );
 }

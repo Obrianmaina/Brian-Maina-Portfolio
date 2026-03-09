@@ -33,7 +33,16 @@ export async function POST(request: Request) {
       { $set: { used_at: new Date() } }
     );
     
-    return Response.json({ success: true, message: 'Access granted' }, { status: 200 });
+    // Parse the references from the secure environment variable
+    const referencesData = process.env.SECRET_REFERENCES 
+      ? JSON.parse(process.env.SECRET_REFERENCES) 
+      : [];
+
+    return Response.json({ 
+      success: true, 
+      message: 'Access granted',
+      references: referencesData
+    }, { status: 200 });
 
   } catch (error) {
     console.error('Error verifying code:', error);
