@@ -353,7 +353,7 @@ export default function ResumePage() {
             </div>
           ) : (
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-              <p className="text-green-600 mb-6 font-medium">Verification successful! Reference details are now visible and your download is unlocked.</p>
+              <p className=" text-gray-900 mb-6 font-medium">Verification successful! Reference details are now visible and your download is unlocked.</p>
               <ul className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {references.map((ref, index) => (
                   <li key={index} className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm">
