@@ -183,10 +183,10 @@ export default function ReportsTab({
                                 {[
                                     { label: 'Total Income (Collected)', value: monthlyStats.collected, color: 'text-emerald-600', bg: '' },
                                     { label: 'Total Expenses', value: monthlyStats.expenses, color: 'text-rose-600', bg: 'border-t border-gray-200' },
-                                    { label: 'Net Monthly Result', value: monthlyStats.collected - monthlyStats.expenses, color: (monthlyStats.collected - monthlyStats.expenses) >= 0 ? 'text-blue-600' : 'text-rose-600', bg: 'border-t border-gray-200 bg-gray-100', bold: true },
+                                    { label: 'Net Monthly Result', value: monthlyStats.collected - monthlyStats.expenses, color: (monthlyStats.collected - monthlyStats.expenses) >= 0 ? 'text-blue-600' : 'text-rose-600', bg: 'border-t border-gray-200 bg-gray-100', bold: false },
                                     { label: 'Est. Tax Obligation', value: monthlyStats.estimatedTax, color: 'text-indigo-700', bg: 'border-t border-gray-200 bg-indigo-50' },
                                     { label: '10% Tithe Allocation', value: monthlyStats.tithe, color: 'text-purple-700', bg: 'border-t border-gray-200 bg-purple-50' },
-                                    { label: 'Free to Spend', value: monthlyStats.freeToSpend, color: 'text-emerald-700', bg: 'border-t border-gray-200 bg-emerald-100', bold: true, large: true },
+                                    { label: 'Free to Spend', value: monthlyStats.freeToSpend, color: 'text-emerald-700', bg: 'border-t border-gray-200 bg-emerald-100', bold: false, large: true },
                                 ].map(({ label, value, color, bg, bold, large }) => (
                                     <tr key={label} className={bg}>
                                         <td colSpan={4} className={`px-4 py-3 text-right uppercase text-xs tracking-wider ${bold ? 'font-black text-gray-900' : 'font-bold text-gray-700'}`}>{label}</td>
