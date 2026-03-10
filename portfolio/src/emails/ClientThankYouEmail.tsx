@@ -53,7 +53,7 @@ export default function ClientThankYouEmail({
             </Text>
             
             <Section style={buttonContainer}>
-              <Link href="https://brianmaina.com/portfolio" style={button}>
+              <Link href="https://brianmaina.de/portfolio" style={button}>
                 Explore My Recent Work
               </Link>
             </Section>
@@ -63,10 +63,10 @@ export default function ClientThankYouEmail({
           
           <Section style={footer}>
             <Text style={footerText}>
-              You are receiving this email because you submitted a quote request at brianmaina.com.
+              You are receiving this email because you submitted a quote request at brianmaina.de.
             </Text>
             <Text style={footerText}>
-              <Link href="https://brianmaina.com" style={footerLink}>Website</Link> | <Link href="https://www.linkedin.com/in/brian-maina-nyawira" style={footerLink}>LinkedIn</Link> | <Link href="https://www.behance.net/brianmaina3" style={footerLink}>Behance</Link>
+              <Link href="https://brianmaina.de" style={footerLink}>Website</Link> | <Link href="https://www.linkedin.com/in/brian-maina-nyawira" style={footerLink}>LinkedIn</Link> | <Link href="https://www.behance.net/brianmaina3" style={footerLink}>Behance</Link>
             </Text>
           </Section>
         </Container>
