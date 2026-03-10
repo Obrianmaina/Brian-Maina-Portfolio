@@ -3,6 +3,13 @@ import clientPromise from "@/lib/mongodb";
 import { cookies } from "next/headers";
 import { ObjectId } from "mongodb";
 
+interface QuoteUpdateData {
+  updatedAt: Date;
+  status?: string;
+  notes?: string;
+  lastContactedDate?: string;
+}
+
 // GET all quotes
 export async function GET() {
   try {
@@ -21,19 +28,24 @@ export async function GET() {
   }
 }
 
-// PATCH to update quote status
+// PATCH to update quote status, notes, and last contacted date
 export async function PATCH(req: Request) {
   try {
     const cookieStore = await cookies();
     if (!cookieStore.get("admin_session")) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const { id, status } = await req.json();
+    const { id, status, notes, lastContactedDate } = await req.json();
     const client = await clientPromise;
     const db = client.db("portfolio");
 
+    const updateData: QuoteUpdateData = { updatedAt: new Date() };
+    if (status) updateData.status = status;
+    if (notes !== undefined) updateData.notes = notes;
+    if (lastContactedDate) updateData.lastContactedDate = lastContactedDate;
+
     await db.collection("quotes").updateOne(
       { _id: new ObjectId(id) },
-      { $set: { status: status, updatedAt: new Date() } }
+      { $set: updateData }
     );
     
     return NextResponse.json({ success: true }, { status: 200 });

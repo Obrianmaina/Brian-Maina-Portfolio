@@ -134,6 +134,20 @@ export interface CatalogBundle {
 }
 
 
+// Add this below your existing types in src/types/index.ts
+export interface Quote {
+  _id: string;
+  name: string;
+  email: string;
+  service: string;
+  budget: string;
+  message: string;
+  status: 'New' | 'Contacted' | 'In Progress' | 'Closed Won' | 'Closed Lost';
+  notes?: string;
+  lastContactedDate?: string;
+  createdAt: string;
+}
+
 // --- UI COMPONENT TYPES ---
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "default" | "outline";
