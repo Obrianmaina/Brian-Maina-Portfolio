@@ -1,36 +1,37 @@
 import { Html, Head, Body, Container, Text, Link, Section, Preview } from '@react-email/components';
 import * as React from 'react';
 
-// Making these optional (?) means this single template can be used 
-// by different parts of your app without throwing TypeScript errors.
 interface VerificationEmailProps {
   userEmail?: string;
   nickname?: string;
   token?: string; 
   verifyLink?: string;
+  service?: string; // Added service prop
 }
 
-export default function VerificationEmail({ userEmail, nickname = "there", token, verifyLink }: VerificationEmailProps) {
+export default function VerificationEmail({ userEmail, nickname = "there", token, verifyLink, service }: VerificationEmailProps) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://brianmaina.de";
   
-  // Intelligently decide which link to use based on what the API passed
   const finalLink = verifyLink ? verifyLink : `${baseUrl}/verify?token=${token}`;
 
   return (
     <Html>
       <Head />
-      <Preview>Please verify your email address</Preview>
+      <Preview>Please verify your email address to confirm your request</Preview>
       <Body style={main}>
         <Container style={container}>
           <Section style={contentSection}>
             <Text style={greeting}>Hi {nickname},</Text>
             
             <Text style={text}>
-              Thanks for reaching out! I have received your details. 
+              {/* Dynamic thank you text based on whether a service was provided */}
+              {service 
+                ? `Thanks for requesting a quote for ${service}! I have received your details and will review them shortly.` 
+                : "Thanks for reaching out! I have received your details."}
             </Text>
             
             <Text style={text}>
-              To ensure your email is valid and to confirm your request, please click the button below:
+              Since you also opted into my newsletter, I just need a quick confirmation. To ensure your email is valid and to confirm your request, please click the button below:
             </Text>
 
             <Section style={buttonContainer}>

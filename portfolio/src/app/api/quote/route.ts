@@ -26,12 +26,12 @@ export async function POST(req: Request) {
       email: email,
       service: service,
       message: details || "None provided",
-      budget: "TBD", // Adding a default since it's expected in your table
+      budget: "TBD", 
       status: 'New',
       createdAt: new Date()
     });
 
-    // 2. HANDLE NEWSLETTER SUBSCRIPTION (If checked)
+    // 2. HANDLE NEWSLETTER SUBSCRIPTION
     if (newsletter) {
       await db.collection("subscribers").updateOne(
         { email: email },
@@ -52,39 +52,54 @@ export async function POST(req: Request) {
       );
     }
 
-    // 3. SEND ADMIN NOTIFICATION EMAIL
-    await resend.emails.send({
-      from: "Portfolio Form <noreply@brianmaina.de>", 
-      to: "request@brianmaina.de",
-      subject: `New Freelance Inquiry: ${service}`,
-      // Replace the 'text' property with the 'react' property
-      react: AdminQuoteNotificationEmail({ 
-        nickname: nickname, 
-        email: email, 
-        service: service, 
-        details: details || "" 
-      }),
-    });
+    // 3. COMPILE ALL EMAILS INTO AN ARRAY
+    const emailsToSend = [
+      {
+        from: "Portfolio Form <noreply@brianmaina.de>", 
+        to: "request@brianmaina.de",
+        subject: `New Freelance Inquiry: ${service}`,
+        react: AdminQuoteNotificationEmail({ 
+          nickname: nickname, 
+          email: email, 
+          service: service, 
+          details: details || "" 
+        }),
+      }
+    ];
 
-    // 3.5 SEND CLIENT AUTO-RESPONDER EMAIL
-    await resend.emails.send({
-      from: "Brian Maina <hello@brianmaina.de>", // Use your actual sending domain
-      to: email,
-      subject: "Thanks for reaching out!",
-      react: ClientThankYouEmail({ 
-        nickname: nickname, 
-        service: service 
-      }),
-    });
-
-    // 4. SEND VERIFICATION EMAIL (If newsletter checked)
+    // 4. CONDITIONALLY ADD THE CORRECT CLIENT EMAIL
     if (newsletter) {
-      await resend.emails.send({
+      // User opted in: Send the combined Thank You + Verification email
+      emailsToSend.push({
         from: "Brian Maina <hello@brianmaina.de>",
         to: email,
-        subject: "Action Required: Verify your email",
-        react: VerificationEmail({ userEmail: email, nickname: nickname, token: verificationToken }), 
+        subject: "Thanks for reaching out! (Action Required)",
+        react: VerificationEmail({ 
+          userEmail: email, 
+          nickname: nickname, 
+          token: verificationToken,
+          service: service // Passing the service name to the template
+        }), 
       });
+    } else {
+      // User did not opt in: Send the standard Thank You email
+      emailsToSend.push({
+        from: "Brian Maina <hello@brianmaina.de>", 
+        to: email,
+        subject: "Thanks for reaching out!",
+        react: ClientThankYouEmail({ 
+          nickname: nickname, 
+          service: service 
+        }),
+      });
+    }
+
+    // 5. SEND EMAILS IN ONE BATCH REQUEST
+    const { error } = await resend.batch.send(emailsToSend);
+
+    if (error) {
+      console.error("Resend Batch Error:", error);
+      return NextResponse.json({ error: "Failed to deliver emails" }, { status: 500 });
     }
 
     return NextResponse.json({ success: true }, { status: 200 });
