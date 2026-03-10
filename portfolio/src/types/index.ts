@@ -110,6 +110,30 @@ export interface PricingList {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface CatalogPrices {
+  KES: number;
+  USD: number;
+  EUR: number;
+  GBP: number;
+}
+
+export interface CatalogService {
+  _id?: string;
+  name: string;
+  category: string;
+  prices: CatalogPrices;
+}
+
+export interface CatalogBundle {
+  _id?: string;
+  name: string;
+  description: string;
+  includedServices: string[];
+  prices: CatalogPrices;
+}
+
+
 // --- UI COMPONENT TYPES ---
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "default" | "outline";
