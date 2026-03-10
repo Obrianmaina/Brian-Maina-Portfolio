@@ -43,7 +43,10 @@ export default function QuotesPage() {
       const res = await fetch("/api/admin/quotes", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id, ...updates }),
+        body: JSON.stringify(
+          { id, ...updates },
+          (_key, value) => (value === undefined ? null : value)
+        ),
       });
       if (res.ok) {
         setQuotes((prev) => prev.map((q) => (q._id === id ? { ...q, ...updates } : q)));

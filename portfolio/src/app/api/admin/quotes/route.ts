@@ -14,13 +14,18 @@ interface QuoteUpdateData {
 export async function GET() {
   try {
     const cookieStore = await cookies();
-    if (!cookieStore.get("admin_session")) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!cookieStore.get("admin_session"))
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const client = await clientPromise;
     const db = client.db("portfolio");
-    
-    const quotes = await db.collection("quotes").find({}).sort({ createdAt: -1 }).toArray();
-    
+
+    const quotes = await db
+      .collection("quotes")
+      .find({})
+      .sort({ createdAt: -1 })
+      .toArray();
+
     return NextResponse.json(quotes, { status: 200 });
   } catch (error) {
     console.error("Fetch Quotes Error:", error);
@@ -32,22 +37,24 @@ export async function GET() {
 export async function PATCH(req: Request) {
   try {
     const cookieStore = await cookies();
-    if (!cookieStore.get("admin_session")) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!cookieStore.get("admin_session"))
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const { id, status, notes, lastContactedDate } = await req.json();
     const client = await clientPromise;
     const db = client.db("portfolio");
 
     const updateData: QuoteUpdateData = { updatedAt: new Date() };
-    if (status) updateData.status = status;
-    if (notes !== undefined) updateData.notes = notes;
-    if (lastContactedDate) updateData.lastContactedDate = lastContactedDate;
+
+    if (status != null) updateData.status = status;
+    if (notes != null) updateData.notes = notes;       // handles "", "some text", but not null/undefined
+    if (lastContactedDate != null) updateData.lastContactedDate = lastContactedDate;
 
     await db.collection("quotes").updateOne(
       { _id: new ObjectId(id) },
       { $set: updateData }
     );
-    
+
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
     console.error("Update Quote Error:", error);
