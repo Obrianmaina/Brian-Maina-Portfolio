@@ -24,7 +24,9 @@ export default function HomePage() {
   }, [actions.length]);
 
   return (
-    <main className="relative text-gray-900 min-h-screen overflow-x-hidden pt-16 bg-gradient-to-br from-gray-50 via-teal-50 to-purple-100 animate-gradient">
+    // Removed: bg-gradient-to-br from-gray-50 via-teal-50 to-purple-100 animate-gradient
+    // You can add a solid background class here like bg-white or bg-gray-50 if needed
+    <main className="relative text-gray-900 min-h-screen overflow-x-hidden pt-16">
       <section className="relative flex flex-col items-center justify-center min-h-[calc(100vh-64px)] text-center px-6">
         <motion.h1 
           initial={{ opacity: 0, y: -50 }} 
