@@ -123,13 +123,37 @@ export default function GetQuoteModal({ onClose }: { onClose: () => void }) {
                   />
                   <datalist id="design-services">
                     <option value="Logo Design" />
-                    <option value="Poster Design" />
-                    <option value="Publication Design" />
+                    <option value="Full Brand Identity System" />
+                    <option value="Landing Page Design" />
+                    <option value="Website UI Design" />
+                    <option value="Web App UI Design" />
+                    <option value="SaaS Dashboard UI" />
+                    <option value="Mobile App UI Design" />
+                    <option value="UI/UX Consultation" />
+                    <option value="Social Media Post Design" />
+                    <option value="Banner Design" />
+                    <option value="Ad Design" />
+                    <option value="Billboard Design" />
                     <option value="Print Banner" />
                     <option value="Web Banner" />
-                    <option value="Landing Page UI" />
-                    <option value="UI/UX Consultation" />
-                    <option value="Email Template Design" />
+                    <option value="Pitch Deck Design" />
+                    <option value="Presentation Design" />
+                    <option value="Brochure Design" />
+                    <option value="Company Profile Design" />
+                    <option value="Publication Design" />
+                    <option value="Poster Design" />
+                    <option value="Flyer Design" />
+                    <option value="Church or NGO Poster Design" />
+                    <option value="Church or NGO Flyer Design" />
+                    <option value="Short Video Editing" />
+                    <option value="Motion Graphics" />
+                    <option value="Explainer Video" />
+                    <option value="Business Card Design" />
+                    <option value="Letterhead" />
+                    <option value="Email Signature" />
+                    <option value="Invoice Template" />
+                    <option value="PowerPoint Template" />
+                    <option value="Email Newsletter Template" />
                   </datalist>
                 </div>
 
