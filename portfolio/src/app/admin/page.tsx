@@ -15,13 +15,15 @@ import {
   MessageSquare,
   Settings, 
   BarChart3,
-  BadgeDollarSign // Add this for the pricing tile
+  BadgeDollarSign
 } from "lucide-react";
 import AdminModal from "@/components/AdminModal";
 
 export default function AdminDashboard() {
   const router = useRouter();
   const [password, setPassword] = useState("");
+  // 1. New state for the Google Authenticator code
+  const [token, setToken] = useState(""); 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
@@ -59,16 +61,18 @@ export default function AdminDashboard() {
     e.preventDefault();
     setLoading(true);
     try {
+      // 2. Send both password and token to the backend
       const res = await fetch("/api/admin-login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ password, token }), 
       });
       const data = await res.json();
       if (res.ok && data.success) {
         setIsAuthenticated(true);
       } else {
-        showModal('error', 'Access Denied', data.message || "Incorrect password");
+        // Updated error message to be more generic for security
+        showModal('error', 'Access Denied', data.message || "Incorrect credentials");
       }
     } catch {
       showModal('error', 'Error', "Connection failed. Please try again.");
@@ -82,6 +86,7 @@ export default function AdminDashboard() {
       await fetch("/api/admin/logout", { method: "POST" });
       setIsAuthenticated(false);
       setPassword("");
+      setToken(""); // Clear token on logout
     } catch (error) {
       console.error("Logout failed", error);
     }
@@ -109,10 +114,25 @@ export default function AdminDashboard() {
             className="w-full p-3 border border-gray-300 rounded-xl mb-4"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          {/* 3. New input field for the Authenticator code */}
+          <input
+            type="text"
+            placeholder="6-Digit Auth Code"
+            className="w-full p-3 border border-gray-300 rounded-xl mb-6 tracking-widest text-center font-mono text-lg"
+            value={token}
+            onChange={(e) => {
+              // Strip non-numeric characters and limit to 6 digits
+              const val = e.target.value.replace(/\D/g, '').slice(0, 6);
+              setToken(val);
+            }}
+            maxLength={6}
+            required
           />
           <button
             type="submit"
-            disabled={loading}
+            disabled={loading || token.length !== 6} // Disable button until 6 digits are entered
             className="w-full bg-teal-600 text-white py-3 rounded-xl font-bold hover:bg-teal-700 transition-colors disabled:opacity-50"
           >
             {loading ? "Verifying..." : "Access Portal"}
@@ -193,7 +213,6 @@ export default function AdminDashboard() {
             <p className="text-gray-500">Update your experience, education, and skills.</p>
           </div>
 
-          {/* Pricing Module Tile */}
           <div onClick={() => router.push('/admin/pricing')} className="bg-white p-8 rounded-3xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border border-gray-100 flex flex-col items-center text-center group">
             <div className="w-16 h-16 bg-rose-100 text-rose-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <BadgeDollarSign size={32} />
@@ -202,14 +221,12 @@ export default function AdminDashboard() {
             <p className="text-gray-500">Create, manage, and send custom pricing lists to clients.</p>
           </div>
 
-          {/* NEW: Analytics Tile */}
           <div onClick={() => router.push('/admin/analytics')} className="bg-white p-8 rounded-3xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border border-gray-100 flex flex-col items-center text-center group">
             <div className="w-16 h-16 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><BarChart3 size={32} /></div>
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Analytics</h2>
             <p className="text-gray-500">Track page views and resume downloads.</p>
           </div>
 
-          {/* Corrected: Settings Tile */}
           <div onClick={() => router.push('/admin/settings')} className="bg-white p-8 rounded-3xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border border-gray-100 flex flex-col items-center text-center group">
             <div className="w-16 h-16 bg-slate-100 text-slate-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><Settings size={32} /></div>
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Portal Settings</h2>
