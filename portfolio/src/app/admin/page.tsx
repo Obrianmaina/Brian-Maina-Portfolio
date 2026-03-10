@@ -3,30 +3,23 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { 
-  FileText, 
-  Megaphone, 
-  Receipt, 
-  Inbox, 
-  Users, 
-  Briefcase, 
-  Building2, 
-  LogOut, 
-  GraduationCap,
-  MessageSquare,
-  Settings, 
-  BarChart3,
-  BadgeDollarSign
+  FileText, Megaphone, Receipt, Inbox, Users, Briefcase, 
+  Building2, LogOut, GraduationCap, MessageSquare, Settings, 
+  BarChart3, BadgeDollarSign
 } from "lucide-react";
 import AdminModal from "@/components/AdminModal";
 
 export default function AdminDashboard() {
   const router = useRouter();
   const [password, setPassword] = useState("");
-  // 1. New state for the Google Authenticator code
   const [token, setToken] = useState(""); 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  
+  // New state for the profile
+  const [profile, setProfile] = useState<{name?: string, email?: string, bio?: string, avatarUrl?: string} | null>(null);
+
   const [modal, setModal] = useState<{
     show: boolean;
     type: 'success' | 'error' | 'confirm';
@@ -41,6 +34,7 @@ export default function AdminDashboard() {
         const res = await fetch("/api/admin/check-auth");
         if (res.ok) {
           setIsAuthenticated(true);
+          fetchProfile(); // Fetch profile if authenticated
         }
       } catch (error) {
         console.error("Auth check failed", error);
@@ -50,6 +44,18 @@ export default function AdminDashboard() {
     };
     verifySession();
   }, []);
+
+  const fetchProfile = async () => {
+    try {
+      const res = await fetch("/api/admin/settings");
+      const data = await res.json();
+      if (data.success && data.data) {
+        setProfile(data.data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch profile", error);
+    }
+  };
 
   const showModal = (type: 'success' | 'error' | 'confirm', title: string, message: string, onConfirm?: () => void) => {
     setModal({ show: true, type, title, message, onConfirm });
@@ -61,7 +67,6 @@ export default function AdminDashboard() {
     e.preventDefault();
     setLoading(true);
     try {
-      // 2. Send both password and token to the backend
       const res = await fetch("/api/admin-login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -70,8 +75,8 @@ export default function AdminDashboard() {
       const data = await res.json();
       if (res.ok && data.success) {
         setIsAuthenticated(true);
+        fetchProfile(); // Fetch profile immediately after login
       } else {
-        // Updated error message to be more generic for security
         showModal('error', 'Access Denied', data.message || "Incorrect credentials");
       }
     } catch {
@@ -86,7 +91,8 @@ export default function AdminDashboard() {
       await fetch("/api/admin/logout", { method: "POST" });
       setIsAuthenticated(false);
       setPassword("");
-      setToken(""); // Clear token on logout
+      setToken("");
+      setProfile(null); // Clear profile on logout
     } catch (error) {
       console.error("Logout failed", error);
     }
@@ -116,14 +122,12 @@ export default function AdminDashboard() {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          {/* 3. New input field for the Authenticator code */}
           <input
             type="text"
             placeholder="6-Digit Auth Code"
             className="w-full p-3 border border-gray-300 rounded-xl mb-6 tracking-widest text-center font-mono text-lg"
             value={token}
             onChange={(e) => {
-              // Strip non-numeric characters and limit to 6 digits
               const val = e.target.value.replace(/\D/g, '').slice(0, 6);
               setToken(val);
             }}
@@ -132,7 +136,7 @@ export default function AdminDashboard() {
           />
           <button
             type="submit"
-            disabled={loading || token.length !== 6} // Disable button until 6 digits are entered
+            disabled={loading || token.length !== 6}
             className="w-full bg-teal-600 text-white py-3 rounded-xl font-bold hover:bg-teal-700 transition-colors disabled:opacity-50"
           >
             {loading ? "Verifying..." : "Access Portal"}
@@ -156,9 +160,26 @@ export default function AdminDashboard() {
             <LogOut size={18} className="mr-2" /> Logout
           </button>
         </div>
+
+        {/* Profile Display Section */}
+        {profile && (profile.name || profile.email || profile.bio) && (
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row items-center gap-6 text-center md:text-left">
+            <div className="w-20 h-20 bg-teal-100 text-teal-600 rounded-full flex items-center justify-center text-2xl font-bold flex-shrink-0 overflow-hidden">
+              {profile.avatarUrl ? (
+                <img src={profile.avatarUrl} alt="Admin Avatar" className="w-full h-full object-cover" />
+              ) : (
+                profile.name ? profile.name.charAt(0).toUpperCase() : (profile.email ? profile.email.charAt(0).toUpperCase() : 'A')
+              )}
+            </div>
+            <div className="flex-1">
+              <h2 className="text-xl font-bold text-gray-800">{profile.name || profile.email || "Admin Profile"}</h2>
+              <p className="text-gray-600 mt-2 max-w-3xl leading-relaxed">{profile.bio}</p>
+            </div>
+          </div>
+        )}
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mt-12">
-          
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mt-4">
+          {/* Dashboard grid items remain completely unchanged below */}
           <div onClick={() => router.push('/admin/blogs')} className="bg-white p-8 rounded-3xl shadow-md hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer border border-gray-100 flex flex-col items-center text-center group">
             <div className="w-16 h-16 bg-teal-100 text-teal-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform"><FileText size={32} /></div>
             <h2 className="text-2xl font-bold text-gray-800 mb-2">Manage Blogs</h2>
