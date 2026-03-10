@@ -3,6 +3,8 @@ import { Resend } from "resend";
 import VerificationEmail from "@/emails/VerificationEmail";
 import clientPromise from "@/lib/mongodb";
 import { randomUUID } from "crypto";
+import AdminQuoteNotificationEmail from "@/emails/AdminQuoteNotificationEmail";
+import ClientThankYouEmail from "@/emails/ClientThankYouEmail";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -55,13 +57,24 @@ export async function POST(req: Request) {
       from: "Portfolio Form <noreply@brianmaina.de>", 
       to: "request@brianmaina.de",
       subject: `New Freelance Inquiry: ${service}`,
-      text: `
-        New quote request received!
-        Client Name: ${nickname}
-        Client Email: ${email}
-        Requested Service: ${service}
-        Project Details: ${details || "None provided"}
-      `,
+      // Replace the 'text' property with the 'react' property
+      react: AdminQuoteNotificationEmail({ 
+        nickname: nickname, 
+        email: email, 
+        service: service, 
+        details: details || "" 
+      }),
+    });
+
+    // 3.5 SEND CLIENT AUTO-RESPONDER EMAIL
+    await resend.emails.send({
+      from: "Brian Maina <hello@brianmaina.de>", // Use your actual sending domain
+      to: email,
+      subject: "Thanks for reaching out!",
+      react: ClientThankYouEmail({ 
+        nickname: nickname, 
+        service: service 
+      }),
     });
 
     // 4. SEND VERIFICATION EMAIL (If newsletter checked)
