@@ -56,7 +56,7 @@ export default function TransactionEmail({
             <Section style={detailsBox}>
               <Row style={detailRow}>
                 <Column><Text style={detailLabel}>Reference Number:</Text></Column>
-                <Column><Text style={detailValue}>#{referenceNumber}</Text></Column>
+                <Column><Text style={detailValue}>{referenceNumber}</Text></Column>
               </Row>
               <Row style={detailRow}>
                 <Column><Text style={detailLabel}>Date:</Text></Column>

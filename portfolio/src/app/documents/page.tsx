@@ -83,7 +83,7 @@ export default function DocumentsPage() {
         <h1 className="text-2xl font-bold text-gray-900 mb-2">Client Portal</h1>
         <p className="text-gray-500 mb-8">Enter the 6-character reference number from your email to view your document.</p>
         
-        <form onSubmit={handleSearch} className="flex gap-2">
+        <form onSubmit={handleSearch} className="flex flex-col sm:flex-row gap-3">
           <input 
             type="text" 
             value={reference}
@@ -91,12 +91,12 @@ export default function DocumentsPage() {
             placeholder="e.g. A1B2C3" 
             maxLength={6}
             required
-            className="flex-1 p-4 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 text-center font-bold tracking-widest uppercase"
+            className="w-full sm:flex-1 p-4 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 text-center font-bold tracking-widest uppercase"
           />
           <button 
             type="submit" 
             disabled={loading}
-            className="bg-gray-900 text-white p-4 rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-70"
+            className="w-full sm:w-auto flex-shrink-0 flex items-center justify-center bg-gray-900 text-white p-4 rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-70"
           >
             {loading ? <Clock size={24} className="animate-spin" /> : <Search size={24} />}
           </button>
