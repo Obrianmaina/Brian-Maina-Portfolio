@@ -266,7 +266,7 @@ export default function PortfolioPage() {
                     )}
 
                   </div>
-                ) : lightbox.title.toLowerCase().includes("logo") ? (
+                ) : lightbox.category === "Logo" || lightbox.title.toLowerCase().includes("logo") ? (
                   
                   <div className="max-w-5xl mx-auto py-8 sm:py-12 space-y-12 sm:space-y-16">
                     {/* BRAND BOOK ONE-PAGER LAYOUT */}
@@ -280,79 +280,140 @@ export default function PortfolioPage() {
                       </div>
                     </div>
 
-                    {/* Main Logo Showcase */}
+                    {/* Main Logo Showcase (Project Level) */}
                     <div className="w-full bg-gray-50 rounded-3xl p-4 sm:p-12 shadow-inner border border-gray-200">
                       <div className="w-full aspect-square sm:aspect-video relative rounded-2xl overflow-hidden">
                         <MediaDisplay project={lightbox} />
                       </div>
                     </div>
 
-                    {/* Color Palette Section */}
-                    {lightbox.brandDetails?.colors && lightbox.brandDetails.colors.length > 0 && (
-                      <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center">
-                        <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6">Brand Colors</h4>
-                        <div className="flex flex-wrap justify-center gap-6">
-                          {lightbox.brandDetails.colors.map((color, idx) => (
-                            <div key={idx} className="flex flex-col items-center gap-3">
+                    {/* Brand Strategy Grid (Project-Level Context) */}
+                    {(lightbox.challenge || lightbox.process || lightbox.outcome) && (
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
+                        {lightbox.challenge && (
+                          <div className="space-y-3">
+                            <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest">The Challenge</h4>
+                            <p className="text-gray-700 leading-relaxed text-sm sm:text-base">{lightbox.challenge}</p>
+                          </div>
+                        )}
+                        {lightbox.process && (
+                          <div className="space-y-3">
+                            <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest">The Process</h4>
+                            <p className="text-gray-700 leading-relaxed text-sm sm:text-base">{lightbox.process}</p>
+                          </div>
+                        )}
+                        {lightbox.outcome && (
+                          <div className="space-y-3">
+                            <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest">The Outcome</h4>
+                            <p className="text-gray-700 leading-relaxed text-sm sm:text-base">{lightbox.outcome}</p>
+                          </div>
+                        )}
+                      </div>
+                    )}
+
+                    {/* DYNAMIC CONCEPTS RENDERER */}
+                    {(() => {
+                      // Support both the new logoConcepts array and fallback to legacy brandDetails if needed
+                      const concepts = lightbox.logoConcepts?.length 
+                        ? lightbox.logoConcepts 
+                        : (lightbox.brandDetails ? [{
+                            title: "Primary Concept",
+                            description: "",
+                            primaryImage: "",
+                            colors: lightbox.brandDetails.colors,
+                            fonts: [],
+                            mockups: lightbox.brandDetails.mockups
+                          }] : []);
+
+                      return concepts.map((concept, idx) => (
+                        <div key={idx} className={`space-y-12 sm:space-y-16 ${idx > 0 ? "pt-16 border-t border-gray-200" : ""}`}>
+                          
+                          {/* Concept Title & Description */}
+                          <div className="text-center space-y-4">
+                            <h4 className="text-3xl font-bold text-gray-800">
+                              {concept.title || `Concept ${idx + 1}`}
+                            </h4>
+                            {concept.description && (
+                              <p className="text-lg text-gray-500 max-w-3xl mx-auto">{concept.description}</p>
+                            )}
+                          </div>
+
+                          {/* Concept Primary Media / Logo Showcase */}
+                          {concept.primaryImage && (
+                            <div className="w-full bg-gray-50 rounded-3xl p-4 sm:p-12 shadow-inner border border-gray-200">
+                              <div className="w-full aspect-square sm:aspect-video relative rounded-2xl overflow-hidden flex items-center justify-center bg-white shadow-sm">
+                                <Image src={concept.primaryImage} alt={concept.title || "Concept logo"} fill className="object-contain p-8" unoptimized={true} />
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Colors and Fonts Grid */}
+                          {((concept.colors && concept.colors.length > 0) || (concept.fonts && concept.fonts.length > 0)) && (
+                            <div className={`grid grid-cols-1 ${concept.colors?.length && concept.fonts?.length ? 'md:grid-cols-2' : ''} gap-8`}>
+                              
+                              {/* Color Palette Section */}
+                              {concept.colors && concept.colors.length > 0 && (
+                                <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center justify-center">
+                                  <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6">Brand Colors</h4>
+                                  <div className="flex flex-wrap justify-center gap-6">
+                                    {concept.colors.map((color, cIdx) => (
+                                      <div key={cIdx} className="flex flex-col items-center gap-3">
+                                        <div 
+                                          className="w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow-inner border border-gray-200"
+                                          style={{ backgroundColor: color }}
+                                        />
+                                        <span className="text-sm font-mono text-gray-600 uppercase">{color}</span>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Fonts Section */}
+                              {concept.fonts && concept.fonts.length > 0 && (
+                                <div className="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex flex-col items-center justify-center h-full">
+                                  <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-6">Typography</h4>
+                                  <div className="flex flex-wrap justify-center gap-4">
+                                    {concept.fonts.map((font, fIdx) => (
+                                      <span key={fIdx} className="text-xl sm:text-2xl font-medium text-gray-800 bg-gray-50 px-6 py-3 rounded-xl border border-gray-100 shadow-inner">
+                                        Aa {font}
+                                      </span>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          )}
+
+                          {/* Sliding Mockup Carousel */}
+                          {concept.mockups && concept.mockups.length > 0 && (
+                            <div className="space-y-6">
+                              <h4 className="text-2xl font-bold text-center text-gray-900">Logo in Action</h4>
                               <div 
-                                className="w-16 h-16 sm:w-20 sm:h-20 rounded-full shadow-inner border border-gray-200"
-                                style={{ backgroundColor: color }}
-                              />
-                              <span className="text-sm font-mono text-gray-600 uppercase">{color}</span>
+                                className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-6 px-4 sm:px-0"
+                                style={{ scrollbarWidth: "none" }}
+                              >
+                                {concept.mockups.map((mockup, mIdx) => (
+                                  <div 
+                                    key={mIdx} 
+                                    className="flex-shrink-0 w-[85%] sm:w-[60%] lg:w-[45%] aspect-video relative snap-center rounded-2xl overflow-hidden cursor-zoom-in group shadow-md hover:shadow-xl transition-shadow"
+                                    onClick={() => setExpandedMockup(mockup)}
+                                  >
+                                    <Image 
+                                      src={mockup} 
+                                      alt={`Brand mockup ${mIdx + 1}`} 
+                                      fill 
+                                      className="object-cover group-hover:scale-105 transition-transform duration-500" 
+                                      unoptimized={true} 
+                                    />
+                                  </div>
+                                ))}
+                              </div>
                             </div>
-                          ))}
+                          )}
                         </div>
-                      </div>
-                    )}
-
-                    {/* Brand Strategy Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 bg-white p-8 rounded-3xl shadow-sm border border-gray-100">
-                      {lightbox.challenge && (
-                        <div className="space-y-3">
-                          <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest">The Challenge</h4>
-                          <p className="text-gray-700 leading-relaxed text-sm sm:text-base">{lightbox.challenge}</p>
-                        </div>
-                      )}
-                      {lightbox.process && (
-                        <div className="space-y-3">
-                          <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest">The Process</h4>
-                          <p className="text-gray-700 leading-relaxed text-sm sm:text-base">{lightbox.process}</p>
-                        </div>
-                      )}
-                      {lightbox.outcome && (
-                        <div className="space-y-3">
-                          <h4 className="text-xs font-bold text-gray-400 uppercase tracking-widest">The Outcome</h4>
-                          <p className="text-gray-700 leading-relaxed text-sm sm:text-base">{lightbox.outcome}</p>
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Sliding Mockup Carousel */}
-                    {lightbox.brandDetails?.mockups && lightbox.brandDetails.mockups.length > 0 && (
-                      <div className="space-y-6">
-                        <h4 className="text-2xl font-bold text-center text-gray-900">Logo in Action</h4>
-                        <div 
-                          className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-6 px-4 sm:px-0"
-                          style={{ scrollbarWidth: "none" }}
-                        >
-                          {lightbox.brandDetails.mockups.map((mockup, idx) => (
-                            <div 
-                              key={idx} 
-                              className="flex-shrink-0 w-[85%] sm:w-[60%] lg:w-[45%] aspect-video relative snap-center rounded-2xl overflow-hidden cursor-zoom-in group shadow-md hover:shadow-xl transition-shadow"
-                              onClick={() => setExpandedMockup(mockup)}
-                            >
-                              <Image 
-                                src={mockup} 
-                                alt={`Brand mockup ${idx + 1}`} 
-                                fill 
-                                className="object-cover group-hover:scale-105 transition-transform duration-500" 
-                                unoptimized={true} 
-                              />
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
+                      ));
+                    })()}
                   </div>
                   
                 ) : (

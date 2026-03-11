@@ -6,7 +6,7 @@ import Image from "next/image";
 import { ArrowLeft, Briefcase, Plus, Trash2, Image as ImageIcon, Pencil, X, Save, GripVertical } from "lucide-react";
 import AdminModal from "@/components/AdminModal";
 
-// Expanded Type to include the Case Study, Brand Details, Cover Image, and Order
+// Expanded Type to include the Case Study, Brand Details, Logo Concepts, Cover Image, and Order
 type Showcase = {
   _id?: string;
   order?: number;
@@ -24,6 +24,14 @@ type Showcase = {
     colors?: string[];
     mockups?: string[];
   };
+  logoConcepts?: {
+    title: string;
+    description?: string;
+    primaryImage?: string;
+    colors?: string[];
+    fonts?: string[];
+    mockups?: string[];
+  }[];
   caseStudy?: {
     role?: string;
     duration?: string;
@@ -38,11 +46,20 @@ type Showcase = {
   };
 };
 
+type LogoConceptForm = {
+  title: string;
+  description: string;
+  primaryImage: string;
+  colorsStr: string;
+  fontsStr: string;
+  mockupsStr: string;
+};
+
 type FormState = {
   title: string; category: string; description: string; tag: string;
   mediaType: string; media: string; coverImage: string;
   challenge: string; process: string; outcome: string;
-  brandColorsStr: string; brandMockupsStr: string;
+  logoConcepts: LogoConceptForm[];
   csRole: string; csDuration: string; csToolsStr: string;
   csProblemText: string; csProblemImagesStr: string;
   csResearchText: string; csResearchImagesStr: string;
@@ -53,7 +70,7 @@ type FormState = {
 const initialFormState: FormState = {
   title: "", category: "Graphics", description: "", tag: "", mediaType: "image", media: "", coverImage: "",
   challenge: "", process: "", outcome: "",
-  brandColorsStr: "", brandMockupsStr: "",
+  logoConcepts: [],
   csRole: "", csDuration: "", csToolsStr: "", csProblemText: "", csProblemImagesStr: "",
   csResearchText: "", csResearchImagesStr: "", csWireframesText: "", csWireframeImagesStr: "", csLearnings: ""
 };
@@ -62,6 +79,28 @@ const initialFormState: FormState = {
 function showcaseToFormState(p: Showcase): FormState {
   const joinArr = (arr?: string[]) => arr?.join(", ") ?? "";
   const mediaStr = Array.isArray(p.media) ? p.media.join(", ") : (p.media ?? "");
+
+  // Handle new logoConcepts or fall back to legacy brandDetails
+  let mappedConcepts: LogoConceptForm[] = p.logoConcepts?.map(c => ({
+    title: c.title || "",
+    description: c.description || "",
+    primaryImage: c.primaryImage || "",
+    colorsStr: joinArr(c.colors),
+    fontsStr: joinArr(c.fonts),
+    mockupsStr: joinArr(c.mockups),
+  })) || [];
+
+  if (mappedConcepts.length === 0 && p.brandDetails) {
+    mappedConcepts = [{
+      title: "Concept 1",
+      description: "",
+      primaryImage: "",
+      colorsStr: joinArr(p.brandDetails.colors),
+      fontsStr: "",
+      mockupsStr: joinArr(p.brandDetails.mockups)
+    }];
+  }
+
   return {
     title: p.title ?? "",
     category: p.category ?? "Graphics",
@@ -73,8 +112,7 @@ function showcaseToFormState(p: Showcase): FormState {
     challenge: p.challenge ?? "",
     process: p.process ?? "",
     outcome: p.outcome ?? "",
-    brandColorsStr: joinArr(p.brandDetails?.colors),
-    brandMockupsStr: joinArr(p.brandDetails?.mockups),
+    logoConcepts: mappedConcepts,
     csRole: p.caseStudy?.role ?? "",
     csDuration: p.caseStudy?.duration ?? "",
     csToolsStr: joinArr(p.caseStudy?.tools),
@@ -92,7 +130,7 @@ export default function PortfolioCMS() {
   const router = useRouter();
   const [projects, setProjects] = useState<Showcase[]>([]);
   const [loading, setLoading] = useState(true);
-  
+
   // Reorder States
   const [isReordering, setIsReordering] = useState(false);
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
@@ -127,7 +165,7 @@ export default function PortfolioCMS() {
   /** Open the form pre-filled for an existing project */
   const openEdit = (project: Showcase) => {
     setFormData(showcaseToFormState(project));
-    setFormMode(project._id!);
+    setFormMode(String(project._id));
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -146,8 +184,11 @@ export default function PortfolioCMS() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const splitAndTrim = (str: string) =>
-      str ? str.split(",").map(s => s.trim()).filter(Boolean) : [];
+    // Enhanced safety to ensure it always correctly handles inputs
+    const splitAndTrim = (str: string | string[] | null | undefined): string[] => {
+      if (!str) return [];
+      return String(str).split(",").map(s => s.trim()).filter(Boolean);
+    };
 
     const payload: Partial<Showcase> & { id?: string } = {
       title: formData.title,
@@ -167,10 +208,14 @@ export default function PortfolioCMS() {
     if (formData.coverImage) payload.coverImage = formData.coverImage;
 
     if (formData.category === "Logo") {
-      payload.brandDetails = {
-        colors: splitAndTrim(formData.brandColorsStr),
-        mockups: splitAndTrim(formData.brandMockupsStr),
-      };
+      payload.logoConcepts = formData.logoConcepts.map(concept => ({
+        title: concept.title,
+        description: concept.description,
+        primaryImage: concept.primaryImage,
+        colors: splitAndTrim(concept.colorsStr),
+        fonts: splitAndTrim(concept.fontsStr),
+        mockups: splitAndTrim(concept.mockupsStr),
+      }));
     }
 
     if (formData.category === "UI/UX") {
@@ -188,7 +233,7 @@ export default function PortfolioCMS() {
       };
     }
 
-    const isEditing = formMode !== "new";
+    const isEditing = formMode !== null && formMode !== "new";
     if (isEditing) payload.id = formMode as string;
 
     try {
@@ -206,10 +251,19 @@ export default function PortfolioCMS() {
         closeForm();
         fetchProjects();
       } else {
-        setModal({ show: true, type: "error", title: "Error", message: isEditing ? "Failed to update project." : "Failed to add project." });
+        // Here we extract the EXACT error being returned by the server API
+        const errorData = await res.json().catch(() => ({}));
+        const serverErrorMsg = errorData.error || errorData.message || res.statusText;
+
+        setModal({
+          show: true,
+          type: "error",
+          title: "Update Failed",
+          message: `Server reported: ${serverErrorMsg}. Please check that you haven't included large Base64 images.`
+        });
       }
-    } catch {
-      setModal({ show: true, type: "error", title: "Error", message: "An unexpected error occurred." });
+    } catch (error) {
+      setModal({ show: true, type: "error", title: "Network Error", message: "Failed to reach the server. Check your connection." });
     }
   };
 
@@ -232,11 +286,10 @@ export default function PortfolioCMS() {
     });
   };
 
-  // ─── DRAG AND DROP HANDLERS ───
+  // DRAG AND DROP HANDLERS
   const handleDragStart = (e: React.DragEvent, index: number) => {
     setDraggedIndex(index);
     e.dataTransfer.effectAllowed = "move";
-    // Required for Firefox to register the drag
     e.dataTransfer.setData("text/plain", index.toString());
   };
 
@@ -259,9 +312,7 @@ export default function PortfolioCMS() {
     const newProjects = [...projects];
     const draggedItem = newProjects[draggedIndex];
 
-    // Remove the item from its old position
     newProjects.splice(draggedIndex, 1);
-    // Insert it into its new position
     newProjects.splice(dropIndex, 0, draggedItem);
 
     setProjects(newProjects);
@@ -285,7 +336,7 @@ export default function PortfolioCMS() {
       if (res.ok) {
         setModal({ show: true, type: "success", title: "Success", message: "Portfolio order updated successfully!" });
         setIsReordering(false);
-        fetchProjects(); // Re-fetch to guarantee sync with DB
+        fetchProjects();
       } else {
         setModal({ show: true, type: "error", title: "Error", message: "Failed to update order." });
       }
@@ -301,7 +352,7 @@ export default function PortfolioCMS() {
     <main className="min-h-screen bg-gray-50 py-12 px-6">
       <div className="max-w-6xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100 fade-in">
 
-        {/* ── Header ── */}
+        {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <button
             onClick={() => router.push("/admin")}
@@ -363,7 +414,7 @@ export default function PortfolioCMS() {
           <h2 className="text-3xl font-bold text-gray-800">Portfolio Manager</h2>
         </div>
 
-        {/* ── Add / Edit Form ── */}
+        {/* Add / Edit Form */}
         {isFormOpen && (
           <div className={`p-6 rounded-2xl border mb-8 fade-in ${isEditing ? "bg-amber-50 border-amber-200" : "bg-gray-50 border-gray-200"}`}>
             <h3 className="text-xl font-bold text-gray-800 mb-1">
@@ -417,11 +468,108 @@ export default function PortfolioCMS() {
               {/* CONDITIONAL: LOGO FIELDS */}
               {formData.category === "Logo" && (
                 <div className="bg-emerald-50/50 p-5 rounded-xl border border-emerald-100 space-y-4 mt-4 fade-in">
-                  <h4 className="font-bold text-emerald-800">Logo Presentation Details</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" placeholder="Brand Hex Colors (e.g. #000000, #FFFFFF)" className="p-3 border rounded-xl" value={formData.brandColorsStr} onChange={e => setFormData({ ...formData, brandColorsStr: e.target.value })} />
-                    <textarea placeholder="Mockup Image URLs (comma separated)" className="p-3 border rounded-xl" value={formData.brandMockupsStr} onChange={e => setFormData({ ...formData, brandMockupsStr: e.target.value })} />
+                  <div className="flex justify-between items-center">
+                    <h4 className="font-bold text-emerald-800">Logo Concepts</h4>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({
+                        ...formData,
+                        logoConcepts: [...formData.logoConcepts, { title: "", description: "", primaryImage: "", colorsStr: "", fontsStr: "", mockupsStr: "" }]
+                      })}
+                      className="bg-emerald-200 text-emerald-800 px-3 py-1 rounded-lg text-sm font-bold hover:bg-emerald-300 transition-colors"
+                    >
+                      + Add Concept
+                    </button>
                   </div>
+
+                  {formData.logoConcepts.length === 0 && (
+                    <p className="text-sm text-emerald-700 italic">No concepts added yet. Click &quot;Add Concept&quot; to start.</p>
+                  )}
+
+                  {formData.logoConcepts.map((concept, index) => (
+                    <div key={index} className="p-4 bg-white border border-emerald-200 rounded-lg relative space-y-3">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const newConcepts = [...formData.logoConcepts];
+                          newConcepts.splice(index, 1);
+                          setFormData({ ...formData, logoConcepts: newConcepts });
+                        }}
+                        className="absolute top-2 right-2 text-red-500 hover:bg-red-50 p-1 rounded"
+                      >
+                        <X size={16} />
+                      </button>
+
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <input
+                          type="text"
+                          placeholder={`Concept ${index + 1} Title`}
+                          className="p-3 border rounded-xl"
+                          value={concept.title}
+                          onChange={e => {
+                            const newConcepts = [...formData.logoConcepts];
+                            newConcepts[index].title = e.target.value;
+                            setFormData({ ...formData, logoConcepts: newConcepts });
+                          }}
+                        />
+                        <input
+                          type="text"
+                          placeholder="Colors (e.g. #000, #FFF)"
+                          className="p-3 border rounded-xl"
+                          value={concept.colorsStr}
+                          onChange={e => {
+                            const newConcepts = [...formData.logoConcepts];
+                            newConcepts[index].colorsStr = e.target.value;
+                            setFormData({ ...formData, logoConcepts: newConcepts });
+                          }}
+                        />
+                        <input
+                          type="text"
+                          placeholder="Fonts (e.g. Inter, Roboto)"
+                          className="p-3 border rounded-xl"
+                          value={concept.fontsStr}
+                          onChange={e => {
+                            const newConcepts = [...formData.logoConcepts];
+                            newConcepts[index].fontsStr = e.target.value;
+                            setFormData({ ...formData, logoConcepts: newConcepts });
+                          }}
+                        />
+                      </div>
+
+                      <input
+                        type="text"
+                        placeholder="Primary Concept Image URL (Main Media Image)"
+                        className="w-full p-3 border rounded-xl text-sm"
+                        value={concept.primaryImage}
+                        onChange={e => {
+                          const newConcepts = [...formData.logoConcepts];
+                          newConcepts[index].primaryImage = e.target.value;
+                          setFormData({ ...formData, logoConcepts: newConcepts });
+                        }}
+                      />
+
+                      <textarea
+                        placeholder="Concept Description (Optional)"
+                        className="w-full p-3 border rounded-xl text-sm"
+                        value={concept.description}
+                        onChange={e => {
+                          const newConcepts = [...formData.logoConcepts];
+                          newConcepts[index].description = e.target.value;
+                          setFormData({ ...formData, logoConcepts: newConcepts });
+                        }}
+                      />
+                      <textarea
+                        placeholder="Mockup Image URLs (comma separated)"
+                        className="w-full p-3 border rounded-xl text-sm"
+                        value={concept.mockupsStr}
+                        onChange={e => {
+                          const newConcepts = [...formData.logoConcepts];
+                          newConcepts[index].mockupsStr = e.target.value;
+                          setFormData({ ...formData, logoConcepts: newConcepts });
+                        }}
+                      />
+                    </div>
+                  ))}
                 </div>
               )}
 
@@ -461,7 +609,7 @@ export default function PortfolioCMS() {
           </div>
         )}
 
-        {/* ── Project Grid ── */}
+        {/* Project Grid */}
         {loading ? (
           <p className="text-gray-500">Loading projects...</p>
         ) : (
@@ -491,7 +639,7 @@ export default function PortfolioCMS() {
                     <ImageIcon className="text-gray-300" size={48} />
                   )}
                   <span className="absolute top-2 right-2 bg-white/90 px-2 py-1 text-xs font-bold rounded-md z-10">{project.category}</span>
-                  
+
                   {isReordering && (
                     <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
                       <span className="text-white text-5xl font-black opacity-50">#{idx + 1}</span>

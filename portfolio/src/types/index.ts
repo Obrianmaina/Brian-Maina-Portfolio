@@ -26,6 +26,15 @@ export interface CaseStudyDetails {
   learnings?: string;
 }
 
+export interface LogoConcept {
+  title: string;
+  description?: string;
+  primaryImage?: string; // NEW FIELD: Main media image for this concept
+  colors?: string[];
+  fonts?: string[];
+  mockups?: string[];
+}
+
 export interface Showcase {
   _id?: string;
   order?: number;
@@ -44,6 +53,7 @@ export interface Showcase {
     colors?: string[];
     mockups?: string[]; 
   };
+  logoConcepts?: LogoConcept[];
 }
 
 export interface CompanyProject {
@@ -53,7 +63,7 @@ export interface CompanyProject {
   projects: Showcase[];
 }
 
-// --- NEW BLOG TYPES ---
+// NEW BLOG TYPES
 export interface BlogPost {
   _id?: string;
   title: string;
@@ -86,7 +96,6 @@ export interface Invoice {
   createdAt: Date;
   paidAt?: Date;
 }
-
 
 // src/types/index.ts
 export interface PricingItem {
@@ -134,7 +143,6 @@ export interface CatalogBundle {
   prices: CatalogPrices;
 }
 
-
 // Add this below your existing types in src/types/index.ts
 export interface Quote {
   _id: string;
@@ -149,7 +157,7 @@ export interface Quote {
   createdAt: string;
 }
 
-// --- UI COMPONENT TYPES ---
+// UI COMPONENT TYPES
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "default" | "outline";
 }
