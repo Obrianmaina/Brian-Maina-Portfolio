@@ -331,7 +331,7 @@ export default function ResumePage() {
                     <li key={skill} className="relative group px-4 py-2 bg-teal-100 text-teal-800 rounded-full text-sm cursor-pointer font-semibold">
                       AI
                       <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 p-3 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10">
-                        My take on AI is that it is a powerful tool to enhance creativity and productivity, but it cannot replace the human touch in design. I use AI tools to generate ideas and automate tasks, but always ensure my designs are original and aligned with the client&apos;s goals.
+                        I leverage AI to accelerate ideation and streamline workflows, freeing up time for high-level creative problem solving. While AI is a fantastic assistant, my final designs are always driven by human intuition and carefully crafted to meet specific client goals.
                         <svg className="absolute text-gray-800 h-2 w-full left-0 top-full" x="0px" y="0px" viewBox="0 0 255 255">
                             <polygon className="fill-current" points="0,0 127.5,127.5 255,0"/>
                         </svg>
