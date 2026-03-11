@@ -18,12 +18,12 @@ async function isAuthenticated() {
   return cookieBuffer.length === tokenBuffer.length && crypto.timingSafeEqual(cookieBuffer, tokenBuffer);
 }
 
-// GET all portfolio items
+// GET all portfolio items (Sorted by custom order, then newest)
 export async function GET(req: Request) {
   try {
     const client = await clientPromise;
     const db = client.db("portfolio");
-    const projects = await db.collection("showcases").find({}).sort({ _id: -1 }).toArray();
+    const projects = await db.collection("showcases").find({}).sort({ order: 1, _id: -1 }).toArray();
     return NextResponse.json(projects, { status: 200 });
   } catch (error) {
     console.error("Fetch Portfolio API Error:", error);
@@ -42,7 +42,9 @@ export async function POST(req: Request) {
     const client = await clientPromise;
     const db = client.db("portfolio");
 
-    const result = await db.collection("showcases").insertOne({ ...data, createdAt: new Date() });
+    // Assign a default order value based on current count
+    const count = await db.collection("showcases").countDocuments();
+    const result = await db.collection("showcases").insertOne({ ...data, order: count, createdAt: new Date() });
     return NextResponse.json({ success: true, id: result.insertedId }, { status: 200 });
   } catch (error) {
     console.error("Create Portfolio API Error:", error);
@@ -94,6 +96,37 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
     console.error("Delete Portfolio API Error:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+}
+
+// PATCH (Reorder) portfolio items in bulk
+export async function PATCH(req: Request) {
+  try {
+    if (!(await isAuthenticated())) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const items = await req.json(); // Expecting an array of { _id, order }
+    if (!Array.isArray(items)) {
+      return NextResponse.json({ error: "Invalid data format" }, { status: 400 });
+    }
+
+    const client = await clientPromise;
+    const db = client.db("portfolio");
+
+    // Prepare bulk write operations for MongoDB
+    const bulkOps = items.map((item) => ({
+      updateOne: {
+        filter: { _id: new ObjectId(item._id) },
+        update: { $set: { order: item.order } }
+      }
+    }));
+
+    await db.collection("showcases").bulkWrite(bulkOps);
+    return NextResponse.json({ success: true }, { status: 200 });
+  } catch (error) {
+    console.error("Reorder Portfolio API Error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

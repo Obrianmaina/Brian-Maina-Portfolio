@@ -3,12 +3,13 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { ArrowLeft, Briefcase, Plus, Trash2, Image as ImageIcon, Pencil, X } from "lucide-react";
+import { ArrowLeft, Briefcase, Plus, Trash2, Image as ImageIcon, Pencil, X, Save, GripVertical } from "lucide-react";
 import AdminModal from "@/components/AdminModal";
 
-// Expanded Type to include the Case Study, Brand Details, and Cover Image
+// Expanded Type to include the Case Study, Brand Details, Cover Image, and Order
 type Showcase = {
   _id?: string;
+  order?: number;
   title: string;
   category: string;
   description: string;
@@ -91,10 +92,15 @@ export default function PortfolioCMS() {
   const router = useRouter();
   const [projects, setProjects] = useState<Showcase[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // Reorder States
+  const [isReordering, setIsReordering] = useState(false);
+  const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
+  const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
-  // null  → no form open
-  // "new" → adding new project
-  // string (id) → editing that project
+  // null  -> no form open
+  // "new" -> adding new project
+  // string (id) -> editing that project
   const [formMode, setFormMode] = useState<null | "new" | string>(null);
   const [formData, setFormData] = useState<FormState>(initialFormState);
 
@@ -129,6 +135,7 @@ export default function PortfolioCMS() {
   const openAdd = () => {
     setFormData(initialFormState);
     setFormMode("new");
+    setIsReordering(false);
   };
 
   const closeForm = () => {
@@ -225,6 +232,68 @@ export default function PortfolioCMS() {
     });
   };
 
+  // ─── DRAG AND DROP HANDLERS ───
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    setDraggedIndex(index);
+    e.dataTransfer.effectAllowed = "move";
+    // Required for Firefox to register the drag
+    e.dataTransfer.setData("text/plain", index.toString());
+  };
+
+  const handleDragEnter = (e: React.DragEvent, index: number) => {
+    e.preventDefault();
+    if (index !== draggedIndex) {
+      setDragOverIndex(index);
+    }
+  };
+
+  const handleDragEnd = () => {
+    setDraggedIndex(null);
+    setDragOverIndex(null);
+  };
+
+  const handleDrop = (e: React.DragEvent, dropIndex: number) => {
+    e.preventDefault();
+    if (draggedIndex === null || draggedIndex === dropIndex) return;
+
+    const newProjects = [...projects];
+    const draggedItem = newProjects[draggedIndex];
+
+    // Remove the item from its old position
+    newProjects.splice(draggedIndex, 1);
+    // Insert it into its new position
+    newProjects.splice(dropIndex, 0, draggedItem);
+
+    setProjects(newProjects);
+    setDraggedIndex(null);
+    setDragOverIndex(null);
+  };
+
+  const handleSaveOrder = async () => {
+    const orderData = projects.map((p, index) => ({
+      _id: p._id,
+      order: index,
+    }));
+
+    try {
+      const res = await fetch("/api/admin/portfolio", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData),
+      });
+
+      if (res.ok) {
+        setModal({ show: true, type: "success", title: "Success", message: "Portfolio order updated successfully!" });
+        setIsReordering(false);
+        fetchProjects(); // Re-fetch to guarantee sync with DB
+      } else {
+        setModal({ show: true, type: "error", title: "Error", message: "Failed to update order." });
+      }
+    } catch {
+      setModal({ show: true, type: "error", title: "Error", message: "An unexpected error occurred." });
+    }
+  };
+
   const isFormOpen = formMode !== null;
   const isEditing = isFormOpen && formMode !== "new";
 
@@ -242,20 +311,50 @@ export default function PortfolioCMS() {
           </button>
 
           <div className="flex gap-2">
-            {isFormOpen && (
+            {!isFormOpen && !isReordering && (
               <button
-                onClick={closeForm}
+                onClick={() => setIsReordering(true)}
                 className="flex items-center border border-gray-300 text-gray-600 px-4 py-2 rounded-lg font-bold hover:bg-gray-50 transition-colors"
               >
-                <X size={16} className="mr-1" /> Cancel
+                Reorder Projects
               </button>
             )}
-            <button
-              onClick={isFormOpen ? closeForm : openAdd}
-              className="flex items-center bg-gray-900 text-white px-4 py-2 rounded-lg font-bold hover:bg-gray-800 transition-colors"
-            >
-              {isFormOpen ? "Close Form" : <><Plus size={18} className="mr-2" /> Add Project</>}
-            </button>
+
+            {isReordering && (
+              <>
+                <button
+                  onClick={() => { setIsReordering(false); fetchProjects(); }}
+                  className="flex items-center border border-gray-300 text-gray-600 px-4 py-2 rounded-lg font-bold hover:bg-gray-50 transition-colors"
+                >
+                  Cancel Reorder
+                </button>
+                <button
+                  onClick={handleSaveOrder}
+                  className="flex items-center bg-emerald-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-emerald-700 transition-colors"
+                >
+                  <Save size={18} className="mr-2" /> Save Order
+                </button>
+              </>
+            )}
+
+            {!isReordering && (
+              <>
+                {isFormOpen && (
+                  <button
+                    onClick={closeForm}
+                    className="flex items-center border border-gray-300 text-gray-600 px-4 py-2 rounded-lg font-bold hover:bg-gray-50 transition-colors"
+                  >
+                    <X size={16} className="mr-1" /> Cancel
+                  </button>
+                )}
+                <button
+                  onClick={isFormOpen ? closeForm : openAdd}
+                  className="flex items-center bg-gray-900 text-white px-4 py-2 rounded-lg font-bold hover:bg-gray-800 transition-colors"
+                >
+                  {isFormOpen ? "Close Form" : <><Plus size={18} className="mr-2" /> Add Project</>}
+                </button>
+              </>
+            )}
           </div>
         </div>
 
@@ -367,12 +466,23 @@ export default function PortfolioCMS() {
           <p className="text-gray-500">Loading projects...</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project) => (
+            {projects.map((project, idx) => (
               <div
                 key={project._id}
-                className={`border rounded-2xl overflow-hidden hover:shadow-lg transition-shadow bg-white flex flex-col ${formMode === project._id ? "border-amber-400 ring-2 ring-amber-300" : "border-gray-200"}`}
+                draggable={isReordering}
+                onDragStart={(e) => isReordering && handleDragStart(e, idx)}
+                onDragEnter={(e) => isReordering && handleDragEnter(e, idx)}
+                onDragEnd={handleDragEnd}
+                onDragOver={(e) => e.preventDefault()}
+                onDrop={(e) => isReordering && handleDrop(e, idx)}
+                className={`border rounded-2xl overflow-hidden bg-white flex flex-col transition-all duration-200
+                  ${formMode === project._id ? "border-amber-400 ring-2 ring-amber-300" : "border-gray-200"}
+                  ${isReordering ? "cursor-grab active:cursor-grabbing" : ""}
+                  ${draggedIndex === idx ? "opacity-50 scale-95 shadow-inner" : "hover:shadow-lg"}
+                  ${dragOverIndex === idx && draggedIndex !== idx ? "border-emerald-500 ring-4 ring-emerald-200 scale-105 z-10" : ""}
+                `}
               >
-                <div className="h-40 bg-gray-100 flex items-center justify-center relative overflow-hidden">
+                <div className={`h-40 bg-gray-100 flex items-center justify-center relative overflow-hidden ${isReordering ? "pointer-events-none" : ""}`}>
                   {project.coverImage ? (
                     <Image src={project.coverImage} alt={project.title} fill className="object-cover" unoptimized />
                   ) : project.mediaType === "image" && project.media.length > 0 ? (
@@ -381,30 +491,44 @@ export default function PortfolioCMS() {
                     <ImageIcon className="text-gray-300" size={48} />
                   )}
                   <span className="absolute top-2 right-2 bg-white/90 px-2 py-1 text-xs font-bold rounded-md z-10">{project.category}</span>
+                  
+                  {isReordering && (
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                      <span className="text-white text-5xl font-black opacity-50">#{idx + 1}</span>
+                    </div>
+                  )}
                 </div>
 
-                <div className="p-4 flex flex-col flex-grow">
+                <div className={`p-4 flex flex-col flex-grow ${isReordering ? "pointer-events-none" : ""}`}>
                   <h3 className="font-bold text-gray-900 mb-1 truncate">{project.title}</h3>
                   <p className="text-xs text-gray-500 line-clamp-2 mb-4">{project.description}</p>
 
-                  <div className="mt-auto pt-2 border-t border-gray-100 flex justify-between items-center">
+                  <div className="mt-auto pt-2 border-t border-gray-100 flex justify-between items-center pointer-events-auto">
                     <span className="text-xs font-semibold text-gray-400">
                       {project.category === "Logo" && "Branding"}
                       {project.category === "UI/UX" && "Case Study"}
                     </span>
                     <div className="flex gap-3">
-                      <button
-                        onClick={() => openEdit(project)}
-                        className="text-amber-500 hover:text-amber-700 text-sm font-bold flex items-center"
-                      >
-                        <Pencil size={15} className="mr-1" /> Edit
-                      </button>
-                      <button
-                        onClick={() => handleDelete(project._id!, project.title)}
-                        className="text-red-500 hover:text-red-700 text-sm font-bold flex items-center"
-                      >
-                        <Trash2 size={15} className="mr-1" /> Delete
-                      </button>
+                      {isReordering ? (
+                        <div className="text-gray-400 flex items-center gap-1 font-semibold text-sm">
+                          <GripVertical size={16} /> Drag
+                        </div>
+                      ) : (
+                        <>
+                          <button
+                            onClick={() => openEdit(project)}
+                            className="text-amber-500 hover:text-amber-700 text-sm font-bold flex items-center"
+                          >
+                            <Pencil size={15} className="mr-1" /> Edit
+                          </button>
+                          <button
+                            onClick={() => handleDelete(project._id!, project.title)}
+                            className="text-red-500 hover:text-red-700 text-sm font-bold flex items-center"
+                          >
+                            <Trash2 size={15} className="mr-1" /> Delete
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>

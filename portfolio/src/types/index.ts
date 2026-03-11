@@ -28,6 +28,7 @@ export interface CaseStudyDetails {
 
 export interface Showcase {
   _id?: string;
+  order?: number;
   title: string;
   category: string;
   description: string;
