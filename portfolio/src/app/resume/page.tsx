@@ -277,7 +277,9 @@ export default function ResumePage() {
               transition={{ delay: 0.2, duration: 0.5 }} 
               className="mb-10"
             >
-              <h3 className="text-2xl font-semibold mb-4">Professional Summary</h3>
+              <h2 className="text-3xl font-extrabold text-gray-900 mb-6 flex items-center gap-3 before:content-[''] before:w-2 before:h-8 before:bg-teal-500 before:rounded-full">
+                Professional Summary
+              </h2>
               <p className="mb-4 text-gray-700">
                 Results-oriented Visual Designer and AFRIKA KOMMT! alumni with experience creating compelling visual solutions for global brands like SAP. Skilled in designing UI components, multimedia assets, long-form document layout, editorial design and marketing collateral for diverse campaigns. Complemented by a foundational year of Computer Science study at DHBW Mosbach, which enhances the creation of practical, buildable designs and collaboration with development teams.
               </p>
@@ -300,11 +302,15 @@ export default function ResumePage() {
               className="grid md:grid-cols-2 gap-10"
             >
               <div>
-                <h3 className="text-2xl font-semibold mb-4">Experience</h3>
+                <h2 className="text-3xl font-extrabold text-gray-900 mb-8 flex items-center gap-3 before:content-[''] before:w-2 before:h-8 before:bg-teal-500 before:rounded-full">
+                  Experience
+                </h2>
                 <Timeline sections={experienceData} />
               </div>
               <div>
-                <h3 className="text-2xl font-semibold mb-4">Education</h3>
+                <h2 className="text-3xl font-extrabold text-gray-900 mb-8 flex items-center gap-3 before:content-[''] before:w-2 before:h-8 before:bg-teal-500 before:rounded-full">
+                  Education
+                </h2>
                 <Timeline sections={educationData} />
               </div>
             </motion.div>
@@ -316,7 +322,9 @@ export default function ResumePage() {
               transition={{ delay: 0.6, duration: 0.5 }} 
               className="mt-10"
             >
-              <h3 className="text-2xl font-semibold mb-4">Skills and Technologies</h3>
+              <h2 className="text-3xl font-extrabold text-gray-900 mb-8 flex items-center gap-3 before:content-[''] before:w-2 before:h-8 before:bg-teal-500 before:rounded-full">
+                Skills and Technologies
+              </h2>
               <ul className="flex flex-wrap gap-3">
                 {skills.map((skill) => (
                   skill === "AI" ? (
@@ -338,8 +346,12 @@ export default function ResumePage() {
           </section>
         )}
 
+        
+
         <motion.section id="references" className="relative max-w-5xl mx-auto py-20 px-6">
-          <h2 className="text-3xl font-semibold mb-8">References & Downloads</h2>
+          <h2 className="text-3xl font-extrabold text-gray-900 mb-8 flex items-center gap-3 before:content-[''] before:w-2 before:h-8 before:bg-teal-500 before:rounded-full">
+  References
+</h2>
           {!unlocked ? (
             <div className="flex flex-col items-center text-center max-w-2xl mx-auto py-12">
                <div className="w-16 h-16 bg-gray-200/50 text-gray-400 rounded-full flex items-center justify-center mb-6">
