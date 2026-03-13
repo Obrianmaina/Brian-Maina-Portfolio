@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import crypto from 'crypto';
-import { verify } from 'otplib'; // Updated import for v13
+import { verifySync } from 'otplib';
 
 export async function POST(req: Request) {
   try {
@@ -24,10 +24,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, message: "Invalid credentials" }, { status: 401 });
     }
 
-    // 2. Verify the Google Authenticator Token (Now Async in v13)
-    const isTokenValid = await verify({ token, secret: totpSecret });
+    // 2. Verify the TOTP token
+    const result = verifySync({ token, secret: totpSecret });
 
-    if (!isTokenValid) {
+    if (!result.valid) {
       return NextResponse.json({ success: false, message: "Invalid authenticator code" }, { status: 401 });
     }
 
