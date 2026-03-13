@@ -33,6 +33,18 @@ export async function POST(request: Request) {
       { $set: { used_at: new Date() } }
     );
     
+    // NEW: Log the email to the analytics database
+    try {
+      // We use the "portfolio" DB to match where your analytics page fetches data
+      const analyticsDb = mongoClient.db("portfolio");
+      await analyticsDb.collection("access_logs").insertOne({
+        clientEmail: requestLog.email || 'Unknown Email',
+        accessedAt: new Date()
+      });
+    } catch (logError) {
+      console.error('Failed to log CV reference access:', logError);
+    }
+
     // Parse the references from the secure environment variable
     const referencesData = process.env.SECRET_REFERENCES 
       ? JSON.parse(process.env.SECRET_REFERENCES) 
