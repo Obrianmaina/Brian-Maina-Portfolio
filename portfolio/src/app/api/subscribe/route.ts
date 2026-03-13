@@ -1,13 +1,13 @@
 import { Resend } from 'resend';
 import clientPromise from '@/lib/mongodb';
 import crypto from 'crypto';
-import VerificationEmail from '@/emails/VerificationEmail'; // Assuming this exists based on your file list
+import VerificationEmail from '@/emails/VerificationEmail';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
-    const { email, subscriptionType } = await request.json();
+    const { email, nickname, subscriptionType } = await request.json();
 
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return Response.json({ message: 'Invalid email address provided.' }, { status: 400 });
@@ -19,21 +19,24 @@ export async function POST(request: Request) {
     const mongoClient = await clientPromise;
     const db = mongoClient.db("portfolio");
     
+    // Provide a fallback just in case, though the frontend requires it
+    const finalNickname = nickname || email.split('@')[0];
+
     // Insert or update the subscriber as unverified
     await db.collection("subscribers").updateOne(
       { email: email },
       { 
         $set: { 
           email: email,
-          verified: false, // They must click the email link to verify
+          nickname: finalNickname,
+          verified: false,
           subscribed: false,
           subscriptionType: subscriptionType || 'blog',
           verificationToken: verificationToken,
           updatedAt: new Date()
         },
         $setOnInsert: {
-          createdAt: new Date(),
-          nickname: email.split('@')[0]
+          createdAt: new Date()
         }
       },
       { upsert: true }
@@ -48,7 +51,7 @@ export async function POST(request: Request) {
       from: 'Brian Maina <hello@brianmaina.de>', 
       to: email,
       subject: 'Please verify your blog subscription',
-      react: VerificationEmail({ verifyLink: verifyLink }), 
+      react: VerificationEmail({ verifyLink: verifyLink, nickname: finalNickname }), 
     });
 
     return Response.json({ message: 'Verification email sent successfully.' }, { status: 200 });

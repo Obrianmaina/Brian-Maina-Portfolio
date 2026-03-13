@@ -5,25 +5,26 @@ import { Mail, ArrowRight, CheckCircle } from "lucide-react";
 
 export default function BlogSubscribe() {
   const [email, setEmail] = useState("");
+  const [nickname, setNickname] = useState("");
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState("");
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    if (!email || !nickname) return;
 
     setLoading(true);
     setStatus('idle');
 
     try {
-      
       const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ 
           email, 
-          subscriptionType: "blog" // Passing the crucial audience tag here
+          nickname,
+          subscriptionType: "blog"
         }),
       });
 
@@ -33,6 +34,7 @@ export default function BlogSubscribe() {
         setStatus('success');
         setMessage("Awesome! Check your inbox to verify your subscription.");
         setEmail("");
+        setNickname("");
       } else {
         setStatus('error');
         setMessage(data.error || "Something went wrong. Please try again.");
@@ -63,19 +65,29 @@ export default function BlogSubscribe() {
           {message}
         </div>
       ) : (
-        <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-          <input
-            type="email"
-            required
-            placeholder="Enter your email address"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="flex-grow p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
-          />
+        <form onSubmit={handleSubscribe} className="flex flex-col gap-3 max-w-md mx-auto">
+          <div className="flex flex-col sm:flex-row gap-3">
+             <input
+              type="text"
+              required
+              placeholder="Your nickname"
+              value={nickname}
+              onChange={(e) => setNickname(e.target.value)}
+              className="flex-grow p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
+            <input
+              type="email"
+              required
+              placeholder="Email address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="flex-grow p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            />
+          </div>
           <button
             type="submit"
             disabled={loading}
-            className="bg-teal-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-teal-700 transition-colors flex items-center justify-center disabled:opacity-70"
+            className="bg-teal-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-teal-700 transition-colors flex items-center justify-center disabled:opacity-70 w-full"
           >
             {loading ? "Sending..." : "Subscribe"}
             {!loading && <ArrowRight size={18} className="ml-2" />}
