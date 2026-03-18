@@ -2,7 +2,7 @@
 
 import { Send, RefreshCw } from "lucide-react";
 import { DocType, CurrencyCode, Rates } from "../types";
-import { getCurrencySymbol } from "../utils";
+import { getCurrencySymbol, maskMpesaBalance } from "../utils";
 
 interface CreateRecordFormProps {
     docType: DocType;
@@ -179,7 +179,7 @@ export default function CreateRecordForm({
                         <label className="text-sm font-semibold text-gray-700 ml-1">M-Pesa Confirmation Message</label>
                         <textarea
                             required value={mpesaMessage}
-                            onChange={e => setMpesaMessage(e.target.value)}
+                            onChange={e => setMpesaMessage(maskMpesaBalance(e.target.value))}
                             className="w-full p-3 border border-gray-300 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 h-24"
                             placeholder="Paste the exact M-Pesa message here..."
                         />

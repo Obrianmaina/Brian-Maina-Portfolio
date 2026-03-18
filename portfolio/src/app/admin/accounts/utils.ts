@@ -15,7 +15,7 @@ export const toMonthString = (date: Date): string =>
 
 /**
  * Kenya progressive annual tax bands (effective 1 July 2023).
- * Pass annual net profit → returns annual tax AFTER personal relief.
+ * Pass annual net profit -> returns annual tax AFTER personal relief.
  * KRA bands: 288k@10%, 100k@25%, 5.612M@30%, 3.6M@32.5%, rest@35%
  * Personal relief: KSh 28,800/yr
  */
@@ -41,7 +41,7 @@ export function calcAnnualTax(annualNetProfit: number): number {
 
 /**
  * Kenya progressive monthly tax bands (effective 1 July 2023).
- * Pass monthly net profit → returns monthly tax AFTER personal relief.
+ * Pass monthly net profit -> returns monthly tax AFTER personal relief.
  * KRA bands: 24k@10%, 8,333@25%, 467,667@30%, 300k@32.5%, rest@35%
  * Personal relief: KSh 2,400/mo
  */
@@ -63,4 +63,15 @@ export function calcMonthlyTax(monthlyNetProfit: number): number {
     }
     const PERSONAL_RELIEF_MONTHLY = 2_400;
     return Math.max(0, tax - PERSONAL_RELIEF_MONTHLY);
+}
+
+/**
+ * Masks the account balance in a standard M-PESA SMS string.
+ * @param message The raw M-PESA SMS string
+ * @returns The sanitized string with the balance hidden
+ */
+export function maskMpesaBalance(message: string): string {
+    if (!message) return '';
+    const balanceRegex = /New M-PESA balance is Ksh[\d,.]+/i;
+    return message.replace(balanceRegex, 'New M-PESA balance is Ksh ***');
 }
