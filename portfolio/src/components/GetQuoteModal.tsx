@@ -8,7 +8,6 @@ import Link from "next/link";
 export default function GetQuoteModal({ onClose }: { onClose: () => void }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  const [showDisclaimer, setShowDisclaimer] = useState(false);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -180,28 +179,16 @@ export default function GetQuoteModal({ onClose }: { onClose: () => void }) {
                   </label>
                 </div>
 
-                <div className="bg-gray-50 p-3 rounded-md text-xs text-gray-500 mt-4 border border-gray-100">
-                  <strong>Data Collection Notice:</strong> By submitting this form, you consent to the collection of your details to discuss your project.{" "}
-                  {!showDisclaimer ? (
-                    <button 
-                      type="button" 
-                      onClick={() => setShowDisclaimer(true)}
-                      className="text-teal-600 hover:text-teal-700 font-medium underline inline-block"
-                    >
-                      Read more
-                    </button>
-                  ) : (
-                    <span className="inline">
-                      If you opt into the newsletter, your email will be used for marketing purposes. Your data is secure and will never be shared with or sold to third parties. You may withdraw your consent or unsubscribe at any time.
-                      <button 
-                        type="button" 
-                        onClick={() => setShowDisclaimer(false)}
-                        className="text-teal-600 hover:text-teal-700 font-medium underline ml-1"
-                      >
-                        Show less
-                      </button>
-                    </span>
-                  )}
+                <div className="bg-gray-50 p-3 rounded-md text-xs text-gray-500 mt-4 border border-gray-100 leading-relaxed">
+                  <strong>Data Collection Notice:</strong> By submitting this form, you consent to the storage of your preferred name, email address, and project details for the purpose of discussing your project. If you opt into the newsletter, your email will also be securely stored for marketing purposes. Your data will never be shared with third parties. Read our{" "}
+                  <Link 
+                    href="/privacy" 
+                    onClick={onClose}
+                    className="text-teal-600 hover:text-teal-700 font-medium underline inline-block"
+                  >
+                    Privacy Policy
+                  </Link>{" "}
+                  for full details.
                 </div>
 
                 <button 

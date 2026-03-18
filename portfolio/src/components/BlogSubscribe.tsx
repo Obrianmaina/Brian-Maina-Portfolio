@@ -1,7 +1,9 @@
+// src/components/BlogSubscribe.tsx
 "use client";
 
 import { useState } from "react";
 import { Mail, ArrowRight, CheckCircle } from "lucide-react";
+import Link from "next/link";
 
 export default function BlogSubscribe() {
   const [email, setEmail] = useState("");
@@ -65,34 +67,44 @@ export default function BlogSubscribe() {
           {message}
         </div>
       ) : (
-        <form onSubmit={handleSubscribe} className="flex flex-col gap-3 max-w-md mx-auto">
-          <div className="flex flex-col sm:flex-row gap-3">
-             <input
-              type="text"
-              required
-              placeholder="Your nickname"
-              value={nickname}
-              onChange={(e) => setNickname(e.target.value)}
-              className="flex-grow p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
-            />
-            <input
-              type="email"
-              required
-              placeholder="Email address"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="flex-grow p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className="bg-teal-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-teal-700 transition-colors flex items-center justify-center disabled:opacity-70 w-full"
-          >
-            {loading ? "Sending..." : "Subscribe"}
-            {!loading && <ArrowRight size={18} className="ml-2" />}
-          </button>
-        </form>
+        <div className="max-w-md mx-auto">
+          <form onSubmit={handleSubscribe} className="flex flex-col gap-3">
+            <div className="flex flex-col sm:flex-row gap-3">
+               <input
+                type="text"
+                required
+                placeholder="Your nickname"
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                className="flex-grow p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              />
+              <input
+                type="email"
+                required
+                placeholder="Email address"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="flex-grow p-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-teal-500"
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={loading}
+              className="bg-teal-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-teal-700 transition-colors flex items-center justify-center disabled:opacity-70 w-full"
+            >
+              {loading ? "Sending..." : "Subscribe"}
+              {!loading && <ArrowRight size={18} className="ml-2" />}
+            </button>
+          </form>
+          
+          <p className="text-xs text-gray-500 mt-4 leading-relaxed">
+            By subscribing, you consent to the storage of your nickname and email address to receive blog updates. Read our{" "}
+            <Link href="/privacy" className="text-teal-600 hover:text-teal-700 font-medium underline">
+              Privacy Policy
+            </Link>{" "}
+            for full details.
+          </p>
+        </div>
       )}
       
       {status === 'error' && (
