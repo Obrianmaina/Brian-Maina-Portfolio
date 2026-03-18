@@ -24,7 +24,8 @@ export default function RevenueChart({
             </h3>
             <div className="flex-1 w-full h-full min-h-[250px]">
                 <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                    {/* Increased the bottom margin from 0 to 20 to accommodate the XAxis labels */}
+                    <AreaChart data={data} margin={{ top: 10, right: 10, left: -20, bottom: 20 }}>
                         <defs>
                             <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
                                 <stop offset="5%" stopColor={color} stopOpacity={0.3} />
