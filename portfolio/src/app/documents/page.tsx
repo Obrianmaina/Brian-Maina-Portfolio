@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, FileText, CheckCircle, Clock, Printer, RefreshCw } from "lucide-react";
+import { Search, FileText, CheckCircle, Clock, RefreshCw } from "lucide-react";
 import PayInvoiceButton from "@/components/PayInvoiceButton"; 
+import DownloadDocumentBtn from "@/components/DownloadDocumentBtn";
+import { DocumentData } from "@/components/pdf/DocumentTemplate";
 
 interface TransactionDocument {
   _id: string;
@@ -24,7 +26,6 @@ export default function DocumentsPage() {
   const [document, setDocument] = useState<TransactionDocument | null>(null);
   const [error, setError] = useState("");
 
-  // Exchange rate state for EUR/GBP to KES conversion
   const [exchangeRate, setExchangeRate] = useState(1);
   const [isConverting, setIsConverting] = useState(false);
 
@@ -50,7 +51,6 @@ export default function DocumentsPage() {
     }
   };
 
-  // Fetch live rate if the invoice is in EUR or GBP
   useEffect(() => {
     if (document && ['EUR', 'GBP'].includes(document.currency || '')) {
       setIsConverting(true);
@@ -66,17 +66,15 @@ export default function DocumentsPage() {
     }
   }, [document]);
 
-  // Determine what to send to Paystack
   const isEuroOrGbp = ['EUR', 'GBP'].includes(document?.currency || '');
   const paystackCurrency = isEuroOrGbp ? 'KES' : (document?.currency || 'USD');
   const paystackAmount = isEuroOrGbp ? ((document?.amount || 0) * exchangeRate) : (document?.amount || 0);
 
   return (
-    // Added print:bg-white to ensure the PDF background is perfectly clean
-    <main className="min-h-screen bg-gray-50 py-20 px-6 font-sans flex flex-col items-center print:bg-white print:py-10">
+    <main className="min-h-screen bg-gray-50 py-20 px-6 font-sans flex flex-col items-center">
       
-      {/* Hide the search portal entirely when the client prints/downloads the PDF */}
-      <div className="max-w-md w-full bg-white p-8 rounded-3xl shadow-xl border border-gray-100 text-center mb-8 print:hidden">
+      {/* Search Portal */}
+      <div className="max-w-md w-full bg-white p-8 rounded-3xl shadow-xl border border-gray-100 text-center mb-8">
         <div className="w-16 h-16 bg-teal-100 text-teal-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
           <FileText size={32} />
         </div>
@@ -105,8 +103,9 @@ export default function DocumentsPage() {
         {error && <p className="text-red-500 mt-4 font-medium">{error}</p>}
       </div>
 
+      {/* Document View */}
       {document && (
-        <div className="max-w-md w-full bg-white p-8 rounded-3xl shadow-lg border border-gray-100 fade-in print:shadow-none print:border-none print:max-w-2xl print:p-0">
+        <div className="max-w-md w-full bg-white p-8 rounded-3xl shadow-lg border border-gray-100 fade-in">
           <div className="flex justify-between items-start border-b border-gray-100 pb-6 mb-6">
             <div>
               <p className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-1">
@@ -142,8 +141,8 @@ export default function DocumentsPage() {
             </div>
           </div>
 
-          {/* Action Buttons: Hidden during printing */}
-          <div className="print:hidden">
+          {/* Action Buttons */}
+          <div>
             {isEuroOrGbp && document.status === 'pending' && (
               <div className="bg-blue-50 p-4 rounded-xl border border-blue-100 mb-6 text-sm text-blue-800">
                 <p className="flex items-center font-bold mb-1">
@@ -174,12 +173,12 @@ export default function DocumentsPage() {
                  </div>
               )}
               
-              <button 
-                onClick={() => window.print()} 
-                className="w-full py-4 font-bold rounded-xl border-2 border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-colors flex items-center justify-center"
-              >
-                <Printer size={20} className="mr-2" /> Download as PDF
-              </button>
+              <div className="w-full flex *:w-full *:flex-1 *:py-2">
+                <DownloadDocumentBtn 
+                  data={document as DocumentData}
+                  type={document.type} 
+                />
+              </div>
             </div>
           </div>
 

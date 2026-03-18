@@ -4,6 +4,8 @@ import { Calculator, Download, Calendar, FileText, CheckCircle, Clock } from "lu
 import RevenueChart from "./RevenueChart";
 import { Transaction, TaxSummary, MonthlyStats, ChartDataPoint, Rates } from "../types";
 import { getCurrencySymbol } from "../utils";
+import DownloadDocumentBtn from "@/components/DownloadDocumentBtn";
+import { DocumentData } from "@/components/pdf/DocumentTemplate";
 
 interface ReportsTabProps {
     taxSummary: TaxSummary;
@@ -25,24 +27,17 @@ export default function ReportsTab({
     const fmt = (n: number) => n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const netMonthly = monthlyStats.collected - monthlyStats.expenses;
 
-    // ── Live disclaimer computed values ──────────────────────────────────
-    // Determine which KRA monthly band the net profit falls into
     const getActiveBand = (netProfit: number): string => {
-        if (netProfit <= 24_000)                          return '10%';
-        if (netProfit <= 32_333)                          return '25%';
-        if (netProfit <= 500_000)                         return '30%';
-        if (netProfit <= 800_000)                         return '32.5%';
+        if (netProfit <= 24_000) return '10%';
+        if (netProfit <= 32_333) return '25%';
+        if (netProfit <= 500_000) return '30%';
+        if (netProfit <= 800_000) return '32.5%';
         return '35%';
     };
     const activeBand = getActiveBand(netMonthly);
 
-    // Gap between monthly provision and annual true liability
-    const monthlyAnnualisedTax = monthlyStats.estimatedTax * 12;
     const annualTrueTax = taxSummary.estimatedTaxDue;
     const savingsBuffer = Math.max(0, monthlyStats.estimatedTax - (annualTrueTax / 12));
-
-    // What the annual free to spend works out to per month
-    const annualFreeToSpendMonthly = taxSummary.freeToSpendKES / 12;
 
     return (
         <div className="fade-in space-y-8">
@@ -66,10 +61,10 @@ export default function ReportsTab({
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-5">
                     {[
-                        { label: 'Gross Revenue',       value: taxSummary.grossRevenueKES },
+                        { label: 'Gross Revenue', value: taxSummary.grossRevenueKES },
                         { label: 'Deductible Expenses', value: taxSummary.totalExpensesKES },
-                        { label: 'Net Profit',          value: taxSummary.netProfit },
-                        { label: 'WHT Credits',         value: taxSummary.totalWithheldTaxKES },
+                        { label: 'Net Profit', value: taxSummary.netProfit },
+                        { label: 'WHT Credits', value: taxSummary.totalWithheldTaxKES },
                     ].map(({ label, value }) => (
                         <div key={label} className="p-4 bg-gray-50 rounded-xl border border-gray-100">
                             <p className="text-sm text-gray-500 font-medium mb-1">{label}</p>
@@ -114,9 +109,9 @@ export default function ReportsTab({
             {/* Monthly Stat Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {[
-                    { icon: FileText,    label: 'Total Billed Vol.',    value: monthlyStats.billed,    note: 'Invoices sent this month',   color: 'amber'   },
+                    { icon: FileText, label: 'Total Billed Vol.', value: monthlyStats.billed, note: 'Invoices sent this month', color: 'amber' },
                     { icon: CheckCircle, label: 'Total Collected Vol.', value: monthlyStats.collected, note: 'Receipts issued this month', color: 'emerald' },
-                    { icon: Clock,       label: 'Pending Value',        value: monthlyStats.pending,   note: 'Expected vs Collected',      color: 'blue'    },
+                    { icon: Clock, label: 'Pending Value', value: monthlyStats.pending, note: 'Expected vs Collected', color: 'blue' },
                 ].map(({ icon: Icon, label, value, note, color }) => (
                     <div key={label} className={`bg-${color}-50 border border-${color}-200 p-6 rounded-2xl`}>
                         <div className="flex items-center mb-2">
@@ -155,7 +150,8 @@ export default function ReportsTab({
                                     <th className="px-4 py-3">Description</th>
                                     <th className="px-4 py-3">Status</th>
                                     <th className="px-4 py-3 text-right">Orig. Amount</th>
-                                    <th className="px-4 py-3 text-right rounded-r-lg">Amount (KES)</th>
+                                    <th className="px-4 py-3 text-right">Amount (KES)</th>
+                                    <th className="px-4 py-3 text-center rounded-r-lg">PDF</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -165,41 +161,52 @@ export default function ReportsTab({
                                     const kesAmount = tx.amountPaidKES ?? amt * txRate;
                                     return (
                                         <tr key={tx._id} className="border-b last:border-0 hover:bg-gray-50 transition-colors">
-                                            <td className="px-4 py-3 whitespace-nowrap">{new Date(tx.date).toLocaleDateString()}</td>
-                                            <td className="px-4 py-3 font-medium text-gray-900">{tx.clientName}</td>
-                                            <td className="px-4 py-3">{tx.description}</td>
-                                            <td className="px-4 py-3">
-                                                <span className={`px-2 py-1 rounded-full text-xs font-bold ${
-                                                    tx.type === 'expense'   ? 'bg-rose-100 text-rose-700'
-                                                    : tx.status === 'paid' ? 'bg-green-100 text-green-700'
-                                                    : 'bg-amber-100 text-amber-700'
-                                                }`}>
-                                                    {tx.type === 'expense' ? 'EXPENSE' : tx.status.toUpperCase()}
-                                                </span>
+                                            <td className="px-4 py-3 whitespace-nowrap">
+                                                {new Date(tx.date).toLocaleDateString()}
                                             </td>
-                                            <td className="px-4 py-3 text-right">
-                                                <div className="flex items-center justify-end gap-3">
-                                                    <span className={`font-medium ${
-                                                        tx.type === 'receipt'   ? 'text-green-600'
-                                                        : tx.type === 'expense' ? 'text-rose-600'
-                                                        : 'text-gray-900'
-                                                    }`}>
-                                                        {tx.type === 'expense' ? '-' : ''}
-                                                        {getCurrencySymbol(tx.currency || 'EUR')}{amt.toFixed(2)}
+                                            <td className="px-4 py-3 font-medium text-gray-900">
+                                                {tx.clientName}
+                                            </td>
+                                            <td className="px-4 py-3">
+                                                {tx.description}
+                                            </td>
+                                            <td className="px-4 py-3">
+                                                <div className="flex flex-col gap-1.5 items-start">
+                                                    <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${tx.type === 'expense' ? 'bg-rose-100 text-rose-700'
+                                                            : tx.status === 'paid' ? 'bg-green-100 text-green-700'
+                                                                : 'bg-amber-100 text-amber-700'
+                                                        }`}>
+                                                        {tx.type === 'expense' ? 'EXPENSE' : tx.status.toUpperCase()}
                                                     </span>
                                                     {tx.type === 'invoice' && tx.status === 'pending' && (
                                                         <button
                                                             onClick={() => onMarkAsPaid(tx._id)}
                                                             disabled={markingPaid === tx._id}
-                                                            className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-1 rounded font-semibold transition-colors disabled:opacity-50"
+                                                            className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-0.5 rounded font-semibold transition-colors disabled:opacity-50"
                                                         >
                                                             {markingPaid === tx._id ? "..." : "Mark Paid"}
                                                         </button>
                                                     )}
                                                 </div>
                                             </td>
+                                            <td className="px-4 py-3 text-right">
+                                                <span className={`font-medium ${tx.type === 'receipt' ? 'text-green-600'
+                                                        : tx.type === 'expense' ? 'text-rose-600'
+                                                            : 'text-gray-900'
+                                                    }`}>
+                                                    {tx.type === 'expense' ? '-' : ''}
+                                                    {getCurrencySymbol(tx.currency || 'EUR')}{amt.toFixed(2)}
+                                                </span>
+                                            </td>
                                             <td className="px-4 py-3 text-right font-bold text-gray-800">
                                                 {tx.type === 'expense' ? '-' : ''}KSh {fmt(kesAmount)}
+                                            </td>
+                                            <td className="px-4 py-3 text-center">
+                                                <DownloadDocumentBtn
+                                                    data={tx as DocumentData}
+                                                    type={tx.status === 'paid' || tx.type === 'receipt' ? 'receipt' : 'invoice'}
+                                                    iconOnly
+                                                />
                                             </td>
                                         </tr>
                                     );
@@ -207,8 +214,6 @@ export default function ReportsTab({
                             </tbody>
 
                             <tfoot className="border-t-2 border-gray-200">
-
-                                {/* ── Section 1: Cash P&L ── */}
                                 <tr className="bg-gray-50">
                                     <td colSpan={4} className="px-4 py-3 text-right uppercase text-xs tracking-wider font-bold text-gray-700">
                                         Total Income (Collected)
@@ -216,14 +221,16 @@ export default function ReportsTab({
                                     <td colSpan={2} className="px-4 py-3 text-right text-base font-bold text-emerald-600">
                                         KSh {fmt(monthlyStats.collected)}
                                     </td>
+                                    <td />
                                 </tr>
                                 <tr className="bg-gray-50 border-t border-gray-200">
                                     <td colSpan={4} className="px-4 py-3 text-right uppercase text-xs tracking-wider font-bold text-gray-700">
                                         Total Expenses
                                     </td>
                                     <td colSpan={2} className="px-4 py-3 text-right text-base font-bold text-rose-600">
-                                        − KSh {fmt(monthlyStats.expenses)}
+                                        - KSh {fmt(monthlyStats.expenses)}
                                     </td>
+                                    <td />
                                 </tr>
                                 <tr className="border-t border-gray-200 bg-gray-100">
                                     <td colSpan={4} className="px-4 py-3 text-right uppercase text-sm tracking-wider font-normal text-gray-900">
@@ -232,9 +239,8 @@ export default function ReportsTab({
                                     <td colSpan={2} className={`px-4 py-3 text-right text-lg font-normal ${netMonthly >= 0 ? 'text-blue-600' : 'text-rose-600'}`}>
                                         KSh {fmt(netMonthly)}
                                     </td>
+                                    <td />
                                 </tr>
-
-                                {/* ── Section 2: WHT (real cash already withheld) ── */}
                                 {monthlyStats.wht > 0 && (
                                     <tr className="border-t border-gray-200 bg-gray-50">
                                         <td colSpan={4} className="px-4 py-3 text-right uppercase text-xs tracking-wider font-bold text-gray-500">
@@ -242,8 +248,9 @@ export default function ReportsTab({
                                             <span className="ml-1 normal-case font-normal text-gray-400">(real money withheld)</span>
                                         </td>
                                         <td colSpan={2} className="px-4 py-3 text-right text-base font-bold text-gray-500">
-                                            − KSh {fmt(monthlyStats.wht)}
+                                            - KSh {fmt(monthlyStats.wht)}
                                         </td>
+                                        <td />
                                     </tr>
                                 )}
                                 <tr className="border-t border-gray-200 bg-slate-50">
@@ -254,17 +261,17 @@ export default function ReportsTab({
                                     <td colSpan={2} className="px-4 py-3 text-right text-base font-bold text-slate-700">
                                         KSh {fmt(monthlyStats.spendableNet)}
                                     </td>
+                                    <td />
                                 </tr>
-
-                                {/* ── Section 3: Allocations ── */}
                                 <tr className="border-t-2 border-dashed border-amber-300 bg-amber-50">
                                     <td colSpan={4} className="px-4 py-3 text-right uppercase text-xs tracking-wider font-bold text-amber-700">
                                         Tax Provision
-                                        <span className="ml-1 normal-case font-normal text-amber-500">— set aside monthly, see Annual Summary for true liability</span>
+                                        <span className="ml-1 normal-case font-normal text-amber-500"> set aside monthly, see Annual Summary for true liability</span>
                                     </td>
                                     <td colSpan={2} className="px-4 py-3 text-right text-base font-bold text-amber-700">
                                         ~ KSh {fmt(monthlyStats.estimatedTax)}
                                     </td>
+                                    <td />
                                 </tr>
                                 <tr className="border-t border-amber-200 bg-purple-50">
                                     <td colSpan={4} className="px-4 py-3 text-right uppercase text-xs tracking-wider font-normal text-purple-900">
@@ -273,6 +280,7 @@ export default function ReportsTab({
                                     <td colSpan={2} className="px-4 py-3 text-right text-base font-normal text-purple-700">
                                         KSh {fmt(monthlyStats.tithe)}
                                     </td>
+                                    <td />
                                 </tr>
                                 <tr className="border-t border-purple-200 bg-emerald-100">
                                     <td colSpan={4} className="px-4 py-4 text-right uppercase text-sm tracking-wider font-normal text-emerald-900">
@@ -281,22 +289,18 @@ export default function ReportsTab({
                                     <td colSpan={2} className="px-4 py-4 text-right text-xl font-normal text-emerald-700">
                                         KSh {fmt(monthlyStats.freeToSpend)}
                                     </td>
+                                    <td />
                                 </tr>
                             </tfoot>
                         </table>
 
-                        {/* Live disclaimer banner */}
                         <div className="mt-4 bg-amber-50 border border-amber-200 rounded-xl overflow-hidden">
-
-                            {/* Header row */}
                             <div className="flex items-center gap-2 px-4 py-3 border-b border-amber-200 bg-amber-100/60">
                                 <span className="text-amber-600 text-sm">⚠</span>
                                 <p className="text-xs font-bold text-amber-900 uppercase tracking-wide">
                                     Why does Free to Spend differ from the Annual Summary?
                                 </p>
                             </div>
-
-                            {/* Body */}
                             <div className="px-4 py-3 space-y-2">
                                 <p className="text-xs text-amber-800 leading-relaxed">
                                     This ledger uses Kenya&apos;s <span className="font-bold">monthly tax bands</span> as a saving discipline,
@@ -314,8 +318,6 @@ export default function ReportsTab({
                                     (~KSh {fmt(annualTrueTax / 12)}/mo equivalent). That number is always lower
                                     unless you earn this exact amount every month all year.
                                 </p>
-
-                                {/* Live delta callout */}
                                 <div className="mt-2 flex flex-col sm:flex-row gap-2">
                                     <div className="flex-1 bg-white border border-amber-200 rounded-lg px-3 py-2">
                                         <p className="text-[10px] font-bold text-amber-600 uppercase tracking-wider mb-0.5">Monthly Provision</p>
@@ -335,10 +337,9 @@ export default function ReportsTab({
                                         <p className="text-[10px] text-emerald-500 mt-0.5">Extra cushion vs KRA bill</p>
                                     </div>
                                 </div>
-
                                 <p className="text-[11px] text-amber-700 pt-1 border-t border-amber-200">
                                     <span className="font-bold">Use the Annual Summary</span> for what you actually owe KRA.
-                                    Use this monthly provision to stay disciplined — the KSh {fmt(savingsBuffer)} buffer
+                                    Use this monthly provision to stay disciplined, the KSh {fmt(savingsBuffer)} buffer
                                     each month compounds into a <span className="font-bold">KSh {fmt(savingsBuffer * 12)} annual cushion</span> if income stays consistent.
                                 </p>
                             </div>

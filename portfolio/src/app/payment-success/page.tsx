@@ -1,14 +1,30 @@
 'use client';
 
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import DownloadDocumentBtn from "@/components/DownloadDocumentBtn";
+import { DocumentData } from "@/components/pdf/DocumentTemplate";
 
 function SuccessContent() {
   const searchParams = useSearchParams();
   const reference = searchParams.get("reference");
-  const trxref = searchParams.get("trxref");
+  
+  const [invoiceData, setInvoiceData] = useState<DocumentData | null>(null);
+
+  useEffect(() => {
+    if (reference) {
+      fetch(`/api/admin/accounts?id=${reference}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data && !data.error) {
+                setInvoiceData(data.transaction || data);
+            }
+        })
+        .catch(err => console.error("Could not fetch invoice data for PDF", err));
+    }
+  }, [reference]);
 
   return (
     <div className="bg-white p-8 rounded-3xl shadow-xl max-w-md w-full text-center border border-gray-100">
@@ -25,6 +41,12 @@ function SuccessContent() {
           <div className="bg-gray-50 p-4 rounded-lg w-full mb-8 text-sm text-gray-600">
             <p><strong>Reference:</strong></p>
             <p className="break-all">{reference}</p>
+          </div>
+        )}
+
+        {invoiceData && (
+          <div className="mb-6 w-full flex justify-center">
+            <DownloadDocumentBtn data={{ ...invoiceData, status: 'paid' }} type="receipt" />
           </div>
         )}
 
