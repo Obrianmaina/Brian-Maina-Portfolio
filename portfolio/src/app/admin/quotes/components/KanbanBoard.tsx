@@ -43,10 +43,10 @@ export default function KanbanBoard({ quotes, onStatusChange }: KanbanBoardProps
     <div className="space-y-6">
       {/* Active Pipeline */}
       <div>
-        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3 pl-1">
+        <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3 pl-1 transition-colors">
           Active Pipeline
         </p>
-        <div className="flex gap-4 overflow-x-auto pb-2">
+        <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700">
           {ACTIVE_STATUSES.map((status) => (
             <KanbanColumn
               key={status}
@@ -60,21 +60,21 @@ export default function KanbanBoard({ quotes, onStatusChange }: KanbanBoardProps
 
       {/* Divider */}
       <div className="flex items-center gap-4">
-        <div className="flex-1 border-t border-dashed border-gray-300" />
-        <span className="text-xs text-gray-400 font-semibold uppercase tracking-widest whitespace-nowrap">
+        <div className="flex-1 border-t border-dashed border-gray-300 dark:border-gray-700 transition-colors" />
+        <span className="text-xs text-gray-400 dark:text-gray-500 font-semibold uppercase tracking-widest whitespace-nowrap transition-colors">
           Lost Leads
           {winRate !== null && (
-            <span className="ml-2 px-2 py-0.5 bg-emerald-50 text-emerald-600 border border-emerald-200 rounded-full normal-case font-bold">
+            <span className="ml-2 px-2 py-0.5 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 rounded-full normal-case font-bold transition-colors">
               {winRate}% win rate
             </span>
           )}
         </span>
-        <div className="flex-1 border-t border-dashed border-gray-300" />
+        <div className="flex-1 border-t border-dashed border-gray-300 dark:border-gray-700 transition-colors" />
       </div>
 
       {/* Closed Section */}
       <div>
-        <div className="flex gap-4 overflow-x-auto pb-4">
+        <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700">
           {CLOSED_STATUSES.map((status) => (
             <KanbanColumn
               key={status}

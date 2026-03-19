@@ -128,28 +128,32 @@ export default function AccountsPage() {
     const markPaidProps = { markingPaid, onMarkAsPaid: handleMarkAsPaid };
 
     return (
-        <main className="min-h-screen bg-gray-50 py-12 px-6">
-            <div className="max-w-6xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100 fade-in">
+        <main className="min-h-screen bg-gray-50 dark:bg-gray-950 py-12 px-6 transition-colors duration-300">
+            <div className="max-w-6xl mx-auto bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg dark:shadow-none border border-gray-100 dark:border-gray-800 fade-in transition-colors duration-300">
 
                 <div className="flex justify-between items-center mb-6">
                     <button
                         onClick={() => router.push('/admin')}
-                        className="flex items-center text-gray-500 hover:text-gray-900 transition-colors font-medium"
+                        className="flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-gray-500 rounded-md p-1 -ml-1"
                     >
                         <ArrowLeft size={20} className="mr-2" /> Back to Hub
                     </button>
                 </div>
 
-                <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-gray-200 gap-4">
-                    <h2 className="text-3xl font-bold border-l-4 border-amber-400 pl-4 text-gray-800">
+                <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 pb-4 border-b border-gray-200 dark:border-gray-800 gap-4 transition-colors">
+                    <h2 className="text-3xl font-bold border-l-4 border-amber-400 dark:border-amber-500 pl-4 text-gray-800 dark:text-gray-50 transition-colors">
                         Financial Hub
                     </h2>
-                    <div className="flex bg-gray-100 p-1 rounded-lg">
+                    <div className="flex bg-gray-100 dark:bg-gray-800 p-1 rounded-lg transition-colors">
                         {(['dashboard', 'report'] as ActiveTab[]).map(tab => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
-                                className={`px-4 py-2 rounded-md font-medium text-sm transition-all ${activeTab === tab ? 'bg-white shadow-sm text-gray-900' : 'text-gray-500 hover:text-gray-700'}`}
+                                className={`px-4 py-2 rounded-md font-medium text-sm transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 ${
+                                    activeTab === tab 
+                                        ? 'bg-white dark:bg-gray-950 shadow-sm text-gray-900 dark:text-gray-100' 
+                                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+                                }`}
                             >
                                 {tab === 'dashboard' ? 'Dashboard' : 'Reports & Tax'}
                             </button>
