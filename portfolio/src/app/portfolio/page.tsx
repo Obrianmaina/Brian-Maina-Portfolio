@@ -74,10 +74,10 @@ export default function PortfolioPage() {
   };
 
   return (
-    <main className="relative bg-gray-50 text-gray-900 min-h-screen overflow-x-hidden pt-24">
-      {/* ── Design Showcase ─────────────────────────────────────────────────── */}
+    <main className="relative bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen overflow-x-hidden pt-24 transition-colors duration-300">
+      {/* --- Design Showcase --- */}
       <section id="portfolio" className="relative max-w-6xl mx-auto py-10 px-6">
-        <h1 className="text-4xl font-bold mb-10 text-center">Design Showcase</h1>
+        <h1 className="text-4xl font-bold mb-10 text-center text-gray-900 dark:text-gray-50">Design Showcase</h1>
 
         <div className="flex flex-wrap gap-4 mb-8 justify-center">
           {categories.map((cat) => (
@@ -88,31 +88,31 @@ export default function PortfolioPage() {
         </div>
 
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+          <div className="flex flex-col items-center justify-center py-20 text-gray-400 dark:text-gray-500">
             <Loader2 className="animate-spin mb-4" size={40} />
             <p className="text-lg font-medium">Loading projects...</p>
           </div>
         ) : showcases.length === 0 ? (
-          <div className="text-center py-20 text-gray-500">
+          <div className="text-center py-20 text-gray-500 dark:text-gray-400">
             <p className="text-lg">No projects found. Add some from the Admin Dashboard!</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredShowcases.map((project, idx) => (
               <motion.div key={project._id || idx} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.08 }}>
-                <Card className="w-full shadow-lg rounded-2xl group relative overflow-hidden cursor-pointer h-full" onClick={() => setLightbox(project)}>
+                <Card className="w-full shadow-lg rounded-2xl group relative overflow-hidden cursor-pointer h-full bg-white dark:bg-gray-900 border border-transparent dark:border-gray-800 transition-colors" onClick={() => setLightbox(project)}>
                   <CardContent>
-                    <div className="h-40 flex items-center justify-center relative bg-gray-100 rounded-lg overflow-hidden">
+                    <div className="h-40 flex items-center justify-center relative bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden transition-colors">
                       <ThumbnailPreview project={project} />
-                      <span className="absolute top-2 left-2 bg-teal-500 text-white text-xs px-2 py-1 rounded-full">{project.tag}</span>
-                      <div className="absolute inset-0 bg-black/60 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="absolute top-2 left-2 bg-teal-500 text-white text-xs px-2 py-1 rounded-full shadow-sm">{project.tag}</span>
+                      <div className="absolute inset-0 bg-black/70 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
                         <p className="text-white text-sm mb-2 px-4 text-center">{project.description}</p>
-                        <Button className="bg-teal-500 hover:bg-teal-600">View Project</Button>
+                        <Button className="bg-teal-500 hover:bg-teal-600 border-none dark:text-white dark:hover:bg-teal-600">View Project</Button>
                       </div>
                     </div>
                     <div className="p-4">
-                      <h3 className="text-xl font-medium">{project.title}</h3>
-                      <p className="text-sm text-gray-600">Category: {project.category}</p>
+                      <h3 className="text-xl font-medium text-gray-900 dark:text-gray-100">{project.title}</h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">Category: {project.category}</p>
                     </div>
                   </CardContent>
                 </Card>
@@ -122,10 +122,10 @@ export default function PortfolioPage() {
         )}
       </section>
 
-      {/* ── Corporate Work ───────────────────────────────────────────────────── */}
+      {/* --- Corporate Work --- */}
       <section id="corporate-work" className="relative max-w-6xl mx-auto py-20 px-6">
-        <h2 className="text-3xl font-semibold mb-8 text-center">Corporate Work</h2>
-        <p className="text-gray-600 mb-8 max-w-3xl mx-auto text-center">
+        <h2 className="text-3xl font-semibold mb-8 text-center text-gray-900 dark:text-gray-50">Corporate Work</h2>
+        <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-3xl mx-auto text-center">
           This section contains confidential work created for specific companies. Access is granted for portfolio review purposes only after acknowledging the respective disclaimer.
         </p>
 
@@ -133,19 +133,19 @@ export default function PortfolioPage() {
           {corporateData.map((project, idx) => (
             <motion.div key={project.companyName} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.08 }}>
               <Card
-                className="w-full shadow-lg rounded-2xl group relative overflow-hidden cursor-pointer h-full flex flex-col items-center justify-center p-8 bg-gray-100 hover:bg-white transition-colors"
+                className="w-full shadow-lg rounded-2xl group relative overflow-hidden cursor-pointer h-full flex flex-col items-center justify-center p-8 bg-gray-100 dark:bg-gray-900 hover:bg-white dark:hover:bg-gray-800 border border-transparent dark:border-gray-800 transition-colors"
                 onClick={() => setDisclaimerProject(project)}
               >
                 <Image src={project.companyLogo} alt={`${project.companyName} logo`} width={128} height={64} className="h-16 w-auto mb-4" unoptimized={true} />
-                <h3 className="text-xl font-medium text-gray-800">{project.companyName}</h3>
-                <p className="text-sm text-teal-600 font-semibold mt-4">View Projects</p>
+                <h3 className="text-xl font-medium text-gray-800 dark:text-gray-200">{project.companyName}</h3>
+                <p className="text-sm text-teal-600 dark:text-teal-400 font-semibold mt-4">View Projects</p>
               </Card>
             </motion.div>
           ))}
         </div>
       </section>
 
-      {/* ── Modals ───────────────────────────────────────────────────────────── */}
+      {/* --- Modals --- */}
       <LightboxModal lightbox={lightbox} onClose={() => setLightbox(null)} setExpandedMockup={setExpandedMockup} />
       <DisclaimerModal disclaimerProject={disclaimerProject} onClose={() => setDisclaimerProject(null)} onProceed={handleDisclaimerProceed} />
       <CorporateGalleryModal
@@ -155,16 +155,16 @@ export default function PortfolioPage() {
       />
       <ExpandedMockupModal src={expandedMockup} onClose={() => setExpandedMockup(null)} />
 
-      {/* ── Footer ───────────────────────────────────────────────────────────── */}
-      <footer className="relative bg-gray-900 text-white py-20 px-6 text-center">
-        <h2 className="text-3xl font-semibold mb-6">Get In Touch</h2>
-        <p className="mb-6">Feel free to reach out for collaborations or opportunities.</p>
+      {/* --- Footer --- */}
+      <footer className="relative bg-gray-900 dark:bg-gray-950 text-white py-20 px-6 text-center border-t border-transparent dark:border-gray-800 transition-colors duration-300">
+        <h2 className="text-3xl font-semibold mb-6 text-gray-50">Get In Touch</h2>
+        <p className="mb-6 text-gray-300">Feel free to reach out for collaborations or opportunities.</p>
         <div className="flex justify-center space-x-6 mb-6">
           <a href="https://www.linkedin.com/in/brian-maina-nyawira" target="_blank" rel="noopener noreferrer" className="hover:text-[#0077B5] transition-transform transform hover:scale-110" aria-label="LinkedIn"><SiLinkedin size={20} /></a>
           <a href="https://github.com/Obrienmaina-Mosbach" target="_blank" rel="noopener noreferrer" className="hover:text-[#C06EFF] transition-transform transform hover:scale-110" aria-label="GitHub"><SiGithub size={20} /></a>
           <a href="https://www.behance.net/brianmaina3" target="_blank" rel="noopener noreferrer" className="hover:text-[#1769FF] transition-transform transform hover:scale-110" aria-label="Behance"><SiBehance size={20} /></a>
         </div>
-        <Button className="bg-teal-500 hover:bg-teal-600 text-lg px-6 py-3 rounded-2xl" onClick={() => (window.location.href = "mailto:request@brianmaina.de")}>Contact Me</Button>
+        <Button className="bg-teal-500 hover:bg-teal-600 text-lg px-6 py-3 rounded-2xl border-none dark:text-white" onClick={() => (window.location.href = "mailto:request@brianmaina.de")}>Contact Me</Button>
       </footer>
     </main>
   );

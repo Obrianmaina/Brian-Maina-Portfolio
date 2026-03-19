@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { Home, PenTool, Settings, Briefcase, FileText, BookOpen } from "lucide-react";
 import { useState } from "react";
 import GetQuoteModal from "./GetQuoteModal";
+import { ThemeToggle } from "./ThemeToggle";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -13,13 +14,13 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 shadow-sm">
+      <nav className="fixed top-0 w-full z-50 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-800 shadow-sm transition-colors duration-300">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
 
           {/* Left: Home */}
           <Link
             href="/"
-            className="text-gray-800 hover:text-teal-600 transition-colors"
+            className="text-gray-800 dark:text-gray-200 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
             aria-label="Home"
             title="Home"
           >
@@ -31,7 +32,7 @@ export default function Navbar() {
 
             <Link
               href="/portfolio"
-              className="relative text-gray-900 hover:text-teal-600 transition-colors flex items-center justify-center"
+              className="relative text-gray-900 dark:text-gray-100 hover:text-teal-600 dark:hover:text-teal-400 transition-colors flex items-center justify-center"
               aria-label="Portfolio"
               title="Portfolio"
             >
@@ -43,7 +44,7 @@ export default function Navbar() {
 
             <Link
               href="/resume"
-              className="relative text-gray-900 hover:text-teal-600 transition-colors flex items-center justify-center"
+              className="relative text-gray-900 dark:text-gray-100 hover:text-teal-600 dark:hover:text-teal-400 transition-colors flex items-center justify-center"
               aria-label="CV / Resume"
               title="CV / Resume"
             >
@@ -55,7 +56,7 @@ export default function Navbar() {
 
             <Link
               href="/blog"
-              className="relative text-gray-900 hover:text-teal-600 transition-colors flex items-center justify-center"
+              className="relative text-gray-900 dark:text-gray-100 hover:text-teal-600 dark:hover:text-teal-400 transition-colors flex items-center justify-center"
               aria-label="Blog"
               title="Blog"
             >
@@ -67,7 +68,7 @@ export default function Navbar() {
 
             <button
               onClick={() => setIsModalOpen(true)}
-              className="text-gray-900 hover:text-teal-600 transition-colors"
+              className="text-gray-900 dark:text-gray-100 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
               aria-label="Get a Quote"
               title="Get a Quote"
             >
@@ -76,12 +77,15 @@ export default function Navbar() {
 
             <Link
               href="/admin"
-              className="text-gray-900 hover:text-teal-600 transition-colors"
+              className="text-gray-900 dark:text-gray-100 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
               aria-label="Admin Portal"
               title="Admin Portal"
             >
               <Settings className="w-5 h-5" />
             </Link>
+
+            {/* Theme Toggle Button */}
+            <ThemeToggle />
 
           </div>
         </div>

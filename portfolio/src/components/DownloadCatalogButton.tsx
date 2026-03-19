@@ -30,7 +30,7 @@ export default function DownloadCatalogButton({ currency, buttonText = "Download
   // PDFDownloadLink only works on the client side
   if (!isClient || services.length === 0) {
     return (
-      <button disabled className="flex items-center gap-2 bg-gray-200 text-gray-500 px-4 py-2 rounded-lg font-medium">
+      <button disabled className="flex items-center gap-2 bg-gray-200 dark:bg-gray-800 text-gray-500 dark:text-gray-400 px-4 py-2 rounded-lg font-medium transition-colors cursor-not-allowed">
         <Download size={18} /> Loading PDF...
       </button>
     );
@@ -40,7 +40,7 @@ export default function DownloadCatalogButton({ currency, buttonText = "Download
     <PDFDownloadLink
       document={<CatalogPDF services={services} bundles={bundles} currency={currency} />}
       fileName={`Brian_Maina_Pricing_${currency}.pdf`}
-      className="flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg transition-colors font-medium"
+      className="flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 dark:bg-teal-600 dark:hover:bg-teal-500 text-white px-4 py-2 rounded-lg transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 shadow-sm"
     >
       {({ loading }) => (
         <>

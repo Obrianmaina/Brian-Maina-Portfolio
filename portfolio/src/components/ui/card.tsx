@@ -6,7 +6,7 @@ export const Card: React.FC<{ children: React.ReactNode; className?: string; onC
   onClick,
 }) => (
   <div
-    className={`bg-white rounded-2xl shadow-md hover:shadow-xl transition p-4 ${className}`}
+    className={`bg-white dark:bg-gray-900 border border-transparent dark:border-gray-800 rounded-2xl shadow-md dark:shadow-none hover:shadow-xl dark:hover:bg-gray-800/80 transition-all duration-300 p-4 ${className}`}
     onClick={onClick}
   >
     {children}

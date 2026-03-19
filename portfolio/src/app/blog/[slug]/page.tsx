@@ -136,17 +136,17 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="animate-spin text-teal-600" size={32} />
+      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-950 transition-colors duration-300">
+        <Loader2 className="animate-spin text-teal-600 dark:text-teal-400" size={32} />
       </div>
     );
   }
 
   if (!blog) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Article Not Found</h2>
-        <Link href="/blog" className="text-teal-600 font-medium flex items-center">
+      <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center bg-white dark:bg-gray-950 transition-colors duration-300">
+        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4 transition-colors">Article Not Found</h2>
+        <Link href="/blog" className="text-teal-600 dark:text-teal-400 font-medium flex items-center hover:text-teal-700 dark:hover:text-teal-300 transition-colors">
           <ArrowLeft size={18} className="mr-2" /> Return to Blog
         </Link>
       </div>
@@ -173,7 +173,7 @@ export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: s
         }}
       />
 
-      <main className="min-h-screen bg-white pb-24 font-sans">
+      <main className="min-h-screen bg-white dark:bg-gray-950 pb-24 font-sans transition-colors duration-300">
         <div className="max-w-6xl mx-auto px-6 pt-12">
           <BlogHeader
             onSubscribeClick={() => setIsSubscribeModalOpen(true)}

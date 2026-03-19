@@ -24,15 +24,13 @@ export default function HomePage() {
   }, [actions.length]);
 
   return (
-    // Removed: bg-gradient-to-br from-gray-50 via-teal-50 to-purple-100 animate-gradient
-    // You can add a solid background class here like bg-white or bg-gray-50 if needed
-    <main className="relative text-gray-900 min-h-screen overflow-x-hidden pt-16">
+    <main className="relative text-gray-900 dark:text-gray-100 min-h-screen overflow-x-hidden pt-16 transition-colors duration-300">
       <section className="relative flex flex-col items-center justify-center min-h-[calc(100vh-64px)] text-center px-6">
         <motion.h1 
           initial={{ opacity: 0, y: -50 }} 
           animate={{ opacity: 1, y: 0 }} 
           transition={{ duration: 0.8 }} 
-          className="text-4xl sm:text-5xl font-bold mb-4"
+          className="text-4xl sm:text-5xl font-bold mb-4 text-gray-900 dark:text-gray-50"
         >
           Brian Maina
         </motion.h1>
@@ -41,7 +39,7 @@ export default function HomePage() {
           initial={{ opacity: 0 }} 
           animate={{ opacity: 1 }} 
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-lg mb-6"
+          className="text-lg mb-6 text-gray-700 dark:text-gray-300"
         >
           Visual Designer
         </motion.p>
@@ -69,9 +67,9 @@ export default function HomePage() {
         </motion.div>
       </section>
 
-      <footer className="relative bg-gray-900/90 text-white py-20 px-6 text-center backdrop-blur-sm">
+      <footer className="relative bg-gray-900 dark:bg-gray-950 text-white py-20 px-6 text-center backdrop-blur-sm border-t border-transparent dark:border-gray-800 transition-colors duration-300">
         <h2 className="text-3xl font-semibold mb-6">Get In Touch</h2>
-        <p className="mb-6">Feel free to reach out for collaborations or opportunities.</p>
+        <p className="mb-6 text-gray-300">Feel free to reach out for collaborations or opportunities.</p>
         <div className="flex justify-center space-x-6 mb-6">
           <a href="https://www.linkedin.com/in/brian-maina-nyawira" target="_blank" rel="noopener noreferrer" className="hover:text-[#0077B5] transition-transform transform hover:scale-110" aria-label="LinkedIn"><SiLinkedin size={20} /></a>
           <a href="https://github.com/Obrienmaina-Mosbach" target="_blank" rel="noopener noreferrer" className="hover:text-[#C06EFF] transition-transform transform hover:scale-110" aria-label="GitHub"><SiGithub size={20} /></a>
