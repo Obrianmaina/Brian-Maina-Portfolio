@@ -24,6 +24,7 @@ export default function AccountsPage() {
     // Form state
     const [clientName, setClientName] = useState("");
     const [clientEmail, setClientEmail] = useState("");
+    const [clientPhone, setClientPhone] = useState("");
     const [amount, setAmount] = useState("");
     const [currency, setCurrency] = useState<CurrencyCode>("USD");
     const [serviceDescription, setServiceDescription] = useState("");
@@ -31,13 +32,14 @@ export default function AccountsPage() {
     const [docType, setDocType] = useState<DocType>('invoice');
     const [expenseCategory, setExpenseCategory] = useState("software");
     const [hasWHT, setHasWHT] = useState(false);
+    const [isCashPayment, setIsCashPayment] = useState(false);
     const [reportMonth, setReportMonth] = useState(() => toMonthString(new Date()));
 
     // Data hooks
     const { transactions, rates, isFetchingRates, fetchTransactions } = useTransactions();
 
     // Computed values
-    const estimatedPayoutKES = useEstimatedPayout(amount, currency, rates, hasWHT, docType);
+    const estimatedPayoutKES = useEstimatedPayout(amount, currency, rates, hasWHT, docType, isCashPayment);
     const taxSummary = useTaxSummary(transactions, rates);
     const allChartData = useAllChartData(transactions, rates);
     const { monthlyTransactions, monthlyChartData, monthlyStats } = useMonthlyData(transactions, rates, reportMonth);
@@ -51,18 +53,22 @@ export default function AccountsPage() {
         window.open(`/api/admin/accounts/export?year=${new Date().getFullYear()}`, '_blank');
 
     const resetForm = () => {
-        setClientName(""); setClientEmail(""); setAmount("");
+        setClientName(""); setClientEmail(""); setClientPhone(""); setAmount("");
         setServiceDescription(""); setMpesaMessage("");
-        setDocType('invoice'); setHasWHT(false);
+        setDocType('invoice'); setHasWHT(false); setIsCashPayment(false);
     };
 
     const handleSendDocument = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!clientName || !amount || !serviceDescription || (docType === 'receipt' && !mpesaMessage)) {
+        
+        // Relax M-Pesa message requirement if it is a cash payment
+        if (!clientName || !amount || !serviceDescription || (docType === 'receipt' && !mpesaMessage && !isCashPayment)) {
             return showModal('error', 'Incomplete', 'All required fields must be filled.');
         }
-        if (docType !== 'expense' && !clientEmail) {
-            return showModal('error', 'Incomplete', 'Client email is required for invoices and receipts.');
+        
+        // Require either email or phone
+        if (docType !== 'expense' && !clientEmail && !clientPhone) {
+            return showModal('error', 'Incomplete', 'Client email or phone is required for invoices and receipts.');
         }
 
         const whtAmount = hasWHT && docType !== 'expense' ? parseFloat(amount) * 0.05 : 0;
@@ -74,6 +80,8 @@ export default function AccountsPage() {
                 body: JSON.stringify({
                     clientName,
                     clientEmail: docType === 'expense' ? undefined : clientEmail,
+                    clientPhone: docType === 'expense' ? undefined : clientPhone,
+                    isCashPayment,
                     amount: parseFloat(amount),
                     currency,
                     description: serviceDescription,
@@ -170,6 +178,8 @@ export default function AccountsPage() {
                         docType={docType} setDocType={setDocType}
                         clientName={clientName} setClientName={setClientName}
                         clientEmail={clientEmail} setClientEmail={setClientEmail}
+                        clientPhone={clientPhone} setClientPhone={setClientPhone}
+                        isCashPayment={isCashPayment} setIsCashPayment={setIsCashPayment}
                         amount={amount} setAmount={setAmount}
                         currency={currency} setCurrency={setCurrency}
                         serviceDescription={serviceDescription} setServiceDescription={setServiceDescription}

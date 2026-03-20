@@ -16,6 +16,8 @@ interface DashboardTabProps {
     docType: DocType; setDocType: (t: DocType) => void;
     clientName: string; setClientName: (v: string) => void;
     clientEmail: string; setClientEmail: (v: string) => void;
+    clientPhone: string; setClientPhone: (v: string) => void;
+    isCashPayment: boolean; setIsCashPayment: (v: boolean) => void;
     amount: string; setAmount: (v: string) => void;
     currency: CurrencyCode; setCurrency: (v: CurrencyCode) => void;
     serviceDescription: string; setServiceDescription: (v: string) => void;
@@ -35,7 +37,7 @@ export default function DashboardTab({
 }: DashboardTabProps) {
     return (
         <div className="transition-colors duration-300">
-            {/* Annual tax health — always shown once there's revenue */}
+            {/* Annual tax health - always shown once there's revenue */}
             <YearHealthBar taxSummary={taxSummary} />
 
             {/* All-time revenue chart */}

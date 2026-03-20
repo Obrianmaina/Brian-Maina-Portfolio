@@ -134,6 +134,7 @@ export type DocumentData = {
   referenceNumber?: string;
   clientName: string;
   clientEmail?: string;
+  clientPhone?: string;
   date: string | Date;
   description: string;
   amount: string | number;
@@ -173,6 +174,7 @@ export const DocumentTemplate = ({ data, type }: { data: DocumentData, type: 'in
             <Text style={styles.infoLabel}>Billed To</Text>
             <Text style={styles.infoValue}>{data.clientName}</Text>
             {data.clientEmail && <Text style={{ color: '#6b7280' }}>{data.clientEmail}</Text>}
+            {data.clientPhone && <Text style={{ color: '#6b7280' }}>{data.clientPhone}</Text>}
           </View>
           <View style={{ alignItems: 'flex-end', justifyContent: 'center' }}>
             <View style={{ flexDirection: 'row', marginBottom: 6 }}>

@@ -44,14 +44,26 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
     }
 
-    const { clientName, clientEmail, amount, currency, description, type, mpesaMessage, expenseCategory, withholdingTax } = await req.json();
+    const { 
+        clientName, 
+        clientEmail, 
+        clientPhone, 
+        amount, 
+        currency, 
+        description, 
+        type, 
+        mpesaMessage, 
+        expenseCategory, 
+        withholdingTax, 
+        isCashPayment 
+    } = await req.json();
 
     if (!clientName || !amount || !description || !type) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    if (type !== 'expense' && !clientEmail) {
-      return NextResponse.json({ error: "Client email is required for client documents" }, { status: 400 });
+    if (type !== 'expense' && !clientEmail && !clientPhone) {
+      return NextResponse.json({ error: "Client email or phone number is required" }, { status: 400 });
     }
 
     const client = await clientPromise;
@@ -61,7 +73,9 @@ export async function POST(req: Request) {
 
     const transaction = {
       clientName, 
-      clientEmail: type === 'expense' ? null : clientEmail,
+      clientEmail: type === 'expense' ? null : (clientEmail || null),
+      clientPhone: type === 'expense' ? null : (clientPhone || null),
+      isCashPayment: isCashPayment || false,
       amount,
       currency: currency || "EUR", 
       description,
@@ -76,8 +90,8 @@ export async function POST(req: Request) {
 
     const result = await db.collection("transactions").insertOne(transaction);
 
-    // Only trigger Resend API if it is an external facing document
-    if (type === 'invoice' || type === 'receipt') {
+    // Only trigger Resend API if it is an external facing document AND an email exists
+    if ((type === 'invoice' || type === 'receipt') && clientEmail) {
       const downloadLink = `${process.env.NEXT_PUBLIC_BASE_URL}/documents`;
 
       await resend.emails.send({

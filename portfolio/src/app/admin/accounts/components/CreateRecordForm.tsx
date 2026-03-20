@@ -9,12 +9,14 @@ interface CreateRecordFormProps {
     setDocType: (t: DocType) => void;
     clientName: string; setClientName: (v: string) => void;
     clientEmail: string; setClientEmail: (v: string) => void;
+    clientPhone: string; setClientPhone: (v: string) => void;
     amount: string; setAmount: (v: string) => void;
     currency: CurrencyCode; setCurrency: (v: CurrencyCode) => void;
     serviceDescription: string; setServiceDescription: (v: string) => void;
     mpesaMessage: string; setMpesaMessage: (v: string) => void;
     expenseCategory: string; setExpenseCategory: (v: string) => void;
     hasWHT: boolean; setHasWHT: (v: boolean) => void;
+    isCashPayment: boolean; setIsCashPayment: (v: boolean) => void;
     rates: Rates;
     isFetchingRates: boolean;
     estimatedPayoutKES: number;
@@ -26,12 +28,14 @@ export default function CreateRecordForm({
     docType, setDocType,
     clientName, setClientName,
     clientEmail, setClientEmail,
+    clientPhone, setClientPhone,
     amount, setAmount,
     currency, setCurrency,
     serviceDescription, setServiceDescription,
     mpesaMessage, setMpesaMessage,
     expenseCategory, setExpenseCategory,
     hasWHT, setHasWHT,
+    isCashPayment, setIsCashPayment,
     rates, isFetchingRates, estimatedPayoutKES,
     loading, onSubmit
 }: CreateRecordFormProps) {
@@ -56,8 +60,8 @@ export default function CreateRecordForm({
                     {typeBtn('expense', 'Log Expense', 'bg-rose-100 dark:bg-rose-900/40 border-rose-500 dark:border-rose-500/50 text-rose-800 dark:text-rose-400 shadow-sm', 'bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800')}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-1">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="space-y-1 md:col-span-1">
                         <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1 transition-colors">
                             {docType === 'expense' ? 'Vendor Name' : 'Client Name'}
                         </label>
@@ -69,15 +73,26 @@ export default function CreateRecordForm({
                         />
                     </div>
                     {docType !== 'expense' && (
-                        <div className="space-y-1">
-                            <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1 transition-colors">Client Email</label>
-                            <input
-                                type="email" required value={clientEmail}
-                                onChange={e => setClientEmail(e.target.value)}
-                                className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 transition-colors"
-                                placeholder="jane@example.com"
-                            />
-                        </div>
+                        <>
+                            <div className="space-y-1 md:col-span-1">
+                                <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1 transition-colors">Client Email (Optional)</label>
+                                <input
+                                    type="email" value={clientEmail}
+                                    onChange={e => setClientEmail(e.target.value)}
+                                    className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 transition-colors"
+                                    placeholder="jane@example.com"
+                                />
+                            </div>
+                            <div className="space-y-1 md:col-span-1">
+                                <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1 transition-colors">Client Phone (Optional)</label>
+                                <input
+                                    type="tel" value={clientPhone}
+                                    onChange={e => setClientPhone(e.target.value)}
+                                    className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 transition-colors"
+                                    placeholder="+254..."
+                                />
+                            </div>
+                        </>
                     )}
                 </div>
 
@@ -138,15 +153,27 @@ export default function CreateRecordForm({
                 </div>
 
                 {docType !== 'expense' && (
-                    <div className="flex items-center pt-2 pb-2">
-                        <input
-                            type="checkbox" id="hasWHT" checked={hasWHT}
-                            onChange={e => setHasWHT(e.target.checked)}
-                            className="w-4 h-4 text-amber-500 bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-700 rounded focus:ring-amber-500 transition-colors"
-                        />
-                        <label htmlFor="hasWHT" className="ml-2 text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">
-                            Apply 5% Withholding Tax (Corporate Clients)
-                        </label>
+                    <div className="flex flex-col gap-2 pt-2 pb-2">
+                        <div className="flex items-center">
+                            <input
+                                type="checkbox" id="hasWHT" checked={hasWHT}
+                                onChange={e => setHasWHT(e.target.checked)}
+                                className="w-4 h-4 text-amber-500 bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-700 rounded focus:ring-amber-500 transition-colors"
+                            />
+                            <label htmlFor="hasWHT" className="ml-2 text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">
+                                Apply 5% Withholding Tax (Corporate Clients)
+                            </label>
+                        </div>
+                        <div className="flex items-center">
+                            <input
+                                type="checkbox" id="isCashPayment" checked={isCashPayment}
+                                onChange={e => setIsCashPayment(e.target.checked)}
+                                className="w-4 h-4 text-amber-500 bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-700 rounded focus:ring-amber-500 transition-colors"
+                            />
+                            <label htmlFor="isCashPayment" className="ml-2 text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">
+                                Cash Payment (Exempt Gateway Fee)
+                            </label>
+                        </div>
                     </div>
                 )}
 
@@ -169,7 +196,9 @@ export default function CreateRecordForm({
                             {rates[currency] > 0 && currency !== 'KES' && (
                                 <p className="text-[10px] text-gray-400 dark:text-gray-500 font-bold transition-colors">1 {currency} = {rates[currency]} KES</p>
                             )}
-                            <p className="text-[10px] text-gray-400 dark:text-gray-500 transition-colors">& ~{currency === 'KES' ? '1.5%' : '3.8%'} Paystack fee</p>
+                            <p className="text-[10px] text-gray-400 dark:text-gray-500 transition-colors">
+                                & ~{isCashPayment ? '0%' : (currency === 'KES' ? '1.5%' : '3.8%')} fee
+                            </p>
                         </div>
                     </div>
                 )}
@@ -178,10 +207,10 @@ export default function CreateRecordForm({
                     <div className="space-y-1">
                         <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1 transition-colors">M-Pesa Confirmation Message</label>
                         <textarea
-                            required value={mpesaMessage}
+                            required={!isCashPayment} value={mpesaMessage}
                             onChange={e => setMpesaMessage(maskMpesaBalance(e.target.value))}
                             className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 h-24 transition-colors"
-                            placeholder="Paste the exact M-Pesa message here..."
+                            placeholder={isCashPayment ? "Optional for cash payments..." : "Paste the exact M-Pesa message here..."}
                         />
                     </div>
                 )}

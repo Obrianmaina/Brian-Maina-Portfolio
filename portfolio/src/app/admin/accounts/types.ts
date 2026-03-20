@@ -1,6 +1,8 @@
 export type Transaction = {
     _id: string;
     clientName: string;
+    clientEmail?: string;
+    clientPhone?: string;
     date: string;
     type: 'invoice' | 'receipt' | 'expense';
     amount: string | number;
@@ -11,6 +13,7 @@ export type Transaction = {
     expenseCategory?: string;
     withholdingTax?: number;
     amountPaidKES?: number;
+    isCashPayment?: boolean;
 };
 
 export type DocType = 'invoice' | 'receipt' | 'expense';

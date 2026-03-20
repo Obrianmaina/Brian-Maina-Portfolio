@@ -12,7 +12,8 @@ export function useEstimatedPayout(
     currency: CurrencyCode,
     rates: Rates,
     hasWHT: boolean,
-    docType: string
+    docType: string,
+    isCashPayment: boolean
 ): number {
     return useMemo(() => {
         const rawAmount = parseFloat(amount) || 0;
@@ -20,9 +21,9 @@ export function useEstimatedPayout(
         const netClientPayment = rawAmount - whtDeduction;
         const currentRate = rates[currency] || 1;
         const grossKES = netClientPayment * currentRate;
-        const feePercentage = currency === 'KES' ? 0.015 : 0.038;
+        const feePercentage = isCashPayment ? 0 : (currency === 'KES' ? 0.015 : 0.038);
         return grossKES - grossKES * feePercentage;
-    }, [amount, rates, currency, hasWHT, docType]);
+    }, [amount, rates, currency, hasWHT, docType, isCashPayment]);
 }
 
 // ─────────────────────────────────────────────
@@ -181,7 +182,7 @@ export function useMonthlyData(
         const netProfit = collected - expenses;
 
         // spendableNet: what's literally in your account (WHT already gone).
-        // Shown as an informational row in the ledger footer — not used as
+        // Shown as an informational row in the ledger footer, not used as
         // the base for freeToSpend to avoid double-deducting WHT.
         const spendableNet = netProfit - wht;
 
@@ -193,7 +194,7 @@ export function useMonthlyData(
         const tithe = collected * 0.10;
 
         // Free to spend: net profit minus remaining tax obligation minus tithe.
-        // WHT is NOT separately deducted here — it is already credited inside estimatedTax.
+        // WHT is NOT separately deducted here, it is already credited inside estimatedTax.
         const freeToSpend = netProfit - estimatedTax - tithe;
 
         return { billed, collected, pending, expenses, wht, spendableNet, estimatedTax, tithe, freeToSpend };
