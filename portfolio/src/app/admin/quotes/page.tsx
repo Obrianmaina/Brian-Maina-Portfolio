@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Inbox, LayoutDashboard, List } from "lucide-react";
+import { ArrowLeft, Inbox, LayoutDashboard, List, Plus, X } from "lucide-react";
 import AdminModal from "@/components/AdminModal";
 import KanbanBoard from "./components/KanbanBoard";
 import QuotesTable from "./components/QuotesTable";
@@ -15,6 +15,18 @@ export default function QuotesPage() {
   const [view, setView] = useState<"list" | "kanban">("list");
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [editingNotes, setEditingNotes] = useState<{ [id: string]: string }>({});
+
+  // Add Lead Modal State
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [newLead, setNewLead] = useState({
+    name: "",
+    email: "", // We will use this for phone numbers too
+    service: "General Inquiry",
+    budget: "Not specified",
+    message: "",
+    status: "New" as Quote["status"],
+  });
 
   const [modal, setModal] = useState<{
     show: boolean;
@@ -58,6 +70,36 @@ export default function QuotesPage() {
     }
   };
 
+  const handleAddLead = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      // We send this to your existing frontend API endpoint, or create a specific POST logic
+      const res = await fetch("/api/admin/quotes", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...newLead,
+          createdAt: new Date().toISOString()
+        }),
+      });
+      
+      if (res.ok) {
+        setShowAddModal(false);
+        setNewLead({ name: "", email: "", service: "General Inquiry", budget: "Not specified", message: "", status: "New" });
+        fetchQuotes(); // Refresh the board
+        setModal({ show: true, type: "success", title: "Success", message: "Manual lead added to CRM." });
+      } else {
+        const data = await res.json();
+        setModal({ show: true, type: "error", title: "Error", message: data.error || "Failed to add lead." });
+      }
+    } catch (error) {
+      setModal({ show: true, type: "error", title: "Error", message: "Network error occurred." });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleNotesSave = (id: string) => {
     const note =
       editingNotes[id] !== undefined
@@ -91,22 +133,31 @@ export default function QuotesPage() {
             <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-50 transition-colors">Lead CRM</h2>
           </div>
 
-          {/* View Toggle */}
-          <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-xl p-1 gap-1 transition-colors">
+          <div className="flex items-center gap-3">
             <button
-              onClick={() => setView("list")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-blue-500
-                ${view === "list" ? "bg-white dark:bg-gray-950 shadow text-gray-900 dark:text-gray-100" : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"}`}
+              onClick={() => setShowAddModal(true)}
+              className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
             >
-              <List size={16} /> List
+              <Plus size={18} className="mr-2" /> Add Lead
             </button>
-            <button
-              onClick={() => setView("kanban")}
-              className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-blue-500
-                ${view === "kanban" ? "bg-white dark:bg-gray-950 shadow text-gray-900 dark:text-gray-100" : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"}`}
-            >
-              <LayoutDashboard size={16} /> Kanban
-            </button>
+
+            {/* View Toggle */}
+            <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-xl p-1 gap-1 transition-colors">
+              <button
+                onClick={() => setView("list")}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-blue-500
+                  ${view === "list" ? "bg-white dark:bg-gray-950 shadow text-gray-900 dark:text-gray-100" : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"}`}
+              >
+                <List size={16} /> List
+              </button>
+              <button
+                onClick={() => setView("kanban")}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-blue-500
+                  ${view === "kanban" ? "bg-white dark:bg-gray-950 shadow text-gray-900 dark:text-gray-100" : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"}`}
+              >
+                <LayoutDashboard size={16} /> Kanban
+              </button>
+            </div>
           </div>
         </div>
 
@@ -137,6 +188,50 @@ export default function QuotesPage() {
           />
         )}
       </div>
+
+      {/* Manual Add Lead Modal */}
+      {showAddModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 dark:bg-black/70 backdrop-blur-sm p-4 transition-colors duration-300">
+          <div className="bg-white dark:bg-gray-900 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl dark:shadow-none border border-transparent dark:border-gray-800 animate-in zoom-in-95 transition-colors duration-300">
+            <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center transition-colors">
+              <h3 className="text-xl font-bold text-gray-900 dark:text-gray-50 transition-colors">Manually Add Lead</h3>
+              <button onClick={() => setShowAddModal(false)} className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 rounded"><X size={24} /></button>
+            </div>
+
+            <form onSubmit={handleAddLead} className="p-6 space-y-4">
+              <div>
+                <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">Client Name</label>
+                <input required type="text" value={newLead.name} onChange={e => setNewLead({...newLead, name: e.target.value})} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 mt-1 transition-colors" placeholder="e.g. John Doe" />
+              </div>
+              <div>
+                <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">Contact (Phone or Email)</label>
+                <input required type="text" value={newLead.email} onChange={e => setNewLead({...newLead, email: e.target.value})} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 mt-1 transition-colors" placeholder="+254 700 000 000" />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">Service Interest</label>
+                  <input type="text" value={newLead.service} onChange={e => setNewLead({...newLead, service: e.target.value})} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 mt-1 transition-colors" placeholder="e.g. Logo Design" />
+                </div>
+                <div>
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">Budget / Value</label>
+                  <input type="text" value={newLead.budget} onChange={e => setNewLead({...newLead, budget: e.target.value})} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 mt-1 transition-colors" placeholder="e.g. 50,000 KES" />
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">Initial Notes / Referral Source</label>
+                <textarea value={newLead.message} onChange={e => setNewLead({...newLead, message: e.target.value})} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 mt-1 transition-colors resize-y h-20" placeholder="Met at networking event..." />
+              </div>
+
+              <div className="pt-4 border-t border-gray-100 dark:border-gray-800 flex justify-end gap-3 transition-colors">
+                <button type="button" onClick={() => setShowAddModal(false)} className="px-5 py-2 text-gray-600 dark:text-gray-300 font-medium hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500">Cancel</button>
+                <button type="submit" disabled={isSubmitting} className="px-5 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900">
+                  {isSubmitting ? 'Saving...' : 'Add Lead to Board'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       <AdminModal modal={modal} close={closeModal} />
     </main>

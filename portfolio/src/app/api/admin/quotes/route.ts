@@ -61,3 +61,33 @@ export async function PATCH(req: Request) {
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
+
+// POST to manually add a new lead/quote from the admin dashboard
+export async function POST(req: Request) {
+  try {
+    const cookieStore = await cookies();
+    if (!cookieStore.get("admin_session"))
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    const body = await req.json();
+    const client = await clientPromise;
+    const db = client.db("portfolio");
+
+    const result = await db.collection("quotes").insertOne({
+      name: body.name,
+      email: body.email, 
+      service: body.service,
+      budget: body.budget,
+      message: body.message,
+      status: body.status || "New",
+      createdAt: new Date(),
+      lastContactedDate: new Date(), 
+      notes: "",
+    });
+
+    return NextResponse.json({ success: true, id: result.insertedId }, { status: 201 });
+  } catch (error) {
+    console.error("Add Manual Lead Error:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+}
