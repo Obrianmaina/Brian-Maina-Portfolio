@@ -8,8 +8,8 @@ import {
   Users, Landmark, Target, TrendingUp 
 } from 'lucide-react';
 import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, 
-  ResponsiveContainer, AreaChart, Area, Legend 
+  ComposedChart, Bar, Line, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, 
+  ResponsiveContainer, AreaChart, Area, Legend, Cell 
 } from 'recharts';
 
 // --- Types ---
@@ -26,6 +26,15 @@ interface AnalyticsData {
     totalExpenses: number;
   };
 }
+
+// Matching colors from KanbanColumn STATUS_STYLES
+const PIPELINE_COLORS = {
+  'New': '#3b82f6',         // blue-500
+  'Contacted': '#f59e0b',   // amber-500
+  'In Progress': '#a855f7', // purple-500
+  'Won': '#10b981',         // emerald-500
+  'Lost': '#f87171'         // red-400
+};
 
 export default function AnalyticsPage() {
   const router = useRouter();
@@ -56,7 +65,7 @@ export default function AnalyticsPage() {
   const totalLeads = data.crm.new + data.crm.contacted + data.crm.inProgress + data.crm.won + data.crm.lost;
   const winRate = totalLeads > 0 ? Math.round((data.crm.won / (data.crm.won + data.crm.lost)) * 100) || 0 : 0;
 
-  // Format CRM data for the Bar Chart
+  // Format CRM data for the Composed Chart
   const crmChartData = [
     { name: 'New', Leads: data.crm.new },
     { name: 'Contacted', Leads: data.crm.contacted },
@@ -77,7 +86,7 @@ export default function AnalyticsPage() {
 
         <h1 className="text-3xl font-bold mb-8 text-gray-900 dark:text-gray-50 transition-colors">Command Center</h1>
         
-        {/* --- Top Level Stats Grid --- */}
+        {/* Top Level Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card className="p-6 flex items-center gap-4 bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800 transition-colors shadow-sm">
             <div className="p-3 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-xl transition-colors"><Landmark /></div>
@@ -114,7 +123,7 @@ export default function AnalyticsPage() {
           </Card>
         </div>
 
-        {/* --- Charts Section --- */}
+        {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           
           {/* Financials Chart */}
@@ -154,30 +163,42 @@ export default function AnalyticsPage() {
             </div>
           </Card>
 
-          {/* CRM Pipeline Chart */}
+          {/* CRM Pipeline Chart (Composed) */}
           <Card className="p-6 bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800 shadow-sm transition-colors">
             <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100 mb-6 flex items-center transition-colors">
               <Target size={20} className="mr-2 text-blue-500" /> Lead Pipeline Velocity
             </h3>
             <div className="h-[300px] w-full">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={crmChartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <ComposedChart data={crmChartData} margin={{ top: 20, right: 10, left: -20, bottom: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#374151" strokeOpacity={0.2} />
-                  <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#6b7280' }} axisLine={false} tickLine={false} />
+                  <XAxis dataKey="name" tick={{ fontSize: 12, fill: '#6b7280', fontWeight: 'bold' }} axisLine={false} tickLine={false} />
                   <YAxis tick={{ fontSize: 12, fill: '#6b7280' }} axisLine={false} tickLine={false} allowDecimals={false} />
                   <RechartsTooltip 
                     cursor={{ fill: '#374151', opacity: 0.1 }}
                     contentStyle={{ backgroundColor: '#1f2937', borderColor: '#374151', borderRadius: '0.5rem', color: '#f3f4f6' }} 
                   />
-                  <Bar dataKey="Leads" fill="#3b82f6" radius={[4, 4, 0, 0]} />
-                </BarChart>
+                  <Bar dataKey="Leads" barSize={40} radius={[4, 4, 0, 0]}>
+                    {crmChartData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={PIPELINE_COLORS[entry.name as keyof typeof PIPELINE_COLORS] || '#3b82f6'} />
+                    ))}
+                  </Bar>
+                  <Line 
+                    type="monotone" 
+                    dataKey="Leads" 
+                    stroke="#94a3b8" 
+                    strokeWidth={3} 
+                    dot={{ r: 5, fill: '#1e293b', stroke: '#94a3b8', strokeWidth: 2 }} 
+                    activeDot={{ r: 7 }} 
+                  />
+                </ComposedChart>
               </ResponsiveContainer>
             </div>
           </Card>
 
         </div>
 
-        {/* --- Bottom Tables --- */}
+        {/* Bottom Tables */}
         <h2 className="text-2xl font-bold mb-6 flex items-center gap-2 text-gray-900 dark:text-gray-50 transition-colors">
           <FileText size={24} className="text-teal-600 dark:text-teal-400 transition-colors" /> Recent References Access
         </h2>
