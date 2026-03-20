@@ -164,7 +164,7 @@ export const DocumentTemplate = ({ data, type }: { data: DocumentData, type: 'in
           <View style={styles.headerRight}>
             <Text style={styles.brandName}>Brian Maina</Text>
             <Text>Nairobi, Kenya</Text>
-            <Text>hello@brianmaina.com</Text>
+            <Text>hello@brianmaina.de</Text>
           </View>
         </View>
 
@@ -226,7 +226,7 @@ export const DocumentTemplate = ({ data, type }: { data: DocumentData, type: 'in
 
         {/* FOOTER */}
         <Text style={styles.footer}>
-          Thank you for your business! If you have any questions regarding this document, please reach out to hello@brianmaina.com
+          Thank you for your business! If you have any questions regarding this document, please reach out to hello@brianmaina.de
         </Text>
       </Page>
     </Document>
