@@ -44,7 +44,7 @@ export default function GeneralLedger({ transactions, markingPaid, onMarkAsPaid 
                                 key={tx._id}
                                 className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700/50 rounded-xl px-4 py-3 flex items-center gap-3 transition-colors"
                             >
-                                {/* Left: name + date — now wider */}
+                                {/* Left: name + date - now wider */}
                                 <div className="flex-1 min-w-0">
                                     <p className="font-semibold text-gray-900 dark:text-gray-100 truncate text-sm transition-colors">
                                         {tx.clientName}
@@ -78,7 +78,7 @@ export default function GeneralLedger({ transactions, markingPaid, onMarkAsPaid 
 
                                         <DownloadDocumentBtn
                                             data={tx as DocumentData}
-                                            type={tx.status === 'paid' || tx.type === 'receipt' ? 'receipt' : 'invoice'}
+                                            type={tx.type === 'expense' ? 'expense' : (tx.status === 'paid' || tx.type === 'receipt' ? 'receipt' : 'invoice')}
                                             iconOnly
                                         />
                                     </div>

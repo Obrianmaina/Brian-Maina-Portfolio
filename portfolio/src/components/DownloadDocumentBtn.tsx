@@ -17,7 +17,7 @@ export default function DownloadDocumentBtn({
   iconOnly = false
 }: { 
   data: DocumentData; 
-  type: 'invoice' | 'receipt';
+  type: 'invoice' | 'receipt' | 'expense';
   iconOnly?: boolean;
 }) {
   const [isMounted, setIsMounted] = useState(false);
@@ -27,7 +27,7 @@ export default function DownloadDocumentBtn({
   }, []);
 
   const fileName = `${type}_${data.clientName.replace(/\s+/g, '_')}_${data._id.substring(0, 6)}.pdf`;
-  const tooltipText = `Download ${type === 'receipt' ? 'Receipt' : 'Invoice'}`;
+  const tooltipText = `Download ${type === 'expense' ? 'Expense' : type === 'receipt' ? 'Receipt' : 'Invoice'}`;
 
   // Fallback UI to prevent hydration mismatch while respecting the iconOnly prop
   if (!isMounted) {

@@ -126,6 +126,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     letterSpacing: 1
+  },
+  expenseStamp: {
+    color: '#6b7280',
+    fontSize: 14,
+    fontWeight: 'bold',
+    letterSpacing: 1
   }
 });
 
@@ -142,8 +148,9 @@ export type DocumentData = {
   status?: string;
 };
 
-export const DocumentTemplate = ({ data, type }: { data: DocumentData, type: 'invoice' | 'receipt' }) => {
-  const isReceipt = type === 'receipt' || data.status === 'paid';
+export const DocumentTemplate = ({ data, type }: { data: DocumentData, type: 'invoice' | 'receipt' | 'expense' }) => {
+  const isExpense = type === 'expense';
+  const isReceipt = type === 'receipt' || (data.status === 'paid' && !isExpense);
   const amount = parseFloat(String(data.amount || 0)).toFixed(2);
   
   // Use referenceNumber if it exists, otherwise fallback to the sliced _id
@@ -151,6 +158,10 @@ export const DocumentTemplate = ({ data, type }: { data: DocumentData, type: 'in
     ? data.referenceNumber.toUpperCase() 
     : (data._id ? data._id.substring(0, 6).toUpperCase() : 'N/A');
   
+  let documentTitle = 'INVOICE';
+  if (isExpense) documentTitle = 'EXPENSE RECORD';
+  else if (isReceipt) documentTitle = 'RECEIPT';
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -158,7 +169,7 @@ export const DocumentTemplate = ({ data, type }: { data: DocumentData, type: 'in
         {/* HEADER */}
         <View style={styles.header}>
           <View style={styles.headerLeft}>
-            <Text style={styles.title}>{isReceipt ? 'RECEIPT' : 'INVOICE'}</Text>
+            <Text style={styles.title}>{documentTitle}</Text>
             <Text style={styles.refText}>Ref: {referenceCode}</Text>
           </View>
           <View style={styles.headerRight}>
@@ -171,7 +182,7 @@ export const DocumentTemplate = ({ data, type }: { data: DocumentData, type: 'in
         {/* CLIENT INFO & DATES */}
         <View style={styles.sectionInfo}>
           <View style={styles.billedToBox}>
-            <Text style={styles.infoLabel}>Billed To</Text>
+            <Text style={styles.infoLabel}>{isExpense ? 'Vendor / Payee' : 'Billed To'}</Text>
             <Text style={styles.infoValue}>{data.clientName}</Text>
             {data.clientEmail && <Text style={{ color: '#6b7280' }}>{data.clientEmail}</Text>}
             {data.clientPhone && <Text style={{ color: '#6b7280' }}>{data.clientPhone}</Text>}
@@ -183,8 +194,8 @@ export const DocumentTemplate = ({ data, type }: { data: DocumentData, type: 'in
             </View>
             <View style={{ flexDirection: 'row' }}>
               <Text style={[styles.infoLabel, { marginRight: 15 }]}>Status:</Text>
-              <Text style={[styles.infoValue, { color: isReceipt ? '#10b981' : '#f59e0b', fontWeight: 'bold', textTransform: 'uppercase' }]}>
-                {isReceipt ? 'Paid' : 'Pending'}
+              <Text style={[styles.infoValue, { color: isReceipt || isExpense ? '#10b981' : '#f59e0b', fontWeight: 'bold', textTransform: 'uppercase' }]}>
+                {isExpense ? 'Deductible' : (isReceipt ? 'Paid' : 'Pending')}
               </Text>
             </View>
           </View>
@@ -216,9 +227,15 @@ export const DocumentTemplate = ({ data, type }: { data: DocumentData, type: 'in
               <Text style={styles.totalText}>{data.currency || 'USD'} {amount}</Text>
             </View>
 
-            {isReceipt && (
+            {isReceipt && !isExpense && (
               <View style={[styles.summaryRow, { marginTop: 15, justifyContent: 'flex-end' }]}>
                 <Text style={styles.paidStamp}>✓ PAID IN FULL</Text>
+              </View>
+            )}
+
+            {isExpense && (
+              <View style={[styles.summaryRow, { marginTop: 15, justifyContent: 'flex-end' }]}>
+                <Text style={styles.expenseStamp}>✓ RECORDED EXPENSE</Text>
               </View>
             )}
           </View>
