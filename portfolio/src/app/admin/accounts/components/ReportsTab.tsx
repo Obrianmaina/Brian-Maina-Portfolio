@@ -219,7 +219,7 @@ export default function ReportsTab({
                                             <td className="px-4 py-3 text-center">
                                                 <DownloadDocumentBtn
                                                     data={tx as DocumentData}
-                                                    type={tx.status === 'paid' || tx.type === 'receipt' ? 'receipt' : 'invoice'}
+                                                    type={tx.type === 'expense' ? 'expense' : (tx.status === 'paid' || tx.type === 'receipt' ? 'receipt' : 'invoice')}
                                                     iconOnly
                                                 />
                                             </td>
