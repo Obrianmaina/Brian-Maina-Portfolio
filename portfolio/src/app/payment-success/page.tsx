@@ -19,7 +19,9 @@ function SuccessContent() {
         .then(res => res.json())
         .then(data => {
             if (data && !data.error) {
-                setInvoiceData(data.transaction || data);
+                // Ensure we get the actual transaction object
+                const txData = data.transaction || data;
+                setInvoiceData(txData);
             }
         })
         .catch(err => console.error("Could not fetch invoice data for PDF", err));
@@ -44,7 +46,8 @@ function SuccessContent() {
           </div>
         )}
 
-        {invoiceData && (
+        {/* Added extra check to verify clientName exists before rendering */}
+        {invoiceData && invoiceData.clientName && (
           <div className="mb-6 w-full flex justify-center">
             <DownloadDocumentBtn data={{ ...invoiceData, status: 'paid' }} type="receipt" />
           </div>

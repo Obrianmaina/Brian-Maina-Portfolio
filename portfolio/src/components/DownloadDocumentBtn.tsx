@@ -26,7 +26,11 @@ export default function DownloadDocumentBtn({
     setIsMounted(true);
   }, []);
 
-  const fileName = `${type}_${data.clientName.replace(/\s+/g, '_')}_${data._id.substring(0, 6)}.pdf`;
+  // Use fallback values to prevent 'replace' or 'substring' errors on undefined
+  const safeClientName = data?.clientName ? data.clientName.replace(/\s+/g, '_') : 'Client';
+  const safeId = data?._id ? data._id.substring(0, 6) : '000000';
+  const fileName = `${type}_${safeClientName}_${safeId}.pdf`;
+  
   const tooltipText = `Download ${type === 'expense' ? 'Expense' : type === 'receipt' ? 'Receipt' : 'Invoice'}`;
 
   // Fallback UI to prevent hydration mismatch while respecting the iconOnly prop
