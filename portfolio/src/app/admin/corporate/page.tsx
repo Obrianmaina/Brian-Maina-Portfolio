@@ -11,8 +11,8 @@ export default function CorporateCMS() {
   const cms = useCorporateCMS();
 
   return (
-    <main className="min-h-screen bg-gray-50 py-12 px-6">
-      <div className="max-w-6xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100 fade-in">
+    <main className="min-h-screen bg-gray-50 dark:bg-gray-950 py-12 px-6 transition-colors duration-300">
+      <div className="max-w-6xl mx-auto bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg dark:shadow-none border border-gray-100 dark:border-gray-800 fade-in transition-colors duration-300">
 
         <CorporateHeader
           isFormOpen={cms.isFormOpen}
@@ -25,9 +25,9 @@ export default function CorporateCMS() {
           fetchCompanies={cms.fetchCompanies}
         />
 
-        <div className="flex items-center mb-8 border-l-4 border-violet-500 pl-4">
+        <div className="flex items-center mb-8 border-l-4 border-violet-500 pl-4 transition-colors">
           <Building2 size={28} className="text-violet-500 mr-3" />
-          <h2 className="text-3xl font-bold text-gray-800">Corporate Manager</h2>
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 transition-colors">Corporate Manager</h2>
         </div>
 
         {cms.isFormOpen && (
@@ -42,7 +42,7 @@ export default function CorporateCMS() {
         )}
 
         {cms.loading ? (
-          <p className="text-gray-500">Loading corporate profiles...</p>
+          <p className="text-gray-500 dark:text-gray-400 transition-colors">Loading corporate profiles...</p>
         ) : (
           <div className="space-y-6">
             {cms.companies.map((company, idx) => (
@@ -66,7 +66,7 @@ export default function CorporateCMS() {
             ))}
 
             {cms.companies.length === 0 && (
-              <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-2xl border border-dashed border-gray-300">
+              <div className="text-center py-12 text-gray-500 dark:text-gray-400 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-dashed border-gray-300 dark:border-gray-700 transition-colors">
                 No corporate profiles found. Add one to get started.
               </div>
             )}

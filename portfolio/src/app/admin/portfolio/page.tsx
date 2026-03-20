@@ -192,30 +192,30 @@ export default function PortfolioCMS() {
   const isEditing = isFormOpen && formMode !== "new";
 
   return (
-    <main className="min-h-screen bg-gray-50 py-12 px-6">
-      <div className="max-w-6xl mx-auto bg-white p-8 rounded-2xl shadow-lg border border-gray-100 fade-in">
+    <main className="min-h-screen bg-gray-50 dark:bg-gray-950 py-12 px-6 transition-colors duration-300">
+      <div className="max-w-6xl mx-auto bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg dark:shadow-none border border-gray-100 dark:border-gray-800 fade-in transition-colors duration-300">
 
         {/* Header */}
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
           <button
             onClick={() => router.push("/admin")}
-            className="flex items-center text-gray-500 hover:text-gray-900 transition-colors font-medium"
+            className="flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-gray-500 rounded-md p-1 -ml-1"
           >
             <ArrowLeft size={20} className="mr-2" /> Back to Hub
           </button>
 
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             {!isFormOpen && !isReordering && (
-              <button onClick={() => setIsReordering(true)} className="flex items-center border border-gray-300 text-gray-600 px-4 py-2 rounded-lg font-bold hover:bg-gray-50 transition-colors">
+              <button onClick={() => setIsReordering(true)} className="flex items-center border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-300 px-4 py-2 rounded-lg font-bold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500">
                 Reorder Projects
               </button>
             )}
             {isReordering && (
               <>
-                <button onClick={() => { setIsReordering(false); fetchProjects(); }} className="flex items-center border border-gray-300 text-gray-600 px-4 py-2 rounded-lg font-bold hover:bg-gray-50 transition-colors">
+                <button onClick={() => { setIsReordering(false); fetchProjects(); }} className="flex items-center border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-300 px-4 py-2 rounded-lg font-bold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500">
                   Cancel Reorder
                 </button>
-                <button onClick={handleSaveOrder} className="flex items-center bg-emerald-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-emerald-700 transition-colors">
+                <button onClick={handleSaveOrder} className="flex items-center bg-emerald-600 text-white px-4 py-2 rounded-lg font-bold hover:bg-emerald-700 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900">
                   <Save size={18} className="mr-2" /> Save Order
                 </button>
               </>
@@ -223,11 +223,11 @@ export default function PortfolioCMS() {
             {!isReordering && (
               <>
                 {isFormOpen && (
-                  <button onClick={closeForm} className="flex items-center border border-gray-300 text-gray-600 px-4 py-2 rounded-lg font-bold hover:bg-gray-50 transition-colors">
+                  <button onClick={closeForm} className="flex items-center border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-300 px-4 py-2 rounded-lg font-bold hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500">
                     <X size={16} className="mr-1" /> Cancel
                   </button>
                 )}
-                <button onClick={isFormOpen ? closeForm : openAdd} className="flex items-center bg-gray-900 text-white px-4 py-2 rounded-lg font-bold hover:bg-gray-800 transition-colors">
+                <button onClick={isFormOpen ? closeForm : openAdd} className="flex items-center bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-4 py-2 rounded-lg font-bold hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900">
                   {isFormOpen ? "Close Form" : <><Plus size={18} className="mr-2" /> Add Project</>}
                 </button>
               </>
@@ -235,9 +235,9 @@ export default function PortfolioCMS() {
           </div>
         </div>
 
-        <div className="flex items-center mb-8 border-l-4 border-emerald-500 pl-4">
+        <div className="flex items-center mb-8 border-l-4 border-emerald-500 pl-4 transition-colors">
           <Briefcase size={28} className="text-emerald-500 mr-3" />
-          <h2 className="text-3xl font-bold text-gray-800">Portfolio Manager</h2>
+          <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-100 transition-colors">Portfolio Manager</h2>
         </div>
 
         {isFormOpen && (
@@ -250,7 +250,7 @@ export default function PortfolioCMS() {
         )}
 
         {loading ? (
-          <p className="text-gray-500">Loading projects...</p>
+          <p className="text-gray-500 dark:text-gray-400 transition-colors">Loading projects...</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project, idx) => (

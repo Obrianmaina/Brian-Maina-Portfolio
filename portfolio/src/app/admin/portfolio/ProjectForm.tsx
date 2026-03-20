@@ -14,13 +14,15 @@ export default function ProjectForm({ formData, isEditing, onSubmit, onChange }:
     (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) =>
       onChange({ [field]: e.target.value });
 
+  const inputClasses = "w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 transition-colors";
+
   return (
-    <div className={`p-6 rounded-2xl border mb-8 fade-in ${isEditing ? "bg-amber-50 border-amber-200" : "bg-gray-50 border-gray-200"}`}>
-      <h3 className="text-xl font-bold text-gray-800 mb-1">
+    <div className={`p-6 rounded-2xl border mb-8 fade-in transition-colors duration-300 ${isEditing ? "bg-amber-50 dark:bg-amber-900/10 border-amber-200 dark:border-amber-900/30" : "bg-gray-50 dark:bg-gray-800/50 border-gray-200 dark:border-gray-800"}`}>
+      <h3 className="text-xl font-bold text-gray-800 dark:text-gray-100 mb-1 transition-colors">
         {isEditing ? `Editing: ${formData.title || "Project"}` : "New Project Details"}
       </h3>
       {isEditing && (
-        <p className="text-xs text-amber-700 mb-4">
+        <p className="text-xs text-amber-700 dark:text-amber-500 mb-4 transition-colors">
           You are editing an existing project. Changes will overwrite the saved data.
         </p>
       )}
@@ -29,10 +31,10 @@ export default function ProjectForm({ formData, isEditing, onSubmit, onChange }:
 
         {/* BASIC DETAILS */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <input required type="text" placeholder="Project Title" className="p-3 border rounded-xl" value={formData.title} onChange={f("title")} />
-          <input required type="text" placeholder="Tag (e.g., Branding)" className="p-3 border rounded-xl" value={formData.tag} onChange={f("tag")} />
+          <input required type="text" placeholder="Project Title" className={inputClasses} value={formData.title} onChange={f("title")} />
+          <input required type="text" placeholder="Tag (e.g., Branding)" className={inputClasses} value={formData.tag} onChange={f("tag")} />
 
-          <select className="p-3 border rounded-xl" value={formData.category} onChange={f("category")}>
+          <select className={inputClasses} value={formData.category} onChange={f("category")}>
             <option value="Graphics">Graphics</option>
             <option value="UI/UX">UI/UX</option>
             <option value="Branding">Branding</option>
@@ -42,7 +44,7 @@ export default function ProjectForm({ formData, isEditing, onSubmit, onChange }:
             <option value="Presentation">Presentation</option>
           </select>
 
-          <select className="p-3 border rounded-xl" value={formData.mediaType} onChange={f("mediaType")}>
+          <select className={inputClasses} value={formData.mediaType} onChange={f("mediaType")}>
             <option value="image">Image(s)</option>
             <option value="video">Video URL</option>
             <option value="figma">Figma Embed</option>
@@ -51,17 +53,17 @@ export default function ProjectForm({ formData, isEditing, onSubmit, onChange }:
           </select>
         </div>
 
-        <textarea required placeholder="Short Description" className="w-full p-3 border rounded-xl" value={formData.description} onChange={f("description")} />
+        <textarea required placeholder="Short Description" className={`${inputClasses} resize-y`} value={formData.description} onChange={f("description")} />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <textarea required placeholder="Media URLs / Embed Link (If multiple images, separate with commas)" className="w-full p-3 border rounded-xl h-24" value={formData.media} onChange={f("media")} />
-          <textarea placeholder="Cover Image URL (Optional, best for Figma/Video thumbnails)" className="w-full p-3 border rounded-xl h-24" value={formData.coverImage} onChange={f("coverImage")} />
+          <textarea required placeholder="Media URLs / Embed Link (If multiple images, separate with commas)" className={`${inputClasses} h-24 resize-y`} value={formData.media} onChange={f("media")} />
+          <textarea placeholder="Cover Image URL (Optional, best for Figma/Video thumbnails)" className={`${inputClasses} h-24 resize-y`} value={formData.coverImage} onChange={f("coverImage")} />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <textarea placeholder="Challenge (Optional)" className="p-3 border rounded-xl text-sm" value={formData.challenge} onChange={f("challenge")} />
-          <textarea placeholder="Process (Optional)" className="p-3 border rounded-xl text-sm" value={formData.process} onChange={f("process")} />
-          <textarea placeholder="Outcome (Optional)" className="p-3 border rounded-xl text-sm" value={formData.outcome} onChange={f("outcome")} />
+          <textarea placeholder="Challenge (Optional)" className={`${inputClasses} text-sm resize-y`} value={formData.challenge} onChange={f("challenge")} />
+          <textarea placeholder="Process (Optional)" className={`${inputClasses} text-sm resize-y`} value={formData.process} onChange={f("process")} />
+          <textarea placeholder="Outcome (Optional)" className={`${inputClasses} text-sm resize-y`} value={formData.outcome} onChange={f("outcome")} />
         </div>
 
         {/* CONDITIONAL: LOGO */}
@@ -79,7 +81,7 @@ export default function ProjectForm({ formData, isEditing, onSubmit, onChange }:
 
         <button
           type="submit"
-          className={`w-full text-white font-bold py-4 mt-4 rounded-xl shadow-md transition-colors ${isEditing ? "bg-amber-500 hover:bg-amber-600" : "bg-emerald-600 hover:bg-emerald-700"}`}
+          className={`w-full text-white font-bold py-4 mt-4 rounded-xl shadow-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900 ${isEditing ? "bg-amber-500 hover:bg-amber-600 focus:ring-amber-500" : "bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500"}`}
         >
           {isEditing ? "Save Changes" : "Publish Project"}
         </button>

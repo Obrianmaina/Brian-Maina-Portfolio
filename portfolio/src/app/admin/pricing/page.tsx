@@ -41,21 +41,25 @@ export default function PricingPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-gray-50 py-12 px-6 relative">
+    <main className="min-h-screen bg-gray-50 dark:bg-gray-950 py-12 px-6 relative transition-colors duration-300">
       <div className="max-w-6xl mx-auto">
 
         {/* Header & Top-level Tab Navigation */}
         <div className="mb-8">
-          <button onClick={() => router.push('/admin')} className="flex items-center text-gray-500 hover:text-gray-900 mb-6 transition-colors font-medium">
+          <button onClick={() => router.push('/admin')} className="flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 mb-6 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-gray-500 rounded-md p-1 -ml-1">
             <ArrowLeft size={20} className="mr-2" /> Back to Hub
           </button>
 
-          <div className="flex gap-6 border-b border-gray-200">
+          <div className="flex gap-6 border-b border-gray-200 dark:border-gray-800 transition-colors">
             {(['client-lists', 'base-catalog'] as const).map(tab => (
               <button
                 key={tab}
                 onClick={() => setActiveDashboardTab(tab)}
-                className={`pb-3 px-2 font-medium text-lg transition-colors ${activeDashboardTab === tab ? 'border-b-2 border-teal-500 text-teal-700' : 'text-gray-500 hover:text-gray-800'}`}
+                className={`pb-3 px-2 font-medium text-lg transition-colors focus:outline-none ${
+                  activeDashboardTab === tab 
+                    ? 'border-b-2 border-teal-500 text-teal-700 dark:text-teal-400' 
+                    : 'text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200'
+                }`}
               >
                 {tab === 'client-lists' ? 'Client Quotes & Invoices' : 'Base Price Catalog'}
               </button>

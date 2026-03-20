@@ -34,7 +34,7 @@ export default function DashboardTab({
     ...formProps
 }: DashboardTabProps) {
     return (
-        <>
+        <div className="transition-colors duration-300">
             {/* Annual tax health — always shown once there's revenue */}
             <YearHealthBar taxSummary={taxSummary} />
 
@@ -61,6 +61,6 @@ export default function DashboardTab({
                     onMarkAsPaid={onMarkAsPaid}
                 />
             </div>
-        </>
+        </div>
     );
 }
