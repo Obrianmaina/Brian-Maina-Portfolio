@@ -179,6 +179,11 @@ export default function BlogsPage() {
     }
   };
 
+  // Reusable UI classes for the editor
+  const inputClasses = "w-full p-4 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white dark:focus:bg-gray-900 transition-all duration-200";
+  const labelClasses = "block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5 ml-1";
+  const sectionClasses = "bg-white dark:bg-gray-800/60 p-6 sm:p-8 rounded-3xl border border-gray-100 dark:border-gray-700/50 shadow-sm space-y-6 transition-colors";
+
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-950 py-12 px-6 transition-colors duration-300">
       <div className="max-w-6xl mx-auto">
@@ -246,47 +251,116 @@ export default function BlogsPage() {
 
         {/* EDITOR VIEW */}
         {view === 'editor' && (
-          <div className="max-w-4xl mx-auto bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800 fade-in transition-colors duration-300">
+          <div className="max-w-4xl mx-auto fade-in transition-all duration-300">
             <button onClick={() => { resetEditor(); setView('list'); }} className="flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 mb-6 transition-colors font-medium">
               <ArrowLeft size={20} className="mr-2" /> Back to Blogs
             </button>
-            <h2 className="text-3xl font-bold mb-8 border-l-4 border-teal-300 dark:border-teal-600 pb-2 px-4 text-gray-900 dark:text-gray-50 transition-colors">
-              {editingId ? "Edit" : "New"} Article
-            </h2>
-            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
-              <div className="space-y-1">
-                <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1 transition-colors">Title</label>
-                <input type="text" required value={title} onChange={(e) => setTitle(e.target.value)} className="w-full p-4 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 transition-colors" placeholder="Title" />
-              </div>
 
-              <div className="space-y-1">
-                <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1 transition-colors">Short Description</label>
-                <textarea required rows={3} value={description} onChange={handleDescriptionChange} className="w-full p-4 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 resize-none transition-colors" placeholder="Short summary..." />
-                <div className="flex justify-end text-xs text-gray-400 dark:text-gray-500 mt-1 font-medium transition-colors">{getWordCount(description)} / 20 words</div>
-              </div>
+            <div className="mb-8 px-2">
+              <h2 className="text-4xl font-extrabold text-gray-900 dark:text-gray-50 transition-colors tracking-tight">
+                {editingId ? "Edit Article" : "Create New Article"}
+              </h2>
+              <p className="text-gray-500 dark:text-gray-400 mt-2 text-lg">
+                {editingId ? "Update your content and refine your ideas." : "Draft a fresh story for your audience."}
+              </p>
+            </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-1">
-                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1 transition-colors">Image URL</label>
-                  <input type="url" value={featuredImage} onChange={(e) => setFeaturedImage(e.target.value)} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 transition-colors" placeholder="https://..." />
+            <form className="space-y-8" onSubmit={(e) => e.preventDefault()}>
+              
+              {/* SECTION 1: Basic Information */}
+              <div className={sectionClasses}>
+                <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 border-b border-gray-100 dark:border-gray-700 pb-3 mb-2">
+                  Post Details
+                </h3>
+                
+                <div>
+                  <label className={labelClasses}>Title</label>
+                  <input 
+                    type="text" 
+                    required 
+                    value={title} 
+                    onChange={(e) => setTitle(e.target.value)} 
+                    className={inputClasses} 
+                    placeholder="Enter an engaging title..." 
+                  />
                 </div>
-                <div className="space-y-1">
-                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1 transition-colors">Photo Credit</label>
-                  <input type="text" value={photoCredit} onChange={(e) => setPhotoCredit(e.target.value)} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 transition-colors" placeholder="Photographer name" />
+
+                <div>
+                  <div className="flex justify-between items-end mb-1.5">
+                    <label className={`${labelClasses} mb-0`}>Short Description</label>
+                    <span className={`text-xs font-semibold ${getWordCount(description) >= 20 ? 'text-amber-500' : 'text-gray-400 dark:text-gray-500'}`}>
+                      {getWordCount(description)} / 20 words
+                    </span>
+                  </div>
+                  <textarea 
+                    required 
+                    rows={3} 
+                    value={description} 
+                    onChange={handleDescriptionChange} 
+                    className={`${inputClasses} resize-none`} 
+                    placeholder="A brief, compelling summary of the article..." 
+                  />
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1 transition-colors">Content (Markdown)</label>
-                <textarea required rows={15} value={content} onChange={(e) => setContent(e.target.value)} className="w-full p-4 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 font-mono text-sm resize-y transition-colors" placeholder="Write your article here..." />
+              {/* SECTION 2: Media */}
+              <div className={sectionClasses}>
+                <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 border-b border-gray-100 dark:border-gray-700 pb-3 mb-2">
+                  Featured Media
+                </h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label className={labelClasses}>Image URL</label>
+                    <input 
+                      type="url" 
+                      value={featuredImage} 
+                      onChange={(e) => setFeaturedImage(e.target.value)} 
+                      className={inputClasses} 
+                      placeholder="https://example.com/image.jpg" 
+                    />
+                  </div>
+                  <div>
+                    <label className={labelClasses}>Photo Credit <span className="text-gray-400 font-normal">(Optional)</span></label>
+                    <input 
+                      type="text" 
+                      value={photoCredit} 
+                      onChange={(e) => setPhotoCredit(e.target.value)} 
+                      className={inputClasses} 
+                      placeholder="e.g. Jane Doe via Unsplash" 
+                    />
+                  </div>
+                </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-gray-100 dark:border-gray-800 transition-colors">
+              {/* SECTION 3: Content */}
+              <div className={sectionClasses}>
+                <h3 className="text-xl font-bold text-gray-800 dark:text-gray-200 border-b border-gray-100 dark:border-gray-700 pb-3 mb-2 flex justify-between items-center">
+                  <span>Content Editor</span>
+                  <span className="text-xs font-normal text-teal-600 dark:text-teal-400 bg-teal-50 dark:bg-teal-900/30 px-2 py-1 rounded-md">
+                    Markdown Supported
+                  </span>
+                </h3>
+                
+                <div>
+                  <textarea 
+                    required 
+                    rows={18} 
+                    value={content} 
+                    onChange={(e) => setContent(e.target.value)} 
+                    className={`${inputClasses} font-mono text-sm leading-relaxed resize-y`} 
+                    placeholder="Start writing your amazing article here..." 
+                  />
+                </div>
+              </div>
+
+              {/* ACTIONS FOOTER */}
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <button 
                   type="button" 
                   onClick={(e) => { e.preventDefault(); handleSubmit(false); }} 
                   disabled={loading} 
-                  className="flex-1 py-3 border-2 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-bold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors disabled:opacity-50"
+                  className="flex-1 py-4 border-2 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-lg font-bold rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-50"
                 >
                   {loading ? "Saving..." : "Save as Draft"}
                 </button>
@@ -294,7 +368,7 @@ export default function BlogsPage() {
                   type="button" 
                   onClick={(e) => { e.preventDefault(); handleSubmit(true); }} 
                   disabled={loading} 
-                  className="flex-1 py-3 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 transition-all active:scale-95 shadow-lg shadow-teal-100 dark:shadow-none disabled:opacity-50"
+                  className="flex-1 py-4 bg-teal-600 text-white text-lg font-bold rounded-xl hover:bg-teal-700 transition-all transform hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-teal-500/25 dark:shadow-none disabled:opacity-50 disabled:transform-none"
                 >
                   {loading ? "Publishing..." : "Publish Article"}
                 </button>
