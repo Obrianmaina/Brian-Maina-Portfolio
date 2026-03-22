@@ -1,10 +1,11 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import clientPromise from '@/lib/mongodb';
 import { ObjectId } from 'mongodb';
 import crypto from 'crypto';
 
-// Reverting to the original database name used in your earlier files
+export const dynamic = 'force-dynamic';
+
 const DB_NAME = "portfolio";
 
 interface BlogUpdate {
@@ -20,7 +21,24 @@ interface BlogUpdate {
 async function isAdmin() {
   const cookieStore = await cookies();
   const session = cookieStore.get('admin_session');
-  return session?.value === process.env.ADMIN_PASSWORD;
+  
+  if (!session?.value) {
+    console.error("Auth Error: No admin_session cookie found");
+    return false;
+  }
+  
+  // FIXED: Checking against ADMIN_SESSION_TOKEN instead of ADMIN_PASSWORD
+  if (!process.env.ADMIN_SESSION_TOKEN) {
+    console.error("Auth Error: ADMIN_SESSION_TOKEN env variable is missing");
+    return false;
+  }
+  
+  if (session.value !== process.env.ADMIN_SESSION_TOKEN) {
+    console.error("Auth Error: Cookie value does not match ADMIN_SESSION_TOKEN");
+    return false;
+  }
+  
+  return true;
 }
 
 function generateUniqueSlug(title: string) {
@@ -31,26 +49,21 @@ function generateUniqueSlug(title: string) {
     .replace(/[\s_-]+/g, '-')
     .replace(/^-+|-+$/g, '');
   
-  // Add 4 random hex chars to prevent collisions
   const suffix = crypto.randomBytes(2).toString('hex');
   return `${baseSlug}-${suffix}`;
 }
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     const client = await clientPromise;
     const db = client.db(DB_NAME);
     
-    // Fetch all blogs to filter in memory
     const allBlogs = await db.collection("blogs").find({}).toArray();
     const adminStatus = await isAdmin();
     
     const filteredBlogs = allBlogs
       .filter(blog => {
-        // If admin, show everything
         if (adminStatus) return true;
-        
-        // If not admin, show if explicitly published OR if the field is missing (legacy support)
         return blog.isPublished === true || blog.isPublished === undefined;
       })
       .sort((a, b) => {
@@ -60,22 +73,22 @@ export async function GET() {
       });
       
     return NextResponse.json(filteredBlogs);
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("GET Blogs Error:", error);
     return NextResponse.json({ error: "Failed to fetch blogs" }, { status: 500 });
   }
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   if (!(await isAdmin())) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    return NextResponse.json({ error: "Unauthorized: Invalid or missing admin session" }, { status: 403 });
   }
 
   try {
     const { title, description, content, featuredImage, photoCredit, isPublished } = await req.json();
     
     if (!title || !content) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+      return NextResponse.json({ error: "Missing required fields (title or content)" }, { status: 400 });
     }
 
     const slug = generateUniqueSlug(title);
@@ -96,14 +109,16 @@ export async function POST(req: Request) {
 
     await db.collection("blogs").insertOne(newBlog);
     return NextResponse.json({ success: true, slug });
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to create blog" }, { status: 500 });
+  } catch (error: unknown) {
+    console.error("POST Blog Error:", error);
+    const errorMessage = error instanceof Error ? error.message : "Failed to create blog";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
 
-export async function PUT(req: Request) {
+export async function PUT(req: NextRequest) {
   if (!(await isAdmin())) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    return NextResponse.json({ error: "Unauthorized: Invalid or missing admin session" }, { status: 403 });
   }
 
   try {
@@ -111,7 +126,11 @@ export async function PUT(req: Request) {
     const { id, title, description, content, featuredImage, photoCredit, isPublished } = body;
 
     if (!id) {
-      return NextResponse.json({ error: "Blog ID is required" }, { status: 400 });
+      return NextResponse.json({ error: "Blog ID is required for updating" }, { status: 400 });
+    }
+
+    if (!ObjectId.isValid(id as string)) {
+      return NextResponse.json({ error: "Invalid Blog ID format" }, { status: 400 });
     }
 
     const client = await clientPromise;
@@ -133,23 +152,28 @@ export async function PUT(req: Request) {
     );
 
     if (result.matchedCount === 0) {
-      return NextResponse.json({ error: "Blog not found" }, { status: 404 });
+      return NextResponse.json({ error: "Blog not found in database" }, { status: 404 });
     }
 
     return NextResponse.json({ success: true });
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to update blog" }, { status: 500 });
+  } catch (error: unknown) {
+    console.error("PUT Blog Error:", error);
+    const errorMessage = error instanceof Error ? error.message : "Database error failed to update blog";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }
 
-export async function DELETE(req: Request) {
+export async function DELETE(req: NextRequest) {
   if (!(await isAdmin())) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
+    return NextResponse.json({ error: "Unauthorized: Invalid or missing admin session" }, { status: 403 });
   }
 
   try {
     const { id } = await req.json();
-    if (!id) return NextResponse.json({ error: "ID required" }, { status: 400 });
+    
+    if (!id || !ObjectId.isValid(id)) {
+      return NextResponse.json({ error: "Valid Blog ID is required for deletion" }, { status: 400 });
+    }
 
     const client = await clientPromise;
     const db = client.db(DB_NAME);
@@ -160,7 +184,9 @@ export async function DELETE(req: Request) {
     }
 
     return NextResponse.json({ success: true });
-  } catch (error) {
-    return NextResponse.json({ error: "Failed to delete blog" }, { status: 500 });
+  } catch (error: unknown) {
+    console.error("DELETE Blog Error:", error);
+    const errorMessage = error instanceof Error ? error.message : "Failed to delete blog";
+    return NextResponse.json({ error: errorMessage }, { status: 500 });
   }
 }

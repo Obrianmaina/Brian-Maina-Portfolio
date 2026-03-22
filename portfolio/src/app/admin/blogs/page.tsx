@@ -33,7 +33,7 @@ export default function BlogsPage() {
 
   const fetchBlogs = async () => {
     try {
-      const res = await fetch("/api/blogs");
+      const res = await fetch("/api/blogs", { cache: "no-store", credentials: 'same-origin' });
       if (res.ok) setBlogs(await res.json());
     } catch (error) {
       console.error("Failed to fetch blogs", error);
@@ -71,7 +71,7 @@ export default function BlogsPage() {
 
   const openEditorForEdit = (blog: BlogPost) => {
     if (!blog._id) return;
-    setEditingId(blog._id);
+    setEditingId(blog._id.toString());
     setTitle(blog.title);
     setDescription(blog.description || "");
     setContent(blog.content);
@@ -81,7 +81,7 @@ export default function BlogsPage() {
   };
 
   const handleSubmit = async (isPublished: boolean) => {
-    if (!title || !content || !description) {
+    if (!title.trim() || !content.trim() || !description.trim()) {
       showModal('error', 'Incomplete', "Title, Description, and Content are required.");
       return;
     }
@@ -95,8 +95,11 @@ export default function BlogsPage() {
       const res = await fetch("/api/blogs", {
         method,
         headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
         body: JSON.stringify(payload),
       });
+
+      const data = await res.json().catch(() => ({}));
 
       if (res.ok) {
         showModal('success', 'Success', `Article ${isPublished ? "published" : "saved as draft"}!`);
@@ -104,10 +107,11 @@ export default function BlogsPage() {
         setView('list');
         fetchBlogs();
       } else {
-        showModal('error', 'Save Failed', "Could not save the article.");
+        showModal('error', 'Save Failed', data.error || "Could not save the article. Please check your connection.");
       }
-    } catch {
-      showModal('error', 'Error', "An unexpected error occurred.");
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred.";
+      showModal('error', 'Error', errorMessage);
     } finally {
       setLoading(false);
     }
@@ -119,6 +123,7 @@ export default function BlogsPage() {
       const res = await fetch("/api/blogs", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
         body: JSON.stringify({
           id: blog._id,
           title: blog.title,
@@ -129,14 +134,18 @@ export default function BlogsPage() {
           isPublished: !blog.isPublished,
         }),
       });
+      
+      const data = await res.json().catch(() => ({}));
+
       if (res.ok) {
         showModal('success', 'Status Updated', `Article has been ${!blog.isPublished ? "published" : "moved to drafts"}.`);
         fetchBlogs();
       } else {
-        showModal('error', 'Update Failed', "Failed to change publication status.");
+        showModal('error', 'Update Failed', data.error || "Failed to change publication status.");
       }
-    } catch {
-      showModal('error', 'Error', "An error occurred.");
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "An error occurred.";
+      showModal('error', 'Error', errorMessage);
     } finally {
       setLoading(false);
     }
@@ -153,15 +162,20 @@ export default function BlogsPage() {
       const res = await fetch("/api/blogs", {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
         body: JSON.stringify({ id }),
       });
+      
+      const data = await res.json().catch(() => ({}));
+
       if (res.ok) {
         fetchBlogs();
       } else {
-        showModal('error', 'Delete Failed', "Could not delete from database.");
+        showModal('error', 'Delete Failed', data.error || "Could not delete from database.");
       }
-    } catch {
-      showModal('error', 'Error', "Error while deleting.");
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Error while deleting.";
+      showModal('error', 'Error', errorMessage);
     }
   };
 
@@ -219,7 +233,7 @@ export default function BlogsPage() {
                       >
                         {blog.isPublished ? <><EyeOff size={16} className="mr-1" /> Unpublish</> : <><Eye size={16} className="mr-1" /> Publish</>}
                       </button>
-                      <button onClick={(e) => blog._id && confirmDelete(blog._id, e)} className="text-red-600 dark:text-red-500 hover:text-red-800 dark:hover:text-red-400 flex items-center text-sm font-medium transition-colors">
+                      <button onClick={(e) => blog._id && confirmDelete(blog._id.toString(), e)} className="text-red-600 dark:text-red-500 hover:text-red-800 dark:hover:text-red-400 flex items-center text-sm font-medium transition-colors">
                         <Trash2 size={16} className="mr-1" /> Delete
                       </button>
                     </div>
@@ -239,7 +253,7 @@ export default function BlogsPage() {
             <h2 className="text-3xl font-bold mb-8 border-l-4 border-teal-300 dark:border-teal-600 pb-2 px-4 text-gray-900 dark:text-gray-50 transition-colors">
               {editingId ? "Edit" : "New"} Article
             </h2>
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
               <div className="space-y-1">
                 <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1 transition-colors">Title</label>
                 <input type="text" required value={title} onChange={(e) => setTitle(e.target.value)} className="w-full p-4 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 transition-colors" placeholder="Title" />
@@ -268,10 +282,20 @@ export default function BlogsPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-4 border-t border-gray-100 dark:border-gray-800 transition-colors">
-                <button type="button" onClick={() => handleSubmit(false)} disabled={loading} className="flex-1 py-3 border-2 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-bold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors disabled:opacity-50">
+                <button 
+                  type="button" 
+                  onClick={(e) => { e.preventDefault(); handleSubmit(false); }} 
+                  disabled={loading} 
+                  className="flex-1 py-3 border-2 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 font-bold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors disabled:opacity-50"
+                >
                   {loading ? "Saving..." : "Save as Draft"}
                 </button>
-                <button type="button" onClick={() => handleSubmit(true)} disabled={loading} className="flex-1 py-3 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 transition-all active:scale-95 shadow-lg shadow-teal-100 dark:shadow-none disabled:opacity-50">
+                <button 
+                  type="button" 
+                  onClick={(e) => { e.preventDefault(); handleSubmit(true); }} 
+                  disabled={loading} 
+                  className="flex-1 py-3 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 transition-all active:scale-95 shadow-lg shadow-teal-100 dark:shadow-none disabled:opacity-50"
+                >
                   {loading ? "Publishing..." : "Publish Article"}
                 </button>
               </div>
