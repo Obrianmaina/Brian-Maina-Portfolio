@@ -21,7 +21,7 @@ export default function BlogSubscribeToast({
           initial={{ opacity: 0, y: 50, x: 50 }}
           animate={{ opacity: 1, y: 0, x: 0 }}
           exit={{ opacity: 0, y: 50, x: 50 }}
-          className="fixed bottom-6 right-6 z-40 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-2xl dark:shadow-xl rounded-2xl p-5 max-w-[320px] flex gap-4 items-start transition-colors duration-300"
+          className="fixed bottom-28 sm:bottom-6 right-4 sm:right-6 z-40 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 shadow-2xl dark:shadow-xl rounded-2xl p-5 max-w-[320px] flex gap-4 items-start transition-colors duration-300"
         >
           <div className="w-10 h-10 bg-teal-100 dark:bg-teal-900/30 text-teal-600 dark:text-teal-400 rounded-full flex items-center justify-center shrink-0 transition-colors">
             <Mail size={20} />
