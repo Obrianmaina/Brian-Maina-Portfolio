@@ -120,7 +120,7 @@ export default function Navbar() {
 
       {/* Bottom Mobile Navbar (Floating Capsule) - Hidden on Desktop */}
       <nav className="fixed bottom-6 inset-x-0 z-50 sm:hidden flex justify-center px-4 pointer-events-none">
-        <div className="bg-white/85 dark:bg-gray-950/85 backdrop-blur-xl border border-gray-200/60 dark:border-gray-800/60 shadow-2xl shadow-teal-500/10 dark:shadow-teal-900/20 rounded-full px-2 h-16 w-full max-w-[22rem] flex items-center justify-between relative pointer-events-auto">
+        <div className="bg-white/40 dark:bg-gray-950/40 backdrop-blur-xl backdrop-saturate-150 border border-white/40 dark:border-white/10 shadow-xl shadow-black/10 dark:shadow-black/40 rounded-full px-2 h-16 w-full max-w-[22rem] flex items-center justify-between relative pointer-events-auto">
           {navLinks.map((link) => {
             // Check if active (exact match for home, partial for others)
             const isActive = link.href === "/" ? pathname === "/" : pathname.includes(link.href);
@@ -136,7 +136,7 @@ export default function Navbar() {
                 {isActive && (
                   <motion.div
                     layoutId="mobile-active-pill"
-                    className="absolute inset-0 bg-teal-50 dark:bg-teal-900/30 rounded-full"
+                    className="absolute inset-0 bg-teal-500/10 dark:bg-teal-400/20 rounded-full"
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
                 )}
@@ -150,7 +150,7 @@ export default function Navbar() {
                   className={`relative z-10 transition-colors duration-300 ${
                     isActive
                       ? "text-teal-600 dark:text-teal-400"
-                      : "text-gray-500 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-100"
+                      : "text-gray-600 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-gray-100"
                   }`}
                 >
                   <link.icon className="w-5 h-5" strokeWidth={isActive ? 2.5 : 2} />

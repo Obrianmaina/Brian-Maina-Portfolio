@@ -1,5 +1,6 @@
 import CookieBanner from '@/components/CookieBanner'
 import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -27,7 +28,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-50 transition-colors duration-300`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-50 transition-colors duration-300 flex flex-col min-h-screen`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -35,10 +36,15 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Navbar />
-          {/* Added top padding to account for the fixed Navbar */}
-          <div className="pt-16">
+          
+          {/* Main content wrapper set to grow so the footer pushes to the bottom */}
+          <div className="pt-16 flex-grow">
             {children}
           </div>
+
+          {/* 2. Add the Footer here */}
+          <Footer />
+          
           <CookieBanner />
         </ThemeProvider>
       </body>
