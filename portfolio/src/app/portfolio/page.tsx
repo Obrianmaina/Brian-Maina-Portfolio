@@ -60,9 +60,11 @@ export default function PortfolioPage() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  const visibleShowcases = showcases.filter((project) => !project.isHidden);
+
   const filteredShowcases = activeCategory === "All"
-    ? showcases
-    : showcases.filter((item) => item.category === activeCategory);
+    ? visibleShowcases
+    : visibleShowcases.filter((item) => item.category === activeCategory);
 
   const handleDisclaimerProceed = (projects: Showcase[]) => {
     if (projects.length === 1) {
@@ -75,7 +77,7 @@ export default function PortfolioPage() {
 
   return (
     <main className="relative bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 min-h-screen overflow-x-hidden pt-24 transition-colors duration-300">
-      {/* --- Design Showcase --- */}
+      
       <section id="portfolio" className="relative max-w-6xl mx-auto py-10 px-6">
         <h1 className="text-4xl font-bold mb-10 text-center text-gray-900 dark:text-gray-50">Design Showcase</h1>
 
@@ -92,9 +94,9 @@ export default function PortfolioPage() {
             <Loader2 className="animate-spin mb-4" size={40} />
             <p className="text-lg font-medium">Loading projects...</p>
           </div>
-        ) : showcases.length === 0 ? (
+        ) : filteredShowcases.length === 0 ? (
           <div className="text-center py-20 text-gray-500 dark:text-gray-400">
-            <p className="text-lg">No projects found. Add some from the Admin Dashboard!</p>
+            <p className="text-xl font-medium">Currently working on {activeCategory === "All" ? "new" : activeCategory} showcase</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -122,7 +124,6 @@ export default function PortfolioPage() {
         )}
       </section>
 
-      {/* --- Corporate Work --- */}
       <section id="corporate-work" className="relative max-w-6xl mx-auto py-20 px-6">
         <h2 className="text-3xl font-semibold mb-8 text-center text-gray-900 dark:text-gray-50">Corporate Work</h2>
         <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-3xl mx-auto text-center">
@@ -145,7 +146,6 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* --- Modals --- */}
       <LightboxModal lightbox={lightbox} onClose={() => setLightbox(null)} setExpandedMockup={setExpandedMockup} />
       <DisclaimerModal disclaimerProject={disclaimerProject} onClose={() => setDisclaimerProject(null)} onProceed={handleDisclaimerProceed} />
       <CorporateGalleryModal
@@ -155,7 +155,6 @@ export default function PortfolioPage() {
       />
       <ExpandedMockupModal src={expandedMockup} onClose={() => setExpandedMockup(null)} />
 
-      
     </main>
   );
 }

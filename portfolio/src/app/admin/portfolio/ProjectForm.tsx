@@ -10,22 +10,18 @@ type Props = {
 };
 
 export default function ProjectForm({ formData, isEditing, onSubmit, onChange }: Props) {
-  // Logic remains exactly the same
   const f = (field: keyof FormState) =>
     (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) =>
       onChange({ [field]: e.target.value });
 
-  // Enhanced input styling with smooth transitions
   const inputClasses = "w-full p-3 border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white dark:focus:bg-gray-900 transition-all duration-200";
   
-  // New reusable classes for labels and section containers
   const labelClasses = "block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5 ml-1";
   const sectionClasses = "bg-white dark:bg-gray-800/60 p-6 rounded-2xl border border-gray-100 dark:border-gray-700/50 shadow-sm space-y-5 transition-colors";
 
   return (
     <div className={`p-6 md:p-8 rounded-3xl border mb-8 fade-in transition-colors duration-300 ${isEditing ? "bg-amber-50/50 dark:bg-amber-900/10 border-amber-200 dark:border-amber-900/30" : "bg-gray-50/80 dark:bg-gray-900/50 border-gray-200 dark:border-gray-800"}`}>
       
-      {/* Header Section */}
       <div className="mb-8">
         <h3 className="text-2xl font-extrabold text-gray-800 dark:text-gray-100 mb-3 transition-colors">
           {isEditing ? `Editing Project: ${formData.title || "Untitled"}` : "Create New Project"}
@@ -41,7 +37,6 @@ export default function ProjectForm({ formData, isEditing, onSubmit, onChange }:
 
       <form onSubmit={onSubmit} className="space-y-6">
 
-        {/* SECTION 1: Basic Information */}
         <div className={sectionClasses}>
           <h4 className="text-lg font-bold text-gray-800 dark:text-gray-200 border-b border-gray-100 dark:border-gray-700 pb-3 mb-2">
             Basic Information
@@ -85,9 +80,21 @@ export default function ProjectForm({ formData, isEditing, onSubmit, onChange }:
             <label className={labelClasses}>Short Description</label>
             <textarea required placeholder="Briefly describe the purpose and scope of the project..." className={`${inputClasses} h-24 resize-y`} value={formData.description} onChange={f("description")} />
           </div>
+
+          <div className="pt-4 border-t border-gray-100 dark:border-gray-700 flex items-center gap-3">
+            <input 
+              type="checkbox" 
+              id="isHidden" 
+              className="w-5 h-5 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500 dark:border-gray-600 dark:bg-gray-700" 
+              checked={formData.isHidden} 
+              onChange={(e) => onChange({ isHidden: e.target.checked })} 
+            />
+            <label htmlFor="isHidden" className="text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer">
+              Hide project from public portfolio
+            </label>
+          </div>
         </div>
 
-        {/* SECTION 2: Media & URLs */}
         <div className={sectionClasses}>
           <h4 className="text-lg font-bold text-gray-800 dark:text-gray-200 border-b border-gray-100 dark:border-gray-700 pb-3 mb-2">
             Media & Links
@@ -104,7 +111,6 @@ export default function ProjectForm({ formData, isEditing, onSubmit, onChange }:
           </div>
         </div>
 
-        {/* SECTION 3: Project Context */}
         <div className={sectionClasses}>
           <h4 className="text-lg font-bold text-gray-800 dark:text-gray-200 border-b border-gray-100 dark:border-gray-700 pb-3 mb-2">
             Project Context <span className="text-sm font-normal text-gray-400">(Optional)</span>
@@ -125,7 +131,6 @@ export default function ProjectForm({ formData, isEditing, onSubmit, onChange }:
           </div>
         </div>
 
-        {/* CONDITIONAL SECTIONS */}
         {formData.category === "Logo" && (
           <div className="bg-emerald-50/60 dark:bg-emerald-900/10 p-4 md:p-6 rounded-2xl border border-emerald-200/60 dark:border-emerald-800/40 shadow-inner">
             <LogoConceptsSection
@@ -141,7 +146,6 @@ export default function ProjectForm({ formData, isEditing, onSubmit, onChange }:
           </div>
         )}
 
-        {/* SUBMIT BUTTON */}
         <div className="pt-4">
           <button
             type="submit"

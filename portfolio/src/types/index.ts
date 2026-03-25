@@ -48,6 +48,7 @@ export interface Showcase {
   challenge: string;
   process: string;
   outcome: string;
+  isHidden?: boolean; // <-- ADD THIS LINE
   caseStudy?: CaseStudyDetails;
   brandDetails?: {
     colors?: string[];

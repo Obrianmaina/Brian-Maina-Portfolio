@@ -18,7 +18,6 @@ export default function PortfolioCMS() {
   const [draggedIndex, setDraggedIndex] = useState<number | null>(null);
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
 
-  // null -> no form | "new" -> adding | string (id) -> editing
   const [formMode, setFormMode] = useState<null | "new" | string>(null);
   const [formData, setFormData] = useState<FormState>(initialFormState);
 
@@ -69,6 +68,7 @@ export default function PortfolioCMS() {
       challenge: formData.challenge,
       process: formData.process,
       outcome: formData.outcome,
+      isHidden: formData.isHidden,
       media: formData.mediaType === "image" ? splitAndTrim(formData.media) : formData.media,
     };
 
@@ -195,7 +195,6 @@ export default function PortfolioCMS() {
     <main className="min-h-screen bg-gray-50 dark:bg-gray-950 py-12 px-6 transition-colors duration-300">
       <div className="max-w-6xl mx-auto bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg dark:shadow-none border border-gray-100 dark:border-gray-800 fade-in transition-colors duration-300">
 
-        {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
           <button
             onClick={() => router.push("/admin")}

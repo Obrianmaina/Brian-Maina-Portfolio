@@ -2,6 +2,7 @@ import { FormState, Showcase } from "./types";
 
 export const initialFormState: FormState = {
   title: "", category: "Graphics", description: "", tag: "", mediaType: "image", media: "", coverImage: "",
+  isHidden: false,
   challenge: "", process: "", outcome: "",
   logoConcepts: [],
   csRole: "", csDuration: "", csToolsStr: "", csProblemText: "", csProblemImagesStr: "",
@@ -41,6 +42,7 @@ export function showcaseToFormState(p: Showcase): FormState {
     mediaType: p.mediaType ?? "image",
     media: mediaStr,
     coverImage: p.coverImage ?? "",
+    isHidden: p.isHidden ?? false,
     challenge: p.challenge ?? "",
     process: p.process ?? "",
     outcome: p.outcome ?? "",

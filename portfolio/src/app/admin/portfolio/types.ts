@@ -8,6 +8,7 @@ export type Showcase = {
   mediaType: string;
   media: string | string[];
   coverImage?: string;
+  isHidden?: boolean;
   challenge?: string;
   process?: string;
   outcome?: string;
@@ -49,6 +50,7 @@ export type LogoConceptForm = {
 export type FormState = {
   title: string; category: string; description: string; tag: string;
   mediaType: string; media: string; coverImage: string;
+  isHidden: boolean;
   challenge: string; process: string; outcome: string;
   logoConcepts: LogoConceptForm[];
   csRole: string; csDuration: string; csToolsStr: string;

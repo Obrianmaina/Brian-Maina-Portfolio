@@ -49,6 +49,10 @@ export default function ProjectCard({
           <ImageIcon className="text-gray-300 dark:text-gray-600 transition-colors" size={48} />
         )}
         <span className="absolute top-2 right-2 bg-white/90 dark:bg-gray-900/90 text-gray-900 dark:text-gray-100 px-2 py-1 text-xs font-bold rounded-md z-10 transition-colors">{project.category}</span>
+        
+        {project.isHidden && (
+          <span className="absolute top-2 left-2 bg-red-500/90 text-white px-2 py-1 text-xs font-bold rounded-md z-10 transition-colors">Hidden</span>
+        )}
 
         {isReordering && (
           <div className="absolute inset-0 bg-black/40 dark:bg-black/60 flex items-center justify-center transition-colors">
