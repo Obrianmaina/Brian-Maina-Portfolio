@@ -131,7 +131,8 @@ export async function PUT(req: Request) {
       return NextResponse.json({ error: "Unauthorized access" }, { status: 401 });
     }
 
-    const { id } = await req.json();
+    // Extract the new mpesaMessage property
+    const { id, mpesaMessage } = await req.json();
 
     if (!id) {
       return NextResponse.json({ error: "Transaction ID is required" }, { status: 400 });
@@ -149,13 +150,14 @@ export async function PUT(req: Request) {
       return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
     }
 
-    // Update the transaction status to paid
+    // Update the transaction status to paid AND save the message
     await db.collection("transactions").updateOne(
       { _id: new ObjectId(id) },
       { 
         $set: { 
           status: 'paid',
-          paidAt: new Date()
+          paidAt: new Date(),
+          mpesaMessage: mpesaMessage || null // Save the M-Pesa message if provided
         } 
       }
     );
@@ -176,7 +178,7 @@ export async function PUT(req: Request) {
           type: 'receipt', // Renders the email as a receipt instead of an invoice
           referenceNumber: transaction.referenceNumber,
           downloadLink,
-          // Note: mpesaMessage is omitted here for a clean, generic manual receipt
+          mpesaMessage: mpesaMessage || undefined // Pass the message to the email template
         }),
       });
     }

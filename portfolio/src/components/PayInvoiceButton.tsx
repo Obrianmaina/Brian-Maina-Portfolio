@@ -1,28 +1,89 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '@/components/ui/button';
 import { Invoice } from '@/types';
+import { RefreshCw } from 'lucide-react';
 
 export default function PayInvoiceButton({ invoice }: { invoice: Invoice }) {
   const [loading, setLoading] = useState(false);
-  
-  // Custom states to handle the beautiful UI popup
   const [showModal, setShowModal] = useState(false);
   const [conversionData, setConversionData] = useState<{ message: string; url: string } | null>(null);
 
-  // 1. EARLY RETURN: If Paystack is disabled, ONLY show manual payment instructions. 
-  // This completely removes the Paystack button from the screen.
+  // States for currency conversion logic on manual M-Pesa payments
+  const [kesRate, setKesRate] = useState<number | null>(null);
+  const [isFetchingRate, setIsFetchingRate] = useState(false);
+
+  useEffect(() => {
+    // Only fetch the exchange rate if Paystack is disabled AND the currency is not already KES
+    if (invoice.disablePaystack && invoice.currency !== 'KES') {
+      const fetchRate = async () => {
+        setIsFetchingRate(true);
+        try {
+          const res = await fetch(`/api/exchange-rate?base=${invoice.currency}`);
+          if (res.ok) {
+            const data = await res.json();
+            if (data.rate) {
+              setKesRate(data.rate);
+            }
+          }
+        } catch (error) {
+          console.error("Failed to fetch exchange rate for manual payment:", error);
+        } finally {
+          setIsFetchingRate(false);
+        }
+      };
+      
+      fetchRate();
+    }
+  }, [invoice.disablePaystack, invoice.currency]);
+
+  // 1. EARLY RETURN: If Paystack is disabled, ONLY show manual payment instructions.
   if (invoice.disablePaystack) {
+    const isForeignCurrency = invoice.currency !== 'KES';
+    
+    // Calculate estimated KES if we have a rate. We add a slight 1.5% buffer often used by gateways/banks for conversion.
+    const estimatedKES = kesRate ? Math.ceil(invoice.amount * kesRate * 1.015) : null;
+
     return (
       <div className="p-5 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-700/50 mt-4 transition-colors">
         <p className="text-sm font-bold text-amber-900 dark:text-amber-400 mb-2">
           Manual Payment Required
         </p>
-        <div className="text-sm text-amber-800 dark:text-amber-200 space-y-2">
-          <p>Please pay <strong>{invoice.currency} {invoice.amount}</strong> via M-Pesa.</p>
-          <div className="bg-white/60 dark:bg-black/20 p-3 rounded-lg border border-amber-100 dark:border-amber-800/50">
-            <p><strong>Phone Number:</strong> 0728 036 420</p>
+        <div className="text-sm text-amber-800 dark:text-amber-200 space-y-3">
+          
+          <div className="flex items-center gap-2">
+            <p>
+              Please pay <strong>{invoice.currency} {invoice.amount.toLocaleString()}</strong> via M-Pesa.
+            </p>
+          </div>
+
+          {/* Render the KES Conversion if applicable */}
+          {isForeignCurrency && (
+            <div className="bg-amber-100/50 dark:bg-amber-900/40 p-3 rounded-lg border border-amber-200 dark:border-amber-800/60 flex items-center justify-between">
+              <div>
+                <p className="text-xs font-semibold uppercase opacity-70 mb-1 flex items-center">
+                  Estimated KES Equivalent
+                  {isFetchingRate && <RefreshCw size={12} className="ml-2 animate-spin" />}
+                </p>
+                {estimatedKES ? (
+                  <p className="font-bold text-lg">KSh {estimatedKES.toLocaleString('en-KE')}</p>
+                ) : (
+                  <p className="text-xs italic opacity-80">{isFetchingRate ? "Calculating..." : "Rate unavailable. Check current rates."}</p>
+                )}
+              </div>
+              {kesRate && (
+                <div className="text-right">
+                  <p className="text-[10px] opacity-70">1 {invoice.currency} = {kesRate} KES</p>
+                  <p className="text-[10px] opacity-70">+ ~1.5% buffer</p>
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="bg-white/60 dark:bg-black/20 p-3 rounded-lg border border-amber-100 dark:border-amber-800/50 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <p><strong>Send to Number:</strong> <span className="font-mono text-base">0728 036 420</span></p>
+            <p className="text-xs opacity-80">Name: Brian Maina</p>
           </div>
         </div>
       </div>
@@ -45,9 +106,7 @@ export default function PayInvoiceButton({ invoice }: { invoice: Invoice }) {
       const data = await res.json();
       
       if (res.ok && data.checkoutUrl) {
-        // Check if the backend sent a currency conversion message
         if (data.conversionMessage) {
-          // Open our custom UI modal and stop the initial loading spinner
           setConversionData({
             message: data.conversionMessage,
             url: data.checkoutUrl
@@ -55,7 +114,6 @@ export default function PayInvoiceButton({ invoice }: { invoice: Invoice }) {
           setShowModal(true);
           setLoading(false);
         } else {
-          // No conversion needed, redirect directly to Paystack
           window.location.href = data.checkoutUrl;
         }
       } else {
@@ -72,21 +130,18 @@ export default function PayInvoiceButton({ invoice }: { invoice: Invoice }) {
 
   const handleProceed = () => {
     if (conversionData?.url) {
-      // Show loading feedback on the modal button, then redirect
       setLoading(true);
       window.location.href = conversionData.url;
     }
   };
 
   const handleCancel = () => {
-    // Simply hide the modal and reset data if they cancel
     setShowModal(false);
     setConversionData(null);
   };
 
   return (
     <>
-      {/* This button ONLY renders if invoice.disablePaystack is falsy */}
       <Button onClick={handlePayment} disabled={loading && !showModal}>
         {loading && !showModal ? 'Processing...' : `Pay ${invoice.currency} ${invoice.amount}`}
       </Button>

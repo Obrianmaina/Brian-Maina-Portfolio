@@ -6,7 +6,7 @@ import { ArrowLeft } from "lucide-react";
 import AdminModal from "@/components/AdminModal";
 
 import { ActiveTab, DocType, CurrencyCode, ModalState } from "./types";
-import { toMonthString } from "./utils";
+import { toMonthString, maskMpesaBalance } from "./utils"; // Added maskMpesaBalance here
 import { useTransactions } from "./hooks/useTransactions";
 import { useEstimatedPayout, useTaxSummary, useAllChartData, useMonthlyData } from "./hooks/useFinancials";
 import DashboardTab from "./components/DashboardTab";
@@ -20,6 +20,10 @@ export default function AccountsPage() {
     const [loading, setLoading] = useState(false);
     const [markingPaid, setMarkingPaid] = useState<string | null>(null);
     const [modal, setModal] = useState<ModalState>({ show: false, type: 'success', title: '', message: '' });
+
+    // Custom UI State for the "Mark as Paid" Prompt
+    const [promptModal, setPromptModal] = useState<{ show: boolean, id: string }>({ show: false, id: '' });
+    const [promptInput, setPromptInput] = useState("");
 
     // Form state
     const [clientName, setClientName] = useState("");
@@ -62,12 +66,10 @@ export default function AccountsPage() {
     const handleSendDocument = async (e: React.FormEvent) => {
         e.preventDefault();
         
-        // Relax M-Pesa message requirement if it is a cash payment
         if (!clientName || !amount || !serviceDescription || (docType === 'receipt' && !mpesaMessage && !isCashPayment)) {
             return showModal('error', 'Incomplete', 'All required fields must be filled.');
         }
         
-        // Require either email or phone
         if (docType !== 'expense' && !clientEmail && !clientPhone) {
             return showModal('error', 'Incomplete', 'Client email or phone is required for invoices and receipts.');
         }
@@ -108,33 +110,42 @@ export default function AccountsPage() {
         }
     };
 
+    // 1. Triggers the custom UI popup
     const handleMarkAsPaid = (id: string) => {
-        showModal('confirm', 'Update Payment Status',
-            'Are you sure you want to mark this invoice as paid? This will update your financial records immediately.',
-            async () => {
-                setMarkingPaid(id);
-                try {
-                    const res = await fetch("/api/admin/accounts", {
-                        method: "PUT",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ id }),
-                    });
-                    if (res.ok) {
-                        fetchTransactions();
-                        showModal('success', 'Update Successful', 'The invoice has been marked as paid.');
-                    } else {
-                        showModal('error', 'Update Failed', 'Could not update the invoice status.');
-                    }
-                } catch {
-                    showModal('error', 'Error', 'An unexpected error occurred.');
-                } finally {
-                    setMarkingPaid(null);
-                }
-            }
-        );
+        setPromptInput(""); // Reset input field
+        setPromptModal({ show: true, id }); // Open our custom modal
     };
 
-    // Shared props for both tabs
+    // 2. Executes the API call from the custom UI
+    const submitMarkAsPaid = async () => {
+        const id = promptModal.id;
+        const enteredMessage = promptInput;
+        
+        setPromptModal({ show: false, id: '' }); // Close the popup
+        setMarkingPaid(id);
+        
+        try {
+            const res = await fetch("/api/admin/accounts", {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 
+                    id, 
+                    mpesaMessage: enteredMessage 
+                }),
+            });
+            if (res.ok) {
+                fetchTransactions();
+                showModal('success', 'Update Successful', 'The invoice has been marked as paid and the receipt was sent.');
+            } else {
+                showModal('error', 'Update Failed', 'Could not update the invoice status.');
+            }
+        } catch {
+            showModal('error', 'Error', 'An unexpected error occurred.');
+        } finally {
+            setMarkingPaid(null);
+        }
+    };
+
     const markPaidProps = { markingPaid, onMarkAsPaid: handleMarkAsPaid };
 
     return (
@@ -209,6 +220,46 @@ export default function AccountsPage() {
                     />
                 )}
             </div>
+
+            {/* Custom UI: M-Pesa Prompt Modal */}
+            {promptModal.show && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm transition-opacity">
+                    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6 w-full max-w-md shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Confirm Payment</h3>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">
+                            Are you sure you want to mark this invoice as paid? This will update your financial records and email the client their receipt.
+                        </p>
+                        
+                        <div className="space-y-2 mb-6">
+                            <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1">
+                                M-Pesa Confirmation Message <span className="text-gray-400 font-normal">(Optional)</span>
+                            </label>
+                            <textarea
+                                value={promptInput}
+                                onChange={(e) => setPromptInput(maskMpesaBalance(e.target.value))} // Masks balance automatically!
+                                placeholder="Paste the exact M-Pesa message here, or leave blank for cash/card..."
+                                className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 h-24 transition-colors resize-none"
+                            />
+                        </div>
+
+                        <div className="flex gap-3 justify-end">
+                            <button
+                                onClick={() => setPromptModal({ show: false, id: '' })}
+                                className="px-4 py-2 rounded-xl font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={submitMarkAsPaid}
+                                className="px-4 py-2 rounded-xl font-bold text-white bg-green-600 hover:bg-green-700 shadow-lg shadow-green-200 dark:shadow-none transition-all focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+                            >
+                                Mark as Paid
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <AdminModal modal={modal} close={closeModal} />
         </main>
     );
