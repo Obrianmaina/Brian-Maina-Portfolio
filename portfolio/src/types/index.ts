@@ -96,6 +96,7 @@ export interface Invoice {
   status: "pending" | "paid";
   createdAt: Date;
   paidAt?: Date;
+  disablePaystack?: boolean; // Added this line to fix the TypeScript error
 }
 
 // src/types/index.ts

@@ -6,6 +6,7 @@ import PayInvoiceButton from "@/components/PayInvoiceButton";
 import DownloadDocumentBtn from "@/components/DownloadDocumentBtn";
 import { DocumentData } from "@/components/pdf/DocumentTemplate";
 
+// 1. ADD disablePaystack to the interface here so TypeScript knows about it
 interface TransactionDocument {
   _id: string;
   referenceNumber: string;
@@ -18,6 +19,7 @@ interface TransactionDocument {
   currency?: string;
   mpesaMessage?: string;
   date: string; 
+  disablePaystack?: boolean; // <-- Added this
 }
 
 export default function DocumentsPage() {
@@ -143,7 +145,8 @@ export default function DocumentsPage() {
 
           {/* Action Buttons */}
           <div>
-            {isEuroOrGbp && document.status === 'pending' && (
+            {/* ONLY show currency notice if it's an international currency AND Paystack is NOT disabled */}
+            {isEuroOrGbp && document.status === 'pending' && !document.disablePaystack && (
               <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-100 dark:border-blue-900/50 mb-6 text-sm text-blue-800 dark:text-blue-300 transition-colors">
                 <p className="flex items-center font-bold mb-1">
                   Currency Notice {isConverting && <RefreshCw size={12} className="ml-2 animate-spin" />}
@@ -167,7 +170,8 @@ export default function DocumentsPage() {
                         currency: paystackCurrency as "USD" | "KES" | "GBP", 
                         isInternational: true, 
                         status: document.status,
-                        createdAt: new Date(document.date)
+                        createdAt: new Date(document.date),
+                        disablePaystack: document.disablePaystack // 2. Pass the flag down!
                       }} 
                    />
                  </div>

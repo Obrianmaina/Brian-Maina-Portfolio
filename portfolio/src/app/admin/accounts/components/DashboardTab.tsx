@@ -18,6 +18,7 @@ interface DashboardTabProps {
     clientEmail: string; setClientEmail: (v: string) => void;
     clientPhone: string; setClientPhone: (v: string) => void;
     isCashPayment: boolean; setIsCashPayment: (v: boolean) => void;
+    disablePaystack: boolean; setDisablePaystack: (v: boolean) => void; // Added here
     amount: string; setAmount: (v: string) => void;
     currency: CurrencyCode; setCurrency: (v: CurrencyCode) => void;
     serviceDescription: string; setServiceDescription: (v: string) => void;

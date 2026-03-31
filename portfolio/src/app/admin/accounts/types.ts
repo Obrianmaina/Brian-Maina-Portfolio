@@ -14,6 +14,7 @@ export type Transaction = {
     withholdingTax?: number;
     amountPaidKES?: number;
     isCashPayment?: boolean;
+    disablePaystack?: boolean;
 };
 
 export type DocType = 'invoice' | 'receipt' | 'expense';

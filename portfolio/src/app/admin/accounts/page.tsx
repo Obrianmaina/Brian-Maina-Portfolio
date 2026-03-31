@@ -33,6 +33,7 @@ export default function AccountsPage() {
     const [expenseCategory, setExpenseCategory] = useState("software");
     const [hasWHT, setHasWHT] = useState(false);
     const [isCashPayment, setIsCashPayment] = useState(false);
+    const [disablePaystack, setDisablePaystack] = useState(false);
     const [reportMonth, setReportMonth] = useState(() => toMonthString(new Date()));
 
     // Data hooks
@@ -55,7 +56,7 @@ export default function AccountsPage() {
     const resetForm = () => {
         setClientName(""); setClientEmail(""); setClientPhone(""); setAmount("");
         setServiceDescription(""); setMpesaMessage("");
-        setDocType('invoice'); setHasWHT(false); setIsCashPayment(false);
+        setDocType('invoice'); setHasWHT(false); setIsCashPayment(false); setDisablePaystack(false);
     };
 
     const handleSendDocument = async (e: React.FormEvent) => {
@@ -82,6 +83,7 @@ export default function AccountsPage() {
                     clientEmail: docType === 'expense' ? undefined : clientEmail,
                     clientPhone: docType === 'expense' ? undefined : clientPhone,
                     isCashPayment,
+                    disablePaystack: docType === 'invoice' ? disablePaystack : false,
                     amount: parseFloat(amount),
                     currency,
                     description: serviceDescription,
@@ -180,6 +182,7 @@ export default function AccountsPage() {
                         clientEmail={clientEmail} setClientEmail={setClientEmail}
                         clientPhone={clientPhone} setClientPhone={setClientPhone}
                         isCashPayment={isCashPayment} setIsCashPayment={setIsCashPayment}
+                        disablePaystack={disablePaystack} setDisablePaystack={setDisablePaystack}
                         amount={amount} setAmount={setAmount}
                         currency={currency} setCurrency={setCurrency}
                         serviceDescription={serviceDescription} setServiceDescription={setServiceDescription}

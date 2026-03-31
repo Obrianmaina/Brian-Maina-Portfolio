@@ -55,7 +55,8 @@ export async function POST(req: Request) {
         mpesaMessage, 
         expenseCategory, 
         withholdingTax, 
-        isCashPayment 
+        isCashPayment,
+        disablePaystack
     } = await req.json();
 
     if (!clientName || !amount || !description || !type) {
@@ -76,6 +77,7 @@ export async function POST(req: Request) {
       clientEmail: type === 'expense' ? null : (clientEmail || null),
       clientPhone: type === 'expense' ? null : (clientPhone || null),
       isCashPayment: isCashPayment || false,
+      disablePaystack: disablePaystack || false,
       amount,
       currency: currency || "EUR", 
       description,
@@ -119,7 +121,7 @@ export async function POST(req: Request) {
   }
 }
 
-// PUT: Manually marks a transaction as paid
+// PUT: Manually marks a transaction as paid and triggers a receipt
 export async function PUT(req: Request) {
   try {
     const cookieStore = await cookies();
@@ -138,6 +140,16 @@ export async function PUT(req: Request) {
     const client = await clientPromise;
     const db = client.db("portfolio");
 
+    // Fetch the original transaction to get client details for the email
+    const transaction = await db.collection("transactions").findOne({ 
+      _id: new ObjectId(id) 
+    });
+
+    if (!transaction) {
+      return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
+    }
+
+    // Update the transaction status to paid
     await db.collection("transactions").updateOne(
       { _id: new ObjectId(id) },
       { 
@@ -147,6 +159,27 @@ export async function PUT(req: Request) {
         } 
       }
     );
+
+    // If it was an invoice and the client has an email, send the receipt
+    if (transaction.type === 'invoice' && transaction.clientEmail) {
+      const downloadLink = `${process.env.NEXT_PUBLIC_BASE_URL}/documents`;
+
+      await resend.emails.send({
+        from: "Brian Maina <hello@brianmaina.de>",
+        to: transaction.clientEmail,
+        subject: `Receipt from Brian Maina (#${transaction.referenceNumber})`,
+        react: TransactionEmail({ 
+          clientName: transaction.clientName, 
+          amount: transaction.amount, 
+          currency: transaction.currency || "EUR", 
+          description: transaction.description, 
+          type: 'receipt', // Renders the email as a receipt instead of an invoice
+          referenceNumber: transaction.referenceNumber,
+          downloadLink,
+          // Note: mpesaMessage is omitted here for a clean, generic manual receipt
+        }),
+      });
+    }
 
     return NextResponse.json({ success: true }, { status: 200 });
 

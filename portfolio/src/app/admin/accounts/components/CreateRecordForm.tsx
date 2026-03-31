@@ -17,6 +17,7 @@ interface CreateRecordFormProps {
     expenseCategory: string; setExpenseCategory: (v: string) => void;
     hasWHT: boolean; setHasWHT: (v: boolean) => void;
     isCashPayment: boolean; setIsCashPayment: (v: boolean) => void;
+    disablePaystack: boolean; setDisablePaystack: (v: boolean) => void;
     rates: Rates;
     isFetchingRates: boolean;
     estimatedPayoutKES: number;
@@ -36,6 +37,7 @@ export default function CreateRecordForm({
     expenseCategory, setExpenseCategory,
     hasWHT, setHasWHT,
     isCashPayment, setIsCashPayment,
+    disablePaystack, setDisablePaystack,
     rates, isFetchingRates, estimatedPayoutKES,
     loading, onSubmit
 }: CreateRecordFormProps) {
@@ -172,6 +174,16 @@ export default function CreateRecordForm({
                             />
                             <label htmlFor="isCashPayment" className="ml-2 text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">
                                 Cash Payment (Exempt Gateway Fee)
+                            </label>
+                        </div>
+                        <div className="flex items-center">
+                            <input
+                                type="checkbox" id="disablePaystack" checked={disablePaystack}
+                                onChange={e => setDisablePaystack(e.target.checked)}
+                                className="w-4 h-4 text-amber-500 bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-700 rounded focus:ring-amber-500 transition-colors"
+                            />
+                            <label htmlFor="disablePaystack" className="ml-2 text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">
+                                Disable Paystack (Local/Manual Payment)
                             </label>
                         </div>
                     </div>
