@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import SingleBlogClient from "./SingleBlogClient";
-import { BlogPost } from "@/types"; // Import the BlogPost type
+import { BlogPost } from "@/types"; 
 
 // Define your base URL for absolute paths required by Open Graph
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://brianmaina.de"; 
@@ -13,7 +13,6 @@ async function getBlogPost(slug: string): Promise<BlogPost | null> {
     if (!res.ok) return null;
     const data = await res.json();
     
-    // Use the BlogPost type instead of any
     return Array.isArray(data) ? data.find((b: BlogPost) => b.slug === slug) : data;
   } catch (error) {
     console.error("Error fetching post for metadata:", error);
@@ -29,7 +28,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     return { title: "Post Not Found" };
   }
 
-  const ogImageUrl = `${SITE_URL}/api/og?title=${encodeURIComponent(post.title)}`;
+  // Use the actual blog featured image instead of the generated text image
+  // This logic ensures the URL is absolute, which social scrapers require
+  const imageUrl = post.featuredImage.startsWith('http') 
+    ? post.featuredImage 
+    : `${SITE_URL}${post.featuredImage.startsWith('/') ? '' : '/'}${post.featuredImage}`;
 
   return {
     title: `${post.title} | Brian Maina Nyawira`,
@@ -41,7 +44,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       type: "article",
       images: [
         {
-          url: ogImageUrl,
+          url: imageUrl,
           width: 1200,
           height: 630,
           alt: post.title,
@@ -49,10 +52,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       ],
     },
     twitter: {
-      card: "summary_large_image",
+      card: "summary_large_image", // This specific value forces the large, YouTube style hero image
       title: post.title,
       description: post.description,
-      images: [ogImageUrl],
+      images: [imageUrl],
     },
   };
 }
