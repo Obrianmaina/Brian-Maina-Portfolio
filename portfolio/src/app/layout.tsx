@@ -16,9 +16,33 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// Update your global metadata here
 export const metadata: Metadata = {
+  metadataBase: new URL('https://brianmaina.de/'), // Replace with your actual live domain
   title: 'Brian Maina Nyawira | Visual Designer & IT Professional',
-  description: 'The professional portfolio of Brian Maina Nyawira, showcasing work in UI/UX, presentation design, branding, and graphics.'
+  description: 'The professional portfolio of Brian Maina Nyawira, showcasing work in UI/UX, presentation design, branding, and graphics.',
+  openGraph: {
+    title: 'Brian Maina Nyawira | Visual Designer',
+    description: 'The professional portfolio of Brian Maina Nyawira, showcasing work in UI/UX, presentation design, branding, and graphics.',
+    url: '/',
+    siteName: 'Brian Maina Portfolio',
+    images: [
+      {
+        url: '/og-image.png', // Add a default 1200x630 preview image in your public folder
+        width: 1200,
+        height: 630,
+        alt: 'Brian Maina Portfolio Preview',
+      },
+    ],
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Brian Maina Nyawira | Visual Designer',
+    description: 'The professional portfolio of Brian Maina Nyawira.',
+    images: ['/og-image.png'],
+  },
 };
 
 export default function RootLayout({
@@ -37,12 +61,10 @@ export default function RootLayout({
         >
           <Navbar />
           
-          {/* Main content wrapper set to grow so the footer pushes to the bottom */}
           <div className="pt-16 flex-grow">
             {children}
           </div>
 
-          {/* 2. Add the Footer here */}
           <Footer />
           
           <CookieBanner />
