@@ -1,200 +1,65 @@
-"use client";
+import { Metadata } from "next";
+import SingleBlogClient from "./SingleBlogClient";
+import { BlogPost } from "@/types"; // Import the BlogPost type
 
-import React, { useEffect, useState, use, useRef } from "react";
-import { Loader2 } from "lucide-react";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-import { BlogPost } from "@/types";
+// Define your base URL for absolute paths required by Open Graph
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://brianmaina.de"; 
 
-import BlogHeader from "./components/BlogHeader";
-import BlogHero from "./components/BlogHero";
-import BlogContent from "./components/BlogContent";
-import BlogComments from "./components/BlogComments";
-import BlogSubscribeModal from "./components/BlogSubscribeModal";
-import BlogSubscribeToast from "./components/BlogSubscribeToast";
-import BlogFooter from "./components/BlogFooter";
-import { BlogComment } from "./components/BlogCommentItem";
+async function getBlogPost(slug: string): Promise<BlogPost | null> {
+  try {
+    const res = await fetch(`${SITE_URL}/api/blogs?slug=${slug}`, {
+      next: { revalidate: 60 } // Cache for 60 seconds
+    });
+    if (!res.ok) return null;
+    const data = await res.json();
+    
+    // Use the BlogPost type instead of any
+    return Array.isArray(data) ? data.find((b: BlogPost) => b.slug === slug) : data;
+  } catch (error) {
+    console.error("Error fetching post for metadata:", error);
+    return null;
+  }
+}
 
-export default function SingleBlogPage({ params }: { params?: Promise<{ slug?: string }> }) {
-  const resolvedParams = params ? use(params) : null;
-  const slug = resolvedParams?.slug || (typeof window !== "undefined" ? window.location.pathname.split("/").filter(Boolean).pop() : "");
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const post = await getBlogPost(resolvedParams.slug);
 
-  const [blog, setBlog] = useState<BlogPost | null>(null);
-  const [comments, setComments] = useState<BlogComment[]>([]);
-  const [newComment, setNewComment] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-
-  const [isSubscribeModalOpen, setIsSubscribeModalOpen] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [hasDismissedToast, setHasDismissedToast] = useState(false);
-  const articleEndRef = useRef<HTMLDivElement>(null);
-
-  const getApiUrl = (path: string) => {
-    if (typeof window !== "undefined") {
-      if (window.location.protocol === "blob:" || window.location.origin === "null") {
-        return `http://localhost:3000${path}`;
-      }
-      return path;
-    }
-    return `http://localhost:3000${path}`;
-  };
-
-  useEffect(() => {
-    if (slug) {
-      fetch("/api/analytics", {
-        method: "POST",
-        body: JSON.stringify({ target: slug, type: "page_view" }),
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-  }, [slug]);
-
-  useEffect(() => {
-    async function fetchData() {
-      if (!slug) return;
-      try {
-        const blogRes = await fetch(getApiUrl(`/api/blogs?slug=${slug}`));
-        const blogData = await blogRes.json();
-        const currentBlog = Array.isArray(blogData)
-          ? blogData.find((b: BlogPost) => b.slug === slug)
-          : blogData;
-        setBlog(currentBlog);
-
-        const commentsRes = await fetch(getApiUrl(`/api/comments?postSlug=${slug}`));
-        const commentsData = await commentsRes.json();
-        if (Array.isArray(commentsData)) {
-          setComments(commentsData);
-        }
-      } catch (err) {
-        console.error("Error loading post data:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchData();
-  }, [slug]);
-
-  useEffect(() => {
-    if (loading || !blog) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasDismissedToast) {
-          setShowToast(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (articleEndRef.current) {
-      observer.observe(articleEndRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [loading, blog, hasDismissedToast]);
-
-  const handlePostComment = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newComment.trim() || submitting) return;
-
-    setSubmitting(true);
-    try {
-      const res = await fetch(getApiUrl("/api/comments"), {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ postSlug: slug, text: newComment }),
-      });
-
-      if (res.ok) {
-        setNewComment("");
-        const refreshRes = await fetch(getApiUrl(`/api/comments?postSlug=${slug}`));
-        const refreshedData = await refreshRes.json();
-        setComments(refreshedData);
-      }
-    } catch (err) {
-      console.error("Failed to post comment");
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  const handleShare = async () => {
-    if (!blog) return;
-    const shareData = { title: blog.title, text: blog.description, url: window.location.href };
-    try {
-      if (navigator.share) {
-        await navigator.share(shareData);
-      } else {
-        await navigator.clipboard.writeText(window.location.href);
-        alert("Link copied to clipboard!");
-      }
-    } catch (err) {
-      console.error("Error sharing:", err);
-    }
-  };
-
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-white dark:bg-gray-950 transition-colors duration-300">
-        <Loader2 className="animate-spin text-teal-600 dark:text-teal-400" size={32} />
-      </div>
-    );
+  if (!post) {
+    return { title: "Post Not Found" };
   }
 
-  if (!blog) {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center p-6 text-center bg-white dark:bg-gray-950 transition-colors duration-300">
-        <h2 className="text-2xl font-bold text-gray-800 dark:text-gray-200 mb-4 transition-colors">Article Not Found</h2>
-        <Link href="/blog" className="text-teal-600 dark:text-teal-400 font-medium flex items-center hover:text-teal-700 dark:hover:text-teal-300 transition-colors">
-          <ArrowLeft size={18} className="mr-2" /> Return to Blog
-        </Link>
-      </div>
-    );
-  }
+  const ogImageUrl = `${SITE_URL}/api/og?title=${encodeURIComponent(post.title)}`;
 
-  return (
-    <>
-      <BlogSubscribeModal
-        isOpen={isSubscribeModalOpen}
-        onClose={() => setIsSubscribeModalOpen(false)}
-      />
+  return {
+    title: `${post.title} | Brian Maina Nyawira`,
+    description: post.description,
+    openGraph: {
+      title: post.title, 
+      description: post.description, 
+      url: `${SITE_URL}/blog/${resolvedParams.slug}`,
+      type: "article",
+      images: [
+        {
+          url: ogImageUrl,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: post.title,
+      description: post.description,
+      images: [ogImageUrl],
+    },
+  };
+}
 
-      <BlogSubscribeToast
-        show={showToast}
-        isModalOpen={isSubscribeModalOpen}
-        onSubscribeClick={() => {
-          setShowToast(false);
-          setIsSubscribeModalOpen(true);
-        }}
-        onDismiss={() => {
-          setShowToast(false);
-          setHasDismissedToast(true);
-        }}
-      />
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const post = await getBlogPost(resolvedParams.slug);
 
-      <main className="min-h-screen bg-white dark:bg-gray-950 pb-24 font-sans transition-colors duration-300">
-        <div className="max-w-6xl mx-auto px-6 pt-12">
-          <BlogHeader
-            onSubscribeClick={() => setIsSubscribeModalOpen(true)}
-            onShare={handleShare}
-          />
-
-          <BlogHero blog={blog} />
-
-          <BlogContent ref={articleEndRef} content={blog.content} />
-
-          <BlogComments
-            comments={comments}
-            newComment={newComment}
-            submitting={submitting}
-            onCommentChange={setNewComment}
-            onSubmit={handlePostComment}
-          />
-        </div>
-      </main>
-
-      <BlogFooter />
-    </>
-  );
+  return <SingleBlogClient initialSlug={resolvedParams.slug} initialPost={post} />;
 }
