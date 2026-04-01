@@ -1,4 +1,4 @@
-![Portfolio Header](./public/og-image.png)
+![Portfolio Header](https://res.cloudinary.com/dsvexizbx/image/upload/v1775024471/og-image_ghe3iv.png)
 
 # Brian Maina Portfolio
 
