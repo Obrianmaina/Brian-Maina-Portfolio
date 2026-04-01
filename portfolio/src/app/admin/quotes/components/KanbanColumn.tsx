@@ -22,6 +22,7 @@ interface KanbanColumnProps {
   onDragLeave: () => void;
   onDrop: (status: Quote["status"]) => void;
   dimmed?: boolean;
+  onReply: (quote: Quote) => void;
 }
 
 export default function KanbanColumn({
@@ -35,6 +36,7 @@ export default function KanbanColumn({
   onDragLeave,
   onDrop,
   dimmed = false,
+  onReply,
 }: KanbanColumnProps) {
   const col = STATUS_STYLES[status!];
   const isOver = dragOverCol === status;
@@ -49,7 +51,6 @@ export default function KanbanColumn({
       onDragLeave={onDragLeave}
       onDrop={() => onDrop(status)}
     >
-      {/* Column Header */}
       <div className={`${col.header} rounded-t-xl px-4 py-3 flex items-center justify-between transition-colors`}>
         <span className="text-white font-bold text-sm tracking-wide">{status}</span>
         <span className="bg-white/25 text-white text-xs font-bold px-2 py-0.5 rounded-full">
@@ -57,7 +58,6 @@ export default function KanbanColumn({
         </span>
       </div>
 
-      {/* Cards */}
       <div
         className={`rounded-b-xl p-3 space-y-3 min-h-[160px] transition-colors duration-300
           ${isOver ? "bg-gray-100 dark:bg-gray-800" : "bg-gray-50 dark:bg-gray-900/50"}
@@ -82,12 +82,25 @@ export default function KanbanColumn({
               <span className={`w-2 h-2 rounded-full mt-1 flex-shrink-0 transition-colors ${col.dot}`} />
             </div>
 
-            <a
-              href={`mailto:${quote.email}`}
-              className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center mb-3 transition-colors"
-            >
-              <Mail size={11} className="mr-1" /> {quote.email}
-            </a>
+            <div className="flex items-center justify-between mb-3">
+              <a
+                href={`mailto:${quote.email}`}
+                className="text-xs text-blue-600 dark:text-blue-400 hover:underline flex items-center transition-colors truncate"
+                title={quote.email}
+              >
+                <Mail size={11} className="mr-1 flex-shrink-0" /> <span className="truncate max-w-[140px]">{quote.email}</span>
+              </a>
+              
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onReply(quote);
+                }}
+                className="text-[10px] uppercase tracking-wider font-bold bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400 px-2 py-1 rounded hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors flex items-center"
+              >
+                Reply
+              </button>
+            </div>
 
             <div className="flex gap-1.5 flex-wrap mb-3">
               <span className="px-2 py-0.5 bg-white dark:bg-gray-950 rounded-md text-xs font-semibold text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-800 transition-colors">

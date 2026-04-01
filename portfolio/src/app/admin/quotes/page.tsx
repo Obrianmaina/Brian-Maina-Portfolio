@@ -2,194 +2,144 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Inbox, LayoutDashboard, List, Plus, X } from "lucide-react";
+import { ArrowLeft, Inbox, LayoutDashboard, List, Plus, X, MessageSquareText } from "lucide-react";
 import AdminModal from "@/components/AdminModal";
 import KanbanBoard from "./components/KanbanBoard";
 import QuotesTable from "./components/QuotesTable";
-import { Quote } from "@/types";
+import MessagesView from "./components/MessagesView";
+import { Quote, SentEmail } from "@/types";
+import EmailReplyModal from "./components/EmailReplyModal";
 
 export default function QuotesPage() {
   const router = useRouter();
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [loading, setLoading] = useState(true);
-  const [view, setView] = useState<"list" | "kanban">("list");
+  const [view, setView] = useState<"list" | "kanban" | "messages">("list");
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [editingNotes, setEditingNotes] = useState<{ [id: string]: string }>({});
-
-  // Add Lead Modal State
+  
+  // Modal State
+  const [replyLead, setReplyLead] = useState<Quote | null>(null);
+  const [editEmailData, setEditEmailData] = useState<SentEmail | undefined>(undefined);
   const [showAddModal, setShowAddModal] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [newLead, setNewLead] = useState({
-    name: "",
-    email: "", // We will use this for phone numbers too
-    service: "General Inquiry",
-    budget: "Not specified",
-    message: "",
-    status: "New" as Quote["status"],
+    name: "", email: "", service: "General Inquiry", budget: "Not specified", message: "", status: "New" as Quote["status"],
   });
 
   const [modal, setModal] = useState<{
-    show: boolean;
-    type: "success" | "error" | "confirm";
-    title: string;
-    message: string;
+    show: boolean; type: "success" | "error" | "confirm"; title: string; message: string;
   }>({ show: false, type: "success", title: "", message: "" });
 
-  useEffect(() => {
-    fetchQuotes();
-  }, []);
+  useEffect(() => { fetchQuotes(); }, []);
 
   const fetchQuotes = async () => {
     try {
-      const res = await fetch("/api/admin/quotes");
-      if (res.ok) setQuotes(await res.json());
-    } catch (error) {
-      console.error("Failed to fetch quotes", error);
-    } finally {
-      setLoading(false);
+      // Force the browser to fetch fresh data directly from the server
+      const res = await fetch("/api/admin/quotes", {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      });
+      
+      if (res.ok) {
+        const data = await res.json();
+        setQuotes(Array.isArray(data) ? data : []);
+      }
+    } catch (error) { 
+      console.error(error); 
+    } finally { 
+      setLoading(false); 
     }
   };
-
+  
   const updateLead = async (id: string, updates: Partial<Quote>) => {
     try {
       const res = await fetch("/api/admin/quotes", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(
-          { id, ...updates },
-          (_key, value) => (value === undefined ? null : value)
-        ),
+        body: JSON.stringify({ id, ...updates }, (_key, value) => (value === undefined ? null : value)),
       });
       if (res.ok) {
         setQuotes((prev) => prev.map((q) => (q._id === id ? { ...q, ...updates } : q)));
-      } else {
-        setModal({ show: true, type: "error", title: "Error", message: "Failed to update lead." });
       }
-    } catch {
-      setModal({ show: true, type: "error", title: "Error", message: "An unexpected error occurred." });
-    }
+    } catch {}
   };
 
   const handleAddLead = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      // We send this to your existing frontend API endpoint, or create a specific POST logic
       const res = await fetch("/api/admin/quotes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...newLead,
-          createdAt: new Date().toISOString()
-        }),
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...newLead, createdAt: new Date().toISOString() }),
       });
-      
       if (res.ok) {
         setShowAddModal(false);
         setNewLead({ name: "", email: "", service: "General Inquiry", budget: "Not specified", message: "", status: "New" });
-        fetchQuotes(); // Refresh the board
-        setModal({ show: true, type: "success", title: "Success", message: "Manual lead added to CRM." });
+        fetchQuotes();
+        setModal({ show: true, type: "success", title: "Success", message: "Manual lead added." });
       } else {
-        const data = await res.json();
-        setModal({ show: true, type: "error", title: "Error", message: data.error || "Failed to add lead." });
+        setModal({ show: true, type: "error", title: "Error", message: "Failed to add lead." });
       }
     } catch (error) {
       setModal({ show: true, type: "error", title: "Error", message: "Network error occurred." });
-    } finally {
-      setIsSubmitting(false);
-    }
+    } finally { setIsSubmitting(false); }
   };
 
-  const handleNotesSave = (id: string) => {
-    const note =
-      editingNotes[id] !== undefined
-        ? editingNotes[id]
-        : quotes.find((q) => q._id === id)?.notes ?? "";
-    updateLead(id, { notes: note });
+  const openComposer = (quote: Quote, emailToEdit?: SentEmail) => {
+    setReplyLead(quote);
+    setEditEmailData(emailToEdit);
   };
-  const handleContactDateUpdate = (id: string) => updateLead(id, { lastContactedDate: new Date().toISOString() });
-  const handleToggleExpand = (id: string) => setExpandedId((prev) => (prev === id ? null : id));
-  const handleNotesChange = (id: string, value: string) =>
-    setEditingNotes((prev) => ({ ...prev, [id]: value }));
-
-  const closeModal = () => setModal((prev) => ({ ...prev, show: false }));
 
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-950 py-12 px-6 transition-colors duration-300">
-      <div className="max-w-7xl mx-auto bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg dark:shadow-none border border-gray-100 dark:border-gray-800 fade-in transition-colors duration-300">
+      <div className="max-w-7xl mx-auto bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg dark:shadow-none border border-gray-100 dark:border-gray-800 transition-colors duration-300">
 
-        {/* Back */}
-        <button
-          onClick={() => router.push("/admin")}
-          className="flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 mb-6 transition-colors font-medium focus:outline-none focus:ring-2 focus:ring-gray-500 rounded-md p-1 -ml-1"
-        >
+        <button onClick={() => router.push("/admin")} className="flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-900 mb-6 font-medium">
           <ArrowLeft size={20} className="mr-2" /> Back to Hub
         </button>
 
-        {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4">
           <div className="flex items-center border-l-4 border-blue-500 pl-4">
             <Inbox size={28} className="text-blue-500 mr-3" />
-            <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-50 transition-colors">Lead CRM</h2>
+            <h2 className="text-3xl font-bold text-gray-800 dark:text-gray-50">Lead CRM</h2>
           </div>
 
           <div className="flex items-center gap-3">
-            <button
-              onClick={() => setShowAddModal(true)}
-              className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
-            >
+            <button onClick={() => setShowAddModal(true)} className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-xl font-bold hover:bg-blue-700">
               <Plus size={18} className="mr-2" /> Add Lead
             </button>
 
-            {/* View Toggle */}
-            <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-xl p-1 gap-1 transition-colors">
-              <button
-                onClick={() => setView("list")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-blue-500
-                  ${view === "list" ? "bg-white dark:bg-gray-950 shadow text-gray-900 dark:text-gray-100" : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"}`}
-              >
+            <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-xl p-1 gap-1">
+              <button onClick={() => setView("list")} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${view === "list" ? "bg-white dark:bg-gray-950 shadow text-gray-900 dark:text-gray-100" : "text-gray-500 hover:text-gray-700"}`}>
                 <List size={16} /> List
               </button>
-              <button
-                onClick={() => setView("kanban")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-blue-500
-                  ${view === "kanban" ? "bg-white dark:bg-gray-950 shadow text-gray-900 dark:text-gray-100" : "text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"}`}
-              >
+              <button onClick={() => setView("kanban")} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${view === "kanban" ? "bg-white dark:bg-gray-950 shadow text-gray-900 dark:text-gray-100" : "text-gray-500 hover:text-gray-700"}`}>
                 <LayoutDashboard size={16} /> Kanban
+              </button>
+              <button onClick={() => setView("messages")} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${view === "messages" ? "bg-white dark:bg-gray-950 shadow text-gray-900 dark:text-gray-100" : "text-gray-500 hover:text-gray-700"}`}>
+                <MessageSquareText size={16} /> Messages
               </button>
             </div>
           </div>
         </div>
 
-        {/* Content */}
         {loading ? (
-          <div className="text-center py-12 text-gray-500 dark:text-gray-400 transition-colors">Loading leads...</div>
-        ) : quotes.length === 0 ? (
-          <div className="bg-gray-50 dark:bg-gray-800/50 p-12 rounded-2xl border border-gray-200 dark:border-gray-700 text-center transition-colors">
-            <Inbox size={48} className="mx-auto mb-4 text-gray-300 dark:text-gray-600 transition-colors" />
-            <h3 className="text-xl font-bold text-gray-700 dark:text-gray-200 mb-2 transition-colors">No leads yet</h3>
-            <p className="text-gray-500 dark:text-gray-400 transition-colors">When potential clients request a quote, they will appear here.</p>
-          </div>
+          <div className="text-center py-12 text-gray-500">Loading...</div>
+        ) : view === "messages" ? (
+          <MessagesView quotes={quotes} onOpenDraft={openComposer} />
         ) : view === "kanban" ? (
-          <KanbanBoard
-            quotes={quotes}
-            onStatusChange={(id, status) => updateLead(id, { status })}
-          />
+          <KanbanBoard quotes={quotes} onStatusChange={(id, status) => updateLead(id, { status })} onReply={(quote) => openComposer(quote)} />
         ) : (
-          <QuotesTable
-            quotes={quotes}
-            expandedId={expandedId}
-            editingNotes={editingNotes}
-            onToggleExpand={handleToggleExpand}
-            onUpdateLead={updateLead}
-            onNotesSave={handleNotesSave}
-            onContactDateUpdate={handleContactDateUpdate}
-            onNotesChange={handleNotesChange}
-          />
+          <QuotesTable quotes={quotes} expandedId={expandedId} editingNotes={editingNotes} onToggleExpand={setExpandedId} onUpdateLead={updateLead} onNotesSave={(id) => updateLead(id, { notes: editingNotes[id] })} onContactDateUpdate={(id) => updateLead(id, { lastContactedDate: new Date().toISOString() })} onNotesChange={(id, val) => setEditingNotes(p => ({...p, [id]: val}))} onReply={(quote) => openComposer(quote)} />
         )}
       </div>
 
-      {/* Manual Add Lead Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/50 dark:bg-black/70 backdrop-blur-sm p-4 transition-colors duration-300">
           <div className="bg-white dark:bg-gray-900 rounded-2xl w-full max-w-lg overflow-hidden shadow-2xl dark:shadow-none border border-transparent dark:border-gray-800 animate-in zoom-in-95 transition-colors duration-300">
@@ -233,7 +183,25 @@ export default function QuotesPage() {
         </div>
       )}
 
-      <AdminModal modal={modal} close={closeModal} />
+      <AdminModal modal={modal} close={() => setModal(p => ({...p, show: false}))} />
+
+      {replyLead && (
+        <EmailReplyModal
+          quote={replyLead}
+          existingEmail={editEmailData}
+          onClose={() => { 
+            setReplyLead(null); 
+            setEditEmailData(undefined); 
+            fetchQuotes(); // Ensures closing the modal refreshes the view
+          }}
+          onSuccess={() => {
+            setReplyLead(null); 
+            setEditEmailData(undefined); 
+            fetchQuotes();
+          }}
+          onRefresh={() => fetchQuotes()} // Triggers background UI refresh
+        />
+      )}
     </main>
   );
 }

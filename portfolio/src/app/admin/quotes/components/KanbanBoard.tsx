@@ -10,9 +10,10 @@ const CLOSED_STATUSES: Quote["status"][] = ["Closed Lost"];
 interface KanbanBoardProps {
   quotes: Quote[];
   onStatusChange: (id: string, status: Quote["status"]) => void;
+  onReply: (quote: Quote) => void;
 }
 
-export default function KanbanBoard({ quotes, onStatusChange }: KanbanBoardProps) {
+export default function KanbanBoard({ quotes = [], onStatusChange, onReply }: KanbanBoardProps) {
   const [draggedId, setDraggedId] = useState<string | null>(null);
   const [dragOverCol, setDragOverCol] = useState<string | null>(null);
 
@@ -32,6 +33,7 @@ export default function KanbanBoard({ quotes, onStatusChange }: KanbanBoardProps
     onDragOver: (status: string) => setDragOverCol(status),
     onDragLeave: () => setDragOverCol(null),
     onDrop: handleDrop,
+    onReply,
   };
 
   const wonCount = quotes.filter((q) => q.status === "Closed Won").length;
@@ -41,7 +43,6 @@ export default function KanbanBoard({ quotes, onStatusChange }: KanbanBoardProps
 
   return (
     <div className="space-y-6">
-      {/* Active Pipeline */}
       <div>
         <p className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3 pl-1 transition-colors">
           Active Pipeline
@@ -58,7 +59,6 @@ export default function KanbanBoard({ quotes, onStatusChange }: KanbanBoardProps
         </div>
       </div>
 
-      {/* Divider */}
       <div className="flex items-center gap-4">
         <div className="flex-1 border-t border-dashed border-gray-300 dark:border-gray-700 transition-colors" />
         <span className="text-xs text-gray-400 dark:text-gray-500 font-semibold uppercase tracking-widest whitespace-nowrap transition-colors">
@@ -72,7 +72,6 @@ export default function KanbanBoard({ quotes, onStatusChange }: KanbanBoardProps
         <div className="flex-1 border-t border-dashed border-gray-300 dark:border-gray-700 transition-colors" />
       </div>
 
-      {/* Closed Section */}
       <div>
         <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700">
           {CLOSED_STATUSES.map((status) => (

@@ -145,7 +145,15 @@ export interface CatalogBundle {
   prices: CatalogPrices;
 }
 
-// Add this below your existing types in src/types/index.ts
+export interface SentEmail {
+  id: string; // Add a unique ID for editing
+  subject: string;
+  body: string;
+  sentAt: string;
+  resendId?: string | null;
+  status: "draft" | "scheduled" | "sent"; // Track the state
+}
+
 export interface Quote {
   _id: string;
   name: string;
@@ -156,6 +164,7 @@ export interface Quote {
   status: 'New' | 'Contacted' | 'In Progress' | 'Closed Won' | 'Closed Lost';
   notes?: string;
   lastContactedDate?: string;
+  emailHistory?: SentEmail[];
   createdAt: string;
 }
 

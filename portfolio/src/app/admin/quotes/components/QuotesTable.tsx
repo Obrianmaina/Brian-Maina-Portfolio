@@ -14,6 +14,7 @@ interface QuotesTableProps {
   onNotesSave: (id: string) => void;
   onContactDateUpdate: (id: string) => void;
   onNotesChange: (id: string, value: string) => void;
+  onReply: (quote: Quote) => void;
 }
 
 const getStatusColor = (status: string) => {
@@ -28,7 +29,7 @@ const getStatusColor = (status: string) => {
 };
 
 export default function QuotesTable({
-  quotes,
+  quotes = [], // SAFEGURAD: Defaults to an empty array
   expandedId,
   editingNotes,
   onToggleExpand,
@@ -36,6 +37,7 @@ export default function QuotesTable({
   onNotesSave,
   onContactDateUpdate,
   onNotesChange,
+  onReply,
 }: QuotesTableProps) {
   const router = useRouter();
 
@@ -108,7 +110,13 @@ export default function QuotesTable({
                   </select>
                 </td>
 
-                <td className="px-4 py-4 align-top text-right">
+                <td className="px-4 py-4 align-top text-right space-x-2 whitespace-nowrap">
+                  <button
+                    onClick={() => onReply(quote)}
+                    className="inline-flex items-center px-3 py-1.5 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-400 text-xs font-bold rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    Reply
+                  </button>
                   <button
                     onClick={() =>
                       router.push(
@@ -128,7 +136,6 @@ export default function QuotesTable({
                   <td colSpan={5} className="p-0 border-b border-gray-200 dark:border-gray-800">
                     <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-8 border-l-4 border-blue-400 dark:border-blue-600 transition-colors">
 
-                      {/* Full Message */}
                       <div>
                         <h4 className="text-sm font-bold text-gray-900 dark:text-gray-100 flex items-center mb-2 transition-colors">
                           <MessageSquare size={16} className="mr-2 text-gray-500 dark:text-gray-400" />
@@ -139,7 +146,6 @@ export default function QuotesTable({
                         </p>
                       </div>
 
-                      {/* CRM Tools */}
                       <div className="space-y-4">
                         <div className="flex items-center justify-between bg-white dark:bg-gray-900 p-3 rounded-lg border border-gray-200 dark:border-gray-800 shadow-sm transition-colors">
                           <div>
