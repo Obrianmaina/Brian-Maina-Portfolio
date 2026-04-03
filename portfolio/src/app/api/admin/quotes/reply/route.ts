@@ -1,10 +1,9 @@
-import * as React from "react";
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import clientPromise from "@/lib/mongodb";
 import { ObjectId } from "mongodb";
 import { cookies } from "next/headers";
-import LeadReplyEmail from "@/emails/LeadReplyEmail";
+import { buildLeadReplyHtml } from "@/emails/leadReplyTemplate";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -31,8 +30,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const body = await req.json();
-    const { id, email, subject, message, action, emailId } = body;
+    const { id, email, subject, message, action, emailId } = await req.json();
 
     if (!id || !email || !subject || !message) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -41,16 +39,16 @@ export async function POST(req: Request) {
     let resendData = null;
     const isDraft = action === "draft";
 
-    // Only send to Resend if it's NOT a draft
     if (!isDraft) {
       const sendAt = new Date(Date.now() + 60 * 1000).toISOString();
+      const htmlContent: string = buildLeadReplyHtml(message);
 
-      // Fix: Let Resend handle the React component natively using the 'react' key
       const { data, error } = await resend.emails.send({
         from: "Brian Maina <brian@brianmaina.de>",
         to: email,
         subject: subject,
-        react: React.createElement(LeadReplyEmail, { body: message }),
+        html: htmlContent,
+        text: message,
         scheduledAt: sendAt,
       });
 
@@ -78,7 +76,6 @@ export async function POST(req: Request) {
     };
 
     if (emailId) {
-      // Updating an existing draft safely without using 'any'
       const setFields: Record<string, unknown> = {
         "emailHistory.$": emailRecord,
       };
@@ -93,7 +90,6 @@ export async function POST(req: Request) {
         { $set: setFields }
       );
     } else {
-      // Pushing a new record safely
       if (!isDraft) {
         await collection.updateOne(
           { _id: new ObjectId(id) },
