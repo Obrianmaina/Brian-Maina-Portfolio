@@ -89,7 +89,7 @@ export default function AnalyticsPage() {
         {/* --- Top Level Stats Grid --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <Card className="p-6 flex items-center gap-4 bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800 transition-colors shadow-sm">
-            <div className="p-3 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-xl transition-colors"><Landmark /></div>
+            <div className="p-3 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-full transition-colors"><Landmark /></div>
             <div>
               <p className="text-sm text-gray-500 dark:text-gray-400 font-medium transition-colors">Net Profit (All Time)</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 transition-colors">
@@ -99,7 +99,7 @@ export default function AnalyticsPage() {
           </Card>
           
           <Card className="p-6 flex items-center gap-4 bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800 transition-colors shadow-sm">
-            <div className="p-3 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl transition-colors"><Target /></div>
+            <div className="p-3 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full transition-colors"><Target /></div>
             <div>
               <p className="text-sm text-gray-500 dark:text-gray-400 font-medium transition-colors">Lead Win Rate</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 transition-colors">{winRate}%</p>
@@ -107,7 +107,7 @@ export default function AnalyticsPage() {
           </Card>
 
           <Card className="p-6 flex items-center gap-4 bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800 transition-colors shadow-sm">
-            <div className="p-3 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-xl transition-colors"><Users /></div>
+            <div className="p-3 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full transition-colors"><Users /></div>
             <div>
               <p className="text-sm text-gray-500 dark:text-gray-400 font-medium transition-colors">Active Subscribers</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 transition-colors">{data.audience.active}</p>
@@ -115,7 +115,7 @@ export default function AnalyticsPage() {
           </Card>
 
           <Card className="p-6 flex items-center gap-4 bg-white dark:bg-gray-900 border-gray-100 dark:border-gray-800 transition-colors shadow-sm">
-            <div className="p-3 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-xl transition-colors"><Download /></div>
+            <div className="p-3 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-full transition-colors"><Download /></div>
             <div>
               <p className="text-sm text-gray-500 dark:text-gray-400 font-medium transition-colors">CV Downloads</p>
               <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 transition-colors">{totalDownloads}</p>

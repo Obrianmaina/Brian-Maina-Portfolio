@@ -139,7 +139,7 @@ export default function CatalogView({
             <p className="text-gray-500 dark:text-gray-400 py-8 col-span-full text-center transition-colors">No bundles found. Click &quot;Add New Bundle&quot; to start.</p>
           ) : (
             catalogBundles.map(bundle => (
-              <div key={bundle._id} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-6 flex flex-col shadow-sm dark:shadow-none hover:shadow-md dark:hover:shadow-xl dark:hover:shadow-teal-900/10 transition-shadow">
+              <div key={bundle._id} className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-full p-6 flex flex-col shadow-sm dark:shadow-none hover:shadow-md dark:hover:shadow-xl dark:hover:shadow-teal-900/10 transition-shadow">
                 <div className="flex justify-between items-start mb-4">
                   <h3 className="text-xl font-bold text-gray-900 dark:text-gray-50 transition-colors">{bundle.name}</h3>
                   <div className="flex gap-2">

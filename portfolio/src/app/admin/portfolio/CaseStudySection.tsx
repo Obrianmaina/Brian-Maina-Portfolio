@@ -9,10 +9,10 @@ export default function CaseStudySection({ formData, onChange }: Props) {
   const f = (field: keyof FormState) => (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) =>
     onChange({ [field]: e.target.value });
 
-  const inputClasses = "p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-colors";
+  const inputClasses = "p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full text-sm outline-none focus:ring-2 focus:ring-blue-500 transition-colors";
 
   return (
-    <div className="bg-blue-50/50 dark:bg-blue-900/20 p-5 rounded-xl border border-blue-100 dark:border-blue-900/50 space-y-4 mt-4 fade-in transition-colors">
+    <div className="bg-blue-50/50 dark:bg-blue-900/20 p-5 rounded-full border border-blue-100 dark:border-blue-900/50 space-y-4 mt-4 fade-in transition-colors">
       <h4 className="font-bold text-blue-800 dark:text-blue-400 transition-colors">UI/UX Case Study Builder</h4>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">

@@ -65,7 +65,7 @@ function VerifyContent() {
           <p className="text-gray-500 dark:text-gray-400 mb-8 transition-colors">{message}</p>
           <Link 
             href="/blog" 
-            className="w-full bg-teal-600 text-white py-4 rounded-xl font-bold hover:bg-teal-700 transition-all flex items-center justify-center shadow-lg shadow-teal-100 dark:shadow-none focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+            className="w-full bg-teal-600 text-white py-4 rounded-full font-bold hover:bg-teal-700 transition-all flex items-center justify-center shadow-lg shadow-teal-100 dark:shadow-none focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
           >
             Read Latest Articles <ArrowRight size={20} className="ml-2" />
           </Link>
@@ -81,7 +81,7 @@ function VerifyContent() {
           <p className="text-gray-500 dark:text-gray-400 mb-8 transition-colors">{message}</p>
           <Link 
             href="/blog" 
-            className="w-full py-4 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-xl font-bold hover:bg-gray-50 dark:hover:bg-gray-800 transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+            className="w-full py-4 border-2 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 rounded-full font-bold hover:bg-gray-50 dark:hover:bg-gray-800 transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
           >
             Return to Blog
           </Link>

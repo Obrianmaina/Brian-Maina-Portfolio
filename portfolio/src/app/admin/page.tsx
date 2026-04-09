@@ -117,7 +117,7 @@ export default function AdminDashboard() {
           <input
             type="password"
             placeholder="Password"
-            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl mb-4 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
+            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full mb-4 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
@@ -125,7 +125,7 @@ export default function AdminDashboard() {
           <input
             type="text"
             placeholder="6-Digit Auth Code"
-            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl mb-6 tracking-widest text-center font-mono text-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
+            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full mb-6 tracking-widest text-center font-mono text-lg focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
             value={token}
             onChange={(e) => {
               const val = e.target.value.replace(/\D/g, '').slice(0, 6);
@@ -137,7 +137,7 @@ export default function AdminDashboard() {
           <button
             type="submit"
             disabled={loading || token.length !== 6}
-            className="w-full bg-teal-600 text-white py-3 rounded-xl font-bold hover:bg-teal-700 transition-colors disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+            className="w-full bg-teal-600 text-white py-3 rounded-full font-bold hover:bg-teal-700 transition-colors disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
           >
             {loading ? "Verifying..." : "Access Portal"}
           </button>

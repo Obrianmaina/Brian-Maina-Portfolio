@@ -61,7 +61,7 @@ function UnsubscribeContent() {
 export default function UnsubscribePage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8 max-w-md w-full">
+      <div className="bg-white rounded-full shadow-sm border border-gray-200 p-8 max-w-md w-full">
         <Suspense fallback={<div className="text-center text-gray-500">Loading...</div>}>
           <UnsubscribeContent />
         </Suspense>

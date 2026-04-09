@@ -28,7 +28,7 @@ export default function CorporateForm({
   }[formMode];
 
   // Enhanced reusable UI classes
-  const inputClasses = "w-full p-3 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-violet-500 focus:bg-white dark:focus:bg-gray-900 transition-all duration-200";
+  const inputClasses = "w-full p-3 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-violet-500 focus:bg-white dark:focus:bg-gray-900 transition-all duration-200";
   const labelClasses = "block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5 ml-1";
   const sectionClasses = "bg-white dark:bg-gray-800/60 p-6 sm:p-8 rounded-3xl border border-gray-100 dark:border-gray-700/50 shadow-sm space-y-6 transition-colors";
 
@@ -353,7 +353,7 @@ export default function CorporateForm({
         <div className="pt-2">
           <button
             type="submit"
-            className="w-full bg-violet-600 text-white text-lg font-bold py-4 rounded-xl hover:bg-violet-700 shadow-lg shadow-violet-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+            className="w-full bg-violet-600 text-white text-lg font-bold py-4 rounded-full hover:bg-violet-700 shadow-lg shadow-violet-500/25 transition-all transform hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
           >
             Save Changes
           </button>

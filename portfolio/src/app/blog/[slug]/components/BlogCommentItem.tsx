@@ -44,7 +44,7 @@ export default function BlogCommentItem({ comment, idx }: BlogCommentItemProps) 
 
           {comment.adminReply && (
             <div className="mt-4 ml-4 sm:ml-8 flex gap-3">
-              <div className="w-8 h-8 rounded-xl bg-teal-600 flex items-center justify-center text-white shrink-0 shadow-sm transition-colors">
+              <div className="w-8 h-8 rounded-full bg-teal-600 flex items-center justify-center text-white shrink-0 shadow-sm transition-colors">
                 <Send size={14} className="rotate-45" />
               </div>
               <div className="flex-1">

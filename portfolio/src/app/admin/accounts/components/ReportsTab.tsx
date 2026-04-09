@@ -68,7 +68,7 @@ export default function ReportsTab({
                     </div>
                     <button
                         onClick={onDownloadKRA}
-                        className="flex items-center justify-center w-full sm:w-auto text-sm bg-gray-900 dark:bg-gray-100 hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-gray-900 py-2 px-4 rounded-xl font-bold transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
+                        className="flex items-center justify-center w-full sm:w-auto text-sm bg-gray-900 dark:bg-gray-100 hover:bg-gray-800 dark:hover:bg-gray-200 text-white dark:text-gray-900 py-2 px-4 rounded-full font-bold transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
                     >
                         <Download size={16} className="mr-2" /> Export CSV
                     </button>
@@ -81,7 +81,7 @@ export default function ReportsTab({
                         { label: 'Net Profit', value: taxSummary.netProfit },
                         { label: 'WHT Credits', value: taxSummary.totalWithheldTaxKES },
                     ].map(({ label, value }) => (
-                        <div key={label} className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-100 dark:border-gray-800 transition-colors">
+                        <div key={label} className="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-full border border-gray-100 dark:border-gray-800 transition-colors">
                             <p className="text-sm text-gray-500 dark:text-gray-400 font-medium mb-1 transition-colors">{label}</p>
                             <p className="text-xl font-bold text-gray-900 dark:text-gray-100 transition-colors">KSh {fmt(value)}</p>
                         </div>
@@ -89,15 +89,15 @@ export default function ReportsTab({
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="p-5 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 border-l-4 border-l-indigo-500 dark:border-l-indigo-500 transition-colors">
+                    <div className="p-5 bg-white dark:bg-gray-900 rounded-full shadow-sm border border-gray-100 dark:border-gray-800 border-l-4 border-l-indigo-500 dark:border-l-indigo-500 transition-colors">
                         <p className="text-sm text-gray-500 dark:text-gray-400 font-medium mb-1 transition-colors">Final Tax Payable</p>
                         <p className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 transition-colors">KSh {fmt(taxSummary.estimatedTaxDue)}</p>
                     </div>
-                    <div className="p-5 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 border-l-4 border-l-purple-500 dark:border-l-purple-500 transition-colors">
+                    <div className="p-5 bg-white dark:bg-gray-900 rounded-full shadow-sm border border-gray-100 dark:border-gray-800 border-l-4 border-l-purple-500 dark:border-l-purple-500 transition-colors">
                         <p className="text-sm text-gray-500 dark:text-gray-400 font-medium mb-1 transition-colors">10% Tithe Allocation</p>
                         <p className="text-2xl font-bold text-purple-600 dark:text-purple-400 transition-colors">KSh {fmt(taxSummary.totalTitheKES)}</p>
                     </div>
-                    <div className="p-5 bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 border-l-4 border-l-emerald-500 dark:border-l-emerald-500 transition-colors">
+                    <div className="p-5 bg-white dark:bg-gray-900 rounded-full shadow-sm border border-gray-100 dark:border-gray-800 border-l-4 border-l-emerald-500 dark:border-l-emerald-500 transition-colors">
                         <p className="text-sm text-gray-500 dark:text-gray-400 font-medium mb-1 transition-colors">Free to Spend</p>
                         <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 transition-colors">KSh {fmt(taxSummary.freeToSpendKES)}</p>
                     </div>
@@ -116,7 +116,7 @@ export default function ReportsTab({
                     </div>
                     <input
                         type="month" value={reportMonth} onChange={e => setReportMonth(e.target.value)}
-                        className="bg-gray-50 dark:bg-gray-950 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm rounded-xl focus:ring-teal-500 focus:border-teal-500 block w-full pl-10 p-2.5 outline-none font-medium transition-colors"
+                        className="bg-gray-50 dark:bg-gray-950 border border-gray-300 dark:border-gray-700 text-gray-900 dark:text-gray-100 text-sm rounded-full focus:ring-teal-500 focus:border-teal-500 block w-full pl-10 p-2.5 outline-none font-medium transition-colors"
                     />
                 </div>
             </div>
@@ -309,7 +309,7 @@ export default function ReportsTab({
                             </tfoot>
                         </table>
 
-                        <div className="mt-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900/50 rounded-xl overflow-hidden transition-colors">
+                        <div className="mt-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-900/50 rounded-full overflow-hidden transition-colors">
                             <div className="flex items-center gap-2 px-4 py-3 border-b border-amber-200 dark:border-amber-900/50 bg-amber-100/60 dark:bg-amber-900/40 transition-colors">
                                 <span className="text-amber-600 dark:text-amber-500 text-sm">⚠</span>
                                 <p className="text-xs font-bold text-amber-900 dark:text-amber-400 uppercase tracking-wide transition-colors">

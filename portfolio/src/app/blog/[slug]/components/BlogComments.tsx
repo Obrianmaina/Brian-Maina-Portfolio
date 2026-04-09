@@ -39,14 +39,14 @@ export default function BlogComments({
             className="w-full bg-transparent border-none outline-none text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500 p-4 resize-none h-28 transition-colors"
             required
           />
-          <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-950 rounded-xl m-1 transition-colors">
+          <div className="flex justify-between items-center p-3 bg-gray-50 dark:bg-gray-950 rounded-lg m-1 transition-colors">
             <p className="text-[12px] uppercase tracking-wider text-gray-400 dark:text-gray-500 pl-2">
               Random Animal Identity Assigned on Post
             </p>
             <button
               type="submit"
               disabled={submitting || !newComment.trim()}
-              className="bg-teal-600 text-white px-6 py-2.5 rounded-xl font-bold flex items-center hover:bg-teal-700 transition-all disabled:opacity-50 shadow-lg shadow-teal-100 dark:shadow-none focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+              className="bg-teal-600 text-white px-6 py-2.5 rounded-full font-bold flex items-center hover:bg-teal-700 transition-all disabled:opacity-50 shadow-lg shadow-teal-100 dark:shadow-none focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
             >
               {submitting ? "Posting..." : "Post Comment"}
             </button>

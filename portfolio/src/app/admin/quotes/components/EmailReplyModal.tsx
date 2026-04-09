@@ -131,14 +131,14 @@ export default function EmailReplyModal({ quote, existingEmail, onClose, onSucce
                 <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">Subject</label>
                 <input 
                   required type="text" value={subject} onChange={e => setSubject(e.target.value)} 
-                  className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-transparent text-gray-900 dark:text-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 mt-1" 
+                  className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-transparent text-gray-900 dark:text-gray-100 rounded-full outline-none focus:ring-2 focus:ring-blue-500 mt-1" 
                 />
               </div>
               <div>
                 <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">Message Body</label>
                 <textarea 
                   required value={message} onChange={e => setMessage(e.target.value)} 
-                  className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-transparent text-gray-900 dark:text-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 mt-1 h-60 resize-y leading-relaxed" 
+                  className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-transparent text-gray-900 dark:text-gray-100 rounded-full outline-none focus:ring-2 focus:ring-blue-500 mt-1 h-60 resize-y leading-relaxed" 
                 />
                 <div className="flex items-start gap-2 mt-3 bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg border border-blue-100 dark:border-blue-800">
                   <Clock size={16} className="text-blue-500 mt-0.5 flex-shrink-0" />
@@ -169,7 +169,7 @@ export default function EmailReplyModal({ quote, existingEmail, onClose, onSucce
                   const secondsLeft = Math.max(0, Math.ceil((sendTimeMs - now) / 1000));
 
                   return (
-                    <div key={i} className={`border rounded-xl p-4 transition-all ${isScheduled ? 'border-amber-300 bg-amber-50 dark:border-amber-800/50 dark:bg-amber-900/10' : 'border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50'}`}>
+                    <div key={i} className={`border rounded-full p-4 transition-all ${isScheduled ? 'border-amber-300 bg-amber-50 dark:border-amber-800/50 dark:bg-amber-900/10' : 'border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50'}`}>
                       
                       <div className="flex justify-between items-start mb-3">
                         <div>

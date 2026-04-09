@@ -111,11 +111,11 @@ export default function QuotesPage() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button onClick={() => setShowAddModal(true)} className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-xl font-bold hover:bg-blue-700">
+            <button onClick={() => setShowAddModal(true)} className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-full font-bold hover:bg-blue-700">
               <Plus size={18} className="mr-2" /> Add Lead
             </button>
 
-            <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-xl p-1 gap-1">
+            <div className="flex items-center bg-gray-100 dark:bg-gray-800 rounded-full p-1 gap-1">
               <button onClick={() => setView("list")} className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all ${view === "list" ? "bg-white dark:bg-gray-950 shadow text-gray-900 dark:text-gray-100" : "text-gray-500 hover:text-gray-700"}`}>
                 <List size={16} /> List
               </button>
@@ -151,25 +151,25 @@ export default function QuotesPage() {
             <form onSubmit={handleAddLead} className="p-6 space-y-4">
               <div>
                 <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">Client Name</label>
-                <input required type="text" value={newLead.name} onChange={e => setNewLead({...newLead, name: e.target.value})} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 mt-1 transition-colors" placeholder="e.g. John Doe" />
+                <input required type="text" value={newLead.name} onChange={e => setNewLead({...newLead, name: e.target.value})} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-blue-500 mt-1 transition-colors" placeholder="e.g. John Doe" />
               </div>
               <div>
                 <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">Contact (Phone or Email)</label>
-                <input required type="text" value={newLead.email} onChange={e => setNewLead({...newLead, email: e.target.value})} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 mt-1 transition-colors" placeholder="+254 700 000 000" />
+                <input required type="text" value={newLead.email} onChange={e => setNewLead({...newLead, email: e.target.value})} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-blue-500 mt-1 transition-colors" placeholder="+254 700 000 000" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">Service Interest</label>
-                  <input type="text" value={newLead.service} onChange={e => setNewLead({...newLead, service: e.target.value})} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 mt-1 transition-colors" placeholder="e.g. Logo Design" />
+                  <input type="text" value={newLead.service} onChange={e => setNewLead({...newLead, service: e.target.value})} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 rounded-full outline-none focus:ring-2 focus:ring-blue-500 mt-1 transition-colors" placeholder="e.g. Logo Design" />
                 </div>
                 <div>
                   <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">Budget / Value</label>
-                  <input type="text" value={newLead.budget} onChange={e => setNewLead({...newLead, budget: e.target.value})} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 mt-1 transition-colors" placeholder="e.g. 50,000 KES" />
+                  <input type="text" value={newLead.budget} onChange={e => setNewLead({...newLead, budget: e.target.value})} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 rounded-full outline-none focus:ring-2 focus:ring-blue-500 mt-1 transition-colors" placeholder="e.g. 50,000 KES" />
                 </div>
               </div>
               <div>
                 <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 transition-colors">Initial Notes / Referral Source</label>
-                <textarea value={newLead.message} onChange={e => setNewLead({...newLead, message: e.target.value})} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 mt-1 transition-colors resize-y h-20" placeholder="Met at networking event..." />
+                <textarea value={newLead.message} onChange={e => setNewLead({...newLead, message: e.target.value})} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-blue-500 mt-1 transition-colors resize-y h-20" placeholder="Met at networking event..." />
               </div>
 
               <div className="pt-4 border-t border-gray-100 dark:border-gray-800 flex justify-end gap-3 transition-colors">

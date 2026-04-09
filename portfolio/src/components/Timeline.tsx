@@ -15,7 +15,7 @@ const Timeline: React.FC<{ sections: TimelineSection[] }> = ({ sections }) => {
             <h4 
               className={`mb-5 transition-colors ${
                 isHighlighted 
-                  ? "text-sm font-bold text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-900/30 inline-block px-4 py-1.5 rounded-lg border border-teal-100 dark:border-teal-900/50 uppercase tracking-wider" 
+                  ? "text-sm font-bold text-teal-700 dark:text-teal-300 bg-teal-50 dark:bg-teal-900/30 inline-block px-4 py-1.5 rounded-full border border-teal-100 dark:border-teal-900/50 uppercase tracking-wider" 
                   : "text-xl font-semibold text-gray-900 dark:text-gray-50"
               }`}
             >

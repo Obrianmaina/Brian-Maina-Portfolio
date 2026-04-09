@@ -72,7 +72,7 @@ export default function KanbanColumn({
             draggable
             onDragStart={() => onDragStart(quote._id)}
             onDragEnd={onDragEnd}
-            className={`rounded-xl border p-4 shadow-sm cursor-grab active:cursor-grabbing transition-all hover:shadow-md
+            className={`rounded-full border p-4 shadow-sm cursor-grab active:cursor-grabbing transition-all hover:shadow-md
               ${col.card}
               ${draggedId === quote._id ? "opacity-40 scale-95" : ""}
             `}

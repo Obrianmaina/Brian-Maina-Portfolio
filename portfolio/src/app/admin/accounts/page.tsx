@@ -238,20 +238,20 @@ export default function AccountsPage() {
                                 value={promptInput}
                                 onChange={(e) => setPromptInput(maskMpesaBalance(e.target.value))} // Masks balance automatically!
                                 placeholder="Paste the exact M-Pesa message here, or leave blank for cash/card..."
-                                className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 h-24 transition-colors resize-none"
+                                className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-amber-500 h-24 transition-colors resize-none"
                             />
                         </div>
 
                         <div className="flex gap-3 justify-end">
                             <button
                                 onClick={() => setPromptModal({ show: false, id: '' })}
-                                className="px-4 py-2 rounded-xl font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                                className="px-4 py-2 rounded-full font-semibold text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={submitMarkAsPaid}
-                                className="px-4 py-2 rounded-xl font-bold text-white bg-green-600 hover:bg-green-700 shadow-lg shadow-green-200 dark:shadow-none transition-all focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+                                className="px-4 py-2 rounded-full font-bold text-white bg-green-600 hover:bg-green-700 shadow-lg shadow-green-200 dark:shadow-none transition-all focus:ring-2 focus:ring-green-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
                             >
                                 Mark as Paid
                             </button>

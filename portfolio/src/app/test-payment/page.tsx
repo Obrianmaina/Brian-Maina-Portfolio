@@ -15,7 +15,7 @@ export default function TestPaymentPage() {
   };
 
   return (
-    <div className="p-10 max-w-md mx-auto mt-20 bg-white border rounded-xl shadow-sm text-center">
+    <div className="p-10 max-w-md mx-auto mt-20 bg-white border rounded-full shadow-sm text-center">
       <h1 className="text-2xl font-bold mb-4">Invoice #TEST-001</h1>
       <p className="text-gray-600 mb-2">Billed to: {dummyInvoice.clientEmail}</p>
       <p className="text-xl font-semibold mb-6">

@@ -15,7 +15,7 @@ interface GeneralLedgerProps {
 export default function GeneralLedger({ transactions, markingPaid, onMarkAsPaid }: GeneralLedgerProps) {
     return (
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 text-gray-900 dark:text-gray-100 p-6 rounded-2xl flex flex-col h-full shadow-lg dark:shadow-none max-h-[600px] transition-colors duration-300">
-            <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-xl flex items-center justify-center mb-6 shrink-0 transition-colors">
+            <div className="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 text-amber-600 dark:text-amber-400 rounded-full flex items-center justify-center mb-6 shrink-0 transition-colors">
                 <Receipt size={24} />
             </div>
             <h3 className="text-xl font-bold mb-2 shrink-0 transition-colors">General Ledger</h3>
@@ -23,7 +23,7 @@ export default function GeneralLedger({ transactions, markingPaid, onMarkAsPaid 
 
             <div className="mt-auto space-y-2 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-700">
                 {transactions.length === 0 ? (
-                    <div className="bg-gray-50 dark:bg-gray-800/50 p-6 rounded-xl border border-gray-200 dark:border-gray-700 text-center transition-colors">
+                    <div className="bg-gray-50 dark:bg-gray-800/50 p-6 rounded-full border border-gray-200 dark:border-gray-700 text-center transition-colors">
                         <p className="text-sm text-gray-500 dark:text-gray-400">No transactions recorded yet.</p>
                     </div>
                 ) : (
@@ -42,7 +42,7 @@ export default function GeneralLedger({ transactions, markingPaid, onMarkAsPaid 
                         return (
                             <div
                                 key={tx._id}
-                                className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700/50 rounded-xl px-4 py-3 flex items-center gap-3 transition-colors"
+                                className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700/50 rounded-full px-4 py-3 flex items-center gap-3 transition-colors"
                             >
                                 {/* Left: name + date - now wider */}
                                 <div className="flex-1 min-w-0">

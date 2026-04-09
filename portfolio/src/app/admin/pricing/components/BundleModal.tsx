@@ -48,7 +48,7 @@ export default function BundleModal({
               type="text"
               value={bundleForm.name}
               onChange={e => setBundleForm({ ...bundleForm, name: e.target.value })}
-              className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors"
+              className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors"
               placeholder="e.g. Startup Package"
             />
           </div>
@@ -57,7 +57,7 @@ export default function BundleModal({
             <textarea
               value={bundleForm.description}
               onChange={e => setBundleForm({ ...bundleForm, description: e.target.value })}
-              className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors resize-y"
+              className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors resize-y"
               placeholder="Brief summary of this package"
               rows={2}
             />
@@ -96,7 +96,7 @@ export default function BundleModal({
                   type="number"
                   value={bundleForm.prices[curr] || ''}
                   onChange={e => setBundleForm({ ...bundleForm, prices: { ...bundleForm.prices, [curr]: Number(e.target.value) } })}
-                  className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors"
+                  className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors"
                 />
               </div>
             ))}

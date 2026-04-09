@@ -61,7 +61,7 @@ export default function BlogSubscribe() {
       </p>
 
       {status === 'success' ? (
-        <div className="flex items-center justify-center text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/20 py-3 px-4 rounded-xl font-medium transition-colors">
+        <div className="flex items-center justify-center text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/20 py-3 px-4 rounded-full font-medium transition-colors">
           <CheckCircle size={20} className="mr-2" />
           {message}
         </div>
@@ -75,7 +75,7 @@ export default function BlogSubscribe() {
                 placeholder="Your nickname"
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
-                className="flex-grow p-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
+                className="flex-grow p-3 rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
               />
               <input
                 type="email"
@@ -83,13 +83,13 @@ export default function BlogSubscribe() {
                 placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="flex-grow p-3 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
+                className="flex-grow p-3 rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
               />
             </div>
             <button
               type="submit"
               disabled={loading}
-              className="bg-teal-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-teal-700 transition-colors flex items-center justify-center disabled:opacity-70 w-full focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+              className="bg-teal-600 text-white px-6 py-3 rounded-full font-bold hover:bg-teal-700 transition-colors flex items-center justify-center disabled:opacity-70 w-full focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
             >
               {loading ? "Sending..." : "Subscribe"}
               {!loading && <ArrowRight size={18} className="ml-2" />}

@@ -29,7 +29,7 @@ export default function ServiceModal({ editingServiceId, serviceForm, setService
               type="text"
               value={serviceForm.name}
               onChange={e => setServiceForm({ ...serviceForm, name: e.target.value })}
-              className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors"
+              className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors"
               placeholder="e.g. Logo Design"
             />
           </div>
@@ -39,7 +39,7 @@ export default function ServiceModal({ editingServiceId, serviceForm, setService
               type="text"
               value={serviceForm.category}
               onChange={e => setServiceForm({ ...serviceForm, category: e.target.value })}
-              className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors"
+              className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors"
               placeholder="e.g. Branding"
             />
           </div>
@@ -52,7 +52,7 @@ export default function ServiceModal({ editingServiceId, serviceForm, setService
                   type="number"
                   value={serviceForm.prices[curr] || ''}
                   onChange={e => setServiceForm({ ...serviceForm, prices: { ...serviceForm.prices, [curr]: Number(e.target.value) } })}
-                  className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors"
+                  className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors"
                 />
               </div>
             ))}

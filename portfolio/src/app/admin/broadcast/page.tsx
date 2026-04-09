@@ -81,7 +81,7 @@ export default function BroadcastPage() {
 
         <form onSubmit={handleSendNewsletter} className="space-y-6">
 
-          <div className="space-y-2 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl border border-gray-200 dark:border-gray-800 transition-colors">
+          <div className="space-y-2 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-full border border-gray-200 dark:border-gray-800 transition-colors">
             <label className="text-sm font-bold text-gray-700 dark:text-gray-300 ml-1 transition-colors">Target Audience</label>
             <div className="flex flex-col sm:flex-row gap-3">
               {(['all', 'blog', 'client'] as const).map((audience) => (
@@ -108,7 +108,7 @@ export default function BroadcastPage() {
               required
               value={newsletterSubject}
               onChange={(e) => setNewsletterSubject(e.target.value)}
-              className="w-full p-4 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
+              className="w-full p-4 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
               placeholder="E.g., Updates on my latest UI project"
             />
           </div>
@@ -122,7 +122,7 @@ export default function BroadcastPage() {
               type="url"
               value={newsletterImage}
               onChange={(e) => setNewsletterImage(e.target.value)}
-              className="w-full p-4 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
+              className="w-full p-4 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-indigo-500 transition-colors"
               placeholder="https://example.com/image.jpg"
             />
           </div>
@@ -134,7 +134,7 @@ export default function BroadcastPage() {
               rows={10}
               value={newsletterMessage}
               onChange={(e) => setNewsletterMessage(e.target.value)}
-              className="w-full p-4 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-indigo-500 resize-y transition-colors"
+              className="w-full p-4 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-indigo-500 resize-y transition-colors"
               placeholder="Type your newsletter content here. Line breaks will be preserved."
             />
           </div>
@@ -143,7 +143,7 @@ export default function BroadcastPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl transition-all active:scale-95 shadow-lg shadow-indigo-100 dark:shadow-none flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+              className="w-full py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-full transition-all active:scale-95 shadow-lg shadow-indigo-100 dark:shadow-none flex items-center justify-center disabled:opacity-70 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
             >
               {loading
                 ? "Sending Broadcast..."

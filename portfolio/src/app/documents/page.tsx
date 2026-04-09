@@ -91,12 +91,12 @@ export default function DocumentsPage() {
             placeholder="e.g. A1B2C3" 
             maxLength={6}
             required
-            className="w-full sm:flex-1 p-4 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 text-center font-bold tracking-widest uppercase transition-colors"
+            className="w-full sm:flex-1 p-4 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-teal-500 text-center font-bold tracking-widest uppercase transition-colors"
           />
           <button 
             type="submit" 
             disabled={loading}
-            className="w-full sm:w-auto flex-shrink-0 flex items-center justify-center bg-gray-900 dark:bg-teal-600 text-white p-4 rounded-xl hover:bg-gray-800 dark:hover:bg-teal-700 transition-colors disabled:opacity-70 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+            className="w-full sm:w-auto flex-shrink-0 flex items-center justify-center bg-gray-900 dark:bg-teal-600 text-white p-4 rounded-full hover:bg-gray-800 dark:hover:bg-teal-700 transition-colors disabled:opacity-70 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
           >
             {loading ? <Clock size={24} className="animate-spin" /> : <Search size={24} />}
           </button>
@@ -147,7 +147,7 @@ export default function DocumentsPage() {
           <div>
             {/* ONLY show currency notice if it's an international currency AND Paystack is NOT disabled */}
             {isEuroOrGbp && document.status === 'pending' && !document.disablePaystack && (
-              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-xl border border-blue-100 dark:border-blue-900/50 mb-6 text-sm text-blue-800 dark:text-blue-300 transition-colors">
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-full border border-blue-100 dark:border-blue-900/50 mb-6 text-sm text-blue-800 dark:text-blue-300 transition-colors">
                 <p className="flex items-center font-bold mb-1">
                   Currency Notice {isConverting && <RefreshCw size={12} className="ml-2 animate-spin" />}
                 </p>
@@ -187,7 +187,7 @@ export default function DocumentsPage() {
           </div>
 
           {document.type === 'receipt' && document.mpesaMessage && (
-            <div className="mt-6 bg-gray-50 dark:bg-gray-950 p-4 rounded-xl border border-gray-200 dark:border-gray-800 transition-colors">
+            <div className="mt-6 bg-gray-50 dark:bg-gray-950 p-4 rounded-full border border-gray-200 dark:border-gray-800 transition-colors">
               <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase mb-2 transition-colors">Payment Details</p>
               <p className="text-sm text-gray-700 dark:text-gray-300 break-words transition-colors">{document.mpesaMessage}</p>
             </div>

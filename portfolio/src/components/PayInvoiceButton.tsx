@@ -46,7 +46,7 @@ export default function PayInvoiceButton({ invoice }: { invoice: Invoice }) {
     const estimatedKES = kesRate ? Math.ceil(invoice.amount * kesRate * 1.015) : null;
 
     return (
-      <div className="p-5 bg-amber-50 dark:bg-amber-900/20 rounded-xl border border-amber-200 dark:border-amber-700/50 mt-4 transition-colors">
+      <div className="p-5 bg-amber-50 dark:bg-amber-900/20 rounded-full border border-amber-200 dark:border-amber-700/50 mt-4 transition-colors">
         <p className="text-sm font-bold text-amber-900 dark:text-amber-400 mb-2">
           Manual Payment Required
         </p>
@@ -166,14 +166,14 @@ export default function PayInvoiceButton({ invoice }: { invoice: Invoice }) {
                 <button
                   onClick={handleCancel}
                   disabled={loading}
-                  className="px-5 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-xl transition-colors disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-gray-500"
+                  className="px-5 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-gray-500"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleProceed}
                   disabled={loading}
-                  className="px-5 py-2.5 text-sm font-medium text-white dark:text-gray-900 bg-gray-900 dark:bg-gray-100 hover:bg-gray-800 dark:hover:bg-gray-200 rounded-xl shadow-md dark:shadow-none transition-colors disabled:opacity-50 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  className="px-5 py-2.5 text-sm font-medium text-white dark:text-gray-900 bg-gray-900 dark:bg-gray-100 hover:bg-gray-800 dark:hover:bg-gray-200 rounded-full shadow-md dark:shadow-none transition-colors disabled:opacity-50 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-teal-500"
                 >
                   {loading ? 'Redirecting...' : 'Proceed to Payment'}
                 </button>

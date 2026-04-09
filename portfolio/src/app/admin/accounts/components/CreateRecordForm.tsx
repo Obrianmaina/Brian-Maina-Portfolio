@@ -45,7 +45,7 @@ export default function CreateRecordForm({
         <button
             type="button"
             onClick={() => setDocType(type)}
-            className={`flex-1 py-3 px-4 rounded-xl font-bold border transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 ${docType === type ? active : base}`}
+            className={`flex-1 py-3 px-4 rounded-full font-bold border transition-all focus:outline-none focus:ring-2 focus:ring-amber-500 ${docType === type ? active : base}`}
         >
             {label}
         </button>
@@ -70,7 +70,7 @@ export default function CreateRecordForm({
                         <input
                             type="text" required value={clientName}
                             onChange={e => setClientName(e.target.value)}
-                            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 transition-colors"
+                            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-amber-500 transition-colors"
                             placeholder={docType === 'expense' ? "e.g. Adobe Inc." : "Jane Doe"}
                         />
                     </div>
@@ -81,7 +81,7 @@ export default function CreateRecordForm({
                                 <input
                                     type="email" value={clientEmail}
                                     onChange={e => setClientEmail(e.target.value)}
-                                    className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 transition-colors"
+                                    className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-amber-500 transition-colors"
                                     placeholder="jane@example.com"
                                 />
                             </div>
@@ -90,7 +90,7 @@ export default function CreateRecordForm({
                                 <input
                                     type="tel" value={clientPhone}
                                     onChange={e => setClientPhone(e.target.value)}
-                                    className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 transition-colors"
+                                    className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-amber-500 transition-colors"
                                     placeholder="+254..."
                                 />
                             </div>
@@ -105,7 +105,7 @@ export default function CreateRecordForm({
                     <input
                         type="text" required value={serviceDescription}
                         onChange={e => setServiceDescription(e.target.value)}
-                        className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 transition-colors"
+                        className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-amber-500 transition-colors"
                         placeholder={docType === 'expense' ? "e.g. Monthly Creative Cloud" : "e.g. Website Redesign Phase 1"}
                     />
                 </div>
@@ -115,7 +115,7 @@ export default function CreateRecordForm({
                         <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1 transition-colors">Expense Category</label>
                         <select
                             value={expenseCategory} onChange={e => setExpenseCategory(e.target.value)}
-                            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 transition-colors"
+                            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 rounded-full outline-none focus:ring-2 focus:ring-amber-500 transition-colors"
                         >
                             <option value="software">Software & Subscriptions (e.g. Adobe, Figma, Gemini)</option>
                             <option value="hosting">Web Hosting & Domains (e.g. Strato)</option>
@@ -131,7 +131,7 @@ export default function CreateRecordForm({
                         <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1 transition-colors">Currency</label>
                         <select
                             value={currency} onChange={e => setCurrency(e.target.value as CurrencyCode)}
-                            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 transition-colors"
+                            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 rounded-full outline-none focus:ring-2 focus:ring-amber-500 transition-colors"
                         >
                             <option value="USD">USD ($)</option>
                             <option value="EUR">EUR (€)</option>
@@ -141,7 +141,7 @@ export default function CreateRecordForm({
                     </div>
                     <div className="space-y-1 md:col-span-2">
                         <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1 transition-colors">Amount</label>
-                        <div className="flex items-center w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 rounded-xl focus-within:ring-2 focus-within:ring-amber-500 transition-all">
+                        <div className="flex items-center w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 rounded-full focus-within:ring-2 focus-within:ring-amber-500 transition-all">
                             <span className="text-gray-500 dark:text-gray-400 font-bold select-none mr-2 whitespace-nowrap transition-colors">
                                 {getCurrencySymbol(currency)}
                             </span>
@@ -190,7 +190,7 @@ export default function CreateRecordForm({
                 )}
 
                 {docType !== 'expense' && (
-                    <div className="bg-blue-50/50 dark:bg-blue-900/20 p-4 border border-blue-100 dark:border-blue-900/50 rounded-xl flex items-center justify-between transition-colors">
+                    <div className="bg-blue-50/50 dark:bg-blue-900/20 p-4 border border-blue-100 dark:border-blue-900/50 rounded-full flex items-center justify-between transition-colors">
                         <div>
                             <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase flex items-center transition-colors">
                                 Estimated M-Pesa Payout
@@ -221,7 +221,7 @@ export default function CreateRecordForm({
                         <textarea
                             required={!isCashPayment} value={mpesaMessage}
                             onChange={e => setMpesaMessage(maskMpesaBalance(e.target.value))}
-                            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-amber-500 h-24 transition-colors"
+                            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-amber-500 h-24 transition-colors"
                             placeholder={isCashPayment ? "Optional for cash payments..." : "Paste the exact M-Pesa message here..."}
                         />
                     </div>
@@ -229,7 +229,7 @@ export default function CreateRecordForm({
 
                 <button
                     type="submit" disabled={loading}
-                    className={`w-full py-4 text-white font-bold rounded-xl transition-all shadow-lg flex items-center justify-center disabled:opacity-70 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900 ${
+                    className={`w-full py-4 text-white font-bold rounded-full transition-all shadow-lg flex items-center justify-center disabled:opacity-70 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900 ${
                         docType === 'invoice' ? 'bg-amber-500 hover:bg-amber-600 shadow-amber-200 dark:shadow-none focus:ring-amber-500'
                         : docType === 'expense' ? 'bg-rose-600 hover:bg-rose-700 shadow-rose-200 dark:shadow-none focus:ring-rose-500'
                         : 'bg-green-600 hover:bg-green-700 shadow-green-200 dark:shadow-none focus:ring-green-500'

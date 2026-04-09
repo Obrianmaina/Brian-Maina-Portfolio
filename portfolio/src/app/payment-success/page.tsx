@@ -55,7 +55,7 @@ function SuccessContent() {
 
         <Link 
           href="/" 
-          className="w-full bg-teal-600 text-white py-4 rounded-xl font-bold hover:bg-teal-700 transition-all flex items-center justify-center shadow-lg shadow-teal-100"
+          className="w-full bg-teal-600 text-white py-4 rounded-full font-bold hover:bg-teal-700 transition-all flex items-center justify-center shadow-lg shadow-teal-100"
         >
           Return to Portfolio <ArrowRight size={20} className="ml-2" />
         </Link>

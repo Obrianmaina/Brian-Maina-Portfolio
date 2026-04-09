@@ -31,7 +31,7 @@ export default function BlogSubscribeToast({
             <p className="text-xs text-gray-500 dark:text-gray-400 mb-3 transition-colors">Get notified whenever a new article drops.</p>
             <button
               onClick={onSubscribeClick}
-              className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors w-full shadow-md shadow-teal-100 dark:shadow-none focus:outline-none focus:ring-2 focus:ring-teal-500"
+              className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-full text-xs font-bold transition-colors w-full shadow-md shadow-teal-100 dark:shadow-none focus:outline-none focus:ring-2 focus:ring-teal-500"
             >
               Subscribe Now
             </button>

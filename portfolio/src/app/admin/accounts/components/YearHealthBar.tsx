@@ -37,7 +37,7 @@ export default function YearHealthBar({ taxSummary }: YearHealthBarProps) {
             {/* ── Dark header ── */}
             <div className="bg-gray-900 dark:bg-gray-950 px-6 py-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4 transition-colors">
                 <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-xl bg-amber-400/10 border border-amber-400/20 flex items-center justify-center shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-amber-400/10 border border-amber-400/20 flex items-center justify-center shrink-0">
                         <Landmark size={17} className="text-amber-400" />
                     </div>
                     <div>

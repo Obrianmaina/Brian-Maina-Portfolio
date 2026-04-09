@@ -22,10 +22,10 @@ export default function LogoConceptsSection({ logoConcepts, onChange }: Props) {
     onChange(next);
   };
 
-  const inputClasses = "p-3 border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl text-sm outline-none focus:ring-2 focus:ring-emerald-500 transition-colors";
+  const inputClasses = "p-3 border border-emerald-200 dark:border-emerald-800 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full text-sm outline-none focus:ring-2 focus:ring-emerald-500 transition-colors";
 
   return (
-    <div className="bg-emerald-50/50 dark:bg-emerald-900/20 p-5 rounded-xl border border-emerald-100 dark:border-emerald-900/50 space-y-4 mt-4 fade-in transition-colors">
+    <div className="bg-emerald-50/50 dark:bg-emerald-900/20 p-5 rounded-full border border-emerald-100 dark:border-emerald-900/50 space-y-4 mt-4 fade-in transition-colors">
       <div className="flex justify-between items-center">
         <h4 className="font-bold text-emerald-800 dark:text-emerald-400 transition-colors">Logo Concepts</h4>
         <button

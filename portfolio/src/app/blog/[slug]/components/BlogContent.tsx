@@ -28,7 +28,7 @@ const BlogContent = forwardRef<HTMLDivElement, BlogContentProps>(({ content }, r
                 {children}
               </code>
             ) : (
-              <div className="bg-gray-900 dark:bg-gray-950 border border-transparent dark:border-gray-800 rounded-xl overflow-hidden mb-6 shadow-md transition-colors">
+              <div className="bg-gray-900 dark:bg-gray-950 border border-transparent dark:border-gray-800 rounded-full overflow-hidden mb-6 shadow-md transition-colors">
                 <pre className="p-4 overflow-x-auto text-sm text-gray-100 dark:text-gray-300 font-mono leading-relaxed">
                   <code className={className} {...props}>
                     {children}

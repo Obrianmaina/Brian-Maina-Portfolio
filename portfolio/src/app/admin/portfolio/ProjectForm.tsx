@@ -14,7 +14,7 @@ export default function ProjectForm({ formData, isEditing, onSubmit, onChange }:
     (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement | HTMLSelectElement>) =>
       onChange({ [field]: e.target.value });
 
-  const inputClasses = "w-full p-3 border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white dark:focus:bg-gray-900 transition-all duration-200";
+  const inputClasses = "w-full p-3 border border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-emerald-500 focus:bg-white dark:focus:bg-gray-900 transition-all duration-200";
   
   const labelClasses = "block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5 ml-1";
   const sectionClasses = "bg-white dark:bg-gray-800/60 p-6 rounded-2xl border border-gray-100 dark:border-gray-700/50 shadow-sm space-y-5 transition-colors";
@@ -149,7 +149,7 @@ export default function ProjectForm({ formData, isEditing, onSubmit, onChange }:
         <div className="pt-4">
           <button
             type="submit"
-            className={`w-full text-white text-lg font-bold py-4 rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900 ${isEditing ? "bg-amber-500 hover:bg-amber-600 focus:ring-amber-500 shadow-amber-500/25" : "bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500 shadow-emerald-500/25"}`}
+            className={`w-full text-white text-lg font-bold py-4 rounded-full shadow-lg transition-all transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900 ${isEditing ? "bg-amber-500 hover:bg-amber-600 focus:ring-amber-500 shadow-amber-500/25" : "bg-emerald-600 hover:bg-emerald-700 focus:ring-emerald-500 shadow-emerald-500/25"}`}
           >
             {isEditing ? "Save Changes" : "Publish Project"}
           </button>

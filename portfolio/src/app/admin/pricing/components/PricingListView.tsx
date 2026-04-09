@@ -121,11 +121,11 @@ export default function PricingListView({
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1 transition-colors">Project / List Title</label>
-            <input type="text" value={title} onChange={e => setTitle(e.target.value)} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors" placeholder="e.g. Website Redesign" />
+            <input type="text" value={title} onChange={e => setTitle(e.target.value)} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors" placeholder="e.g. Website Redesign" />
           </div>
           <div>
             <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1 transition-colors">Currency</label>
-            <select value={currency} onChange={e => setCurrency(e.target.value)} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors">
+            <select value={currency} onChange={e => setCurrency(e.target.value)} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 rounded-full outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors">
               <option value="USD">USD ($)</option>
               <option value="EUR">EUR (€)</option>
               <option value="GBP">GBP (£)</option>
@@ -134,11 +134,11 @@ export default function PricingListView({
           </div>
           <div>
             <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1 transition-colors">Client Name</label>
-            <input type="text" value={clientName} onChange={e => setClientName(e.target.value)} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors" placeholder="Client Name" />
+            <input type="text" value={clientName} onChange={e => setClientName(e.target.value)} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors" placeholder="Client Name" />
           </div>
           <div>
             <label className="text-sm font-semibold text-gray-700 dark:text-gray-300 ml-1 transition-colors">Client Email</label>
-            <input type="email" value={clientEmail} onChange={e => setClientEmail(e.target.value)} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors" placeholder="client@example.com" />
+            <input type="email" value={clientEmail} onChange={e => setClientEmail(e.target.value)} className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-teal-500 mt-1 transition-colors" placeholder="client@example.com" />
           </div>
         </div>
 
@@ -146,7 +146,7 @@ export default function PricingListView({
         <div className="pt-6 border-t border-gray-100 dark:border-gray-800 transition-colors">
           <h3 className="font-bold text-lg mb-4 text-gray-800 dark:text-gray-100 transition-colors">Line Items</h3>
           {items.map((item, index) => (
-            <div key={index} className="flex flex-col md:flex-row gap-4 mb-4 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl relative group border border-gray-200 dark:border-gray-700 transition-colors">
+            <div key={index} className="flex flex-col md:flex-row gap-4 mb-4 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-full relative group border border-gray-200 dark:border-gray-700 transition-colors">
               <div className="flex-grow">
                 <input type="text" placeholder="Item Name" value={item.name} onChange={e => handleItemChange(index, 'name', e.target.value)} className="w-full p-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-lg mb-2 outline-none focus:ring-2 focus:ring-teal-500 transition-colors" />
                 <input type="text" placeholder="Short Description (optional)" value={item.description} onChange={e => handleItemChange(index, 'description', e.target.value)} className="w-full p-2 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-lg text-sm outline-none focus:ring-2 focus:ring-teal-500 transition-colors" />
@@ -186,7 +186,7 @@ export default function PricingListView({
 
         {/* Save */}
         <div className="flex gap-4 pt-6 transition-colors">
-          <button onClick={handleSave} disabled={loading} className="flex-1 py-3 bg-teal-600 text-white font-bold rounded-xl hover:bg-teal-700 flex justify-center items-center transition-all disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 shadow-sm">
+          <button onClick={handleSave} disabled={loading} className="flex-1 py-3 bg-teal-600 text-white font-bold rounded-full hover:bg-teal-700 flex justify-center items-center transition-all disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 shadow-sm">
             <Save size={18} className="mr-2" />
             {loading ? 'Saving...' : editingId ? 'Update Pricing List' : 'Save Pricing List'}
           </button>

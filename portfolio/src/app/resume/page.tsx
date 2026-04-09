@@ -213,7 +213,7 @@ export default function ResumePage() {
                   <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">You can now download the CV PDF.</p>
                   <button
                     onClick={trackDownload}
-                    className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors w-full shadow-md shadow-teal-100 dark:shadow-none flex items-center justify-center gap-2"
+                    className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-full text-xs font-bold transition-colors w-full shadow-md shadow-teal-100 dark:shadow-none flex items-center justify-center gap-2"
                   >
                     <Download size={14} /> Download PDF
                   </button>
@@ -227,7 +227,7 @@ export default function ResumePage() {
                       setShowToast(false);
                       setIsVerifyModalOpen(true);
                     }}
-                    className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition-colors w-full shadow-md shadow-teal-100 dark:shadow-none"
+                    className="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-full text-xs font-bold transition-colors w-full shadow-md shadow-teal-100 dark:shadow-none"
                   >
                     Verify Email
                   </button>
@@ -263,7 +263,7 @@ export default function ResumePage() {
               <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
                 <Button 
                   onClick={trackDownload} 
-                  className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-xl shadow-lg border-none dark:text-white transition-all"
+                  className="flex items-center gap-2 bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-full shadow-lg border-none dark:text-white transition-all"
                 >
                   <Download size={18} />
                   {unlocked ? "Download CV" : "Verify Email to Download"}
@@ -357,7 +357,7 @@ export default function ResumePage() {
                </div>
                <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-3">References are locked</h3>
                <p className="text-gray-600 dark:text-gray-400 mb-8 text-lg">Please verify your email address to access reference contacts and unlock the PDF download.</p>
-               <Button onClick={() => setIsVerifyModalOpen(true)} className="bg-teal-600 hover:bg-teal-700 border-none text-white dark:text-white px-8 py-3 rounded-xl shadow-md transition-all">
+               <Button onClick={() => setIsVerifyModalOpen(true)} className="bg-teal-600 hover:bg-teal-700 border-none text-white dark:text-white px-8 py-3 rounded-full shadow-md transition-all">
                  Verify Email to Unlock
                </Button>
             </div>

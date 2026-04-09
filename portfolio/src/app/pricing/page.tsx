@@ -119,7 +119,7 @@ export default function PublicPricingPage() {
                 <h3 className="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-100 border-l-4 border-teal-500 pl-4 transition-colors">Individual Services</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
                   {Object.entries(groupedCategories).map(([category, items]) => (
-                    <div key={category} className="bg-white dark:bg-gray-900 rounded-xl p-6 shadow-sm border border-gray-100 dark:border-gray-800 transition-colors">
+                    <div key={category} className="bg-white dark:bg-gray-900 rounded-full p-6 shadow-sm border border-gray-100 dark:border-gray-800 transition-colors">
                       <h4 className="text-lg font-bold text-teal-800 dark:text-teal-400 mb-4 pb-2 border-b border-gray-100 dark:border-gray-800 transition-colors">{category}</h4>
                       <div className="space-y-4">
                         {items.map(item => (

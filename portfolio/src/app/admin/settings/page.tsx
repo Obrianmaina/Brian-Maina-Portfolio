@@ -61,25 +61,25 @@ export default function SettingsPage() {
         <div className="space-y-4">
           <input 
             type="text" placeholder="Display Name" 
-            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
+            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
             value={form.name}
             onChange={(e) => setForm({...form, name: e.target.value})}
           />
           <input 
             type="email" placeholder="Contact Email" 
-            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
+            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
             value={form.email}
             onChange={(e) => setForm({...form, email: e.target.value})}
           />
           <input 
             type="text" placeholder="Cloudinary Avatar URL" 
-            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
+            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
             value={form.avatarUrl}
             onChange={(e) => setForm({...form, avatarUrl: e.target.value})}
           />
           <textarea 
             placeholder="Admin Bio" 
-            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl h-24 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors resize-y"
+            className="w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full h-24 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors resize-y"
             value={form.bio}
             onChange={(e) => setForm({...form, bio: e.target.value})}
           />
@@ -94,13 +94,13 @@ export default function SettingsPage() {
         <div className="space-y-4">
           <input 
             type="password" placeholder="Current Password" 
-            className="w-full p-3 border border-orange-200 dark:border-orange-900/50 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors"
+            className="w-full p-3 border border-orange-200 dark:border-orange-900/50 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors"
             value={form.oldPassword}
             onChange={(e) => setForm({...form, oldPassword: e.target.value})}
           />
           <input 
             type="text" placeholder="6-Digit Authenticator Code" maxLength={6}
-            className="w-full p-3 border border-orange-200 dark:border-orange-900/50 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl tracking-widest focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors"
+            className="w-full p-3 border border-orange-200 dark:border-orange-900/50 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full tracking-widest focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors"
             value={form.authenticatorCode}
             onChange={(e) => {
               const val = e.target.value.replace(/\D/g, '').slice(0, 6);
@@ -109,7 +109,7 @@ export default function SettingsPage() {
           />
           <input 
             type="password" placeholder="New Admin Password" 
-            className="w-full p-3 border border-orange-200 dark:border-orange-900/50 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors"
+            className="w-full p-3 border border-orange-200 dark:border-orange-900/50 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 transition-colors"
             value={form.newPassword}
             onChange={(e) => setForm({...form, newPassword: e.target.value})}
           />

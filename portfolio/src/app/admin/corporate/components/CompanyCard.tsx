@@ -120,7 +120,7 @@ function ProjectTile({ project, pIdx, company, onEdit, onDelete }: TileProps) {
     : null;
 
   return (
-    <div className="border border-gray-100 dark:border-gray-800 rounded-xl overflow-hidden bg-gray-50 dark:bg-gray-800/50 flex flex-col transition-colors">
+    <div className="border border-gray-100 dark:border-gray-800 rounded-full overflow-hidden bg-gray-50 dark:bg-gray-800/50 flex flex-col transition-colors">
       <div className="h-24 bg-gray-200 dark:bg-gray-800 relative overflow-hidden flex items-center justify-center transition-colors">
         {thumbSrc ? (
           <Image src={thumbSrc} alt={project.title} fill className="object-cover" unoptimized />

@@ -122,7 +122,7 @@ export default function SubscribersPage() {
             <p className="text-gray-500 dark:text-gray-400 transition-colors">When users sign up for your newsletter, they will appear here.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto border border-gray-200 dark:border-gray-800 rounded-xl transition-colors">
+          <div className="overflow-x-auto border border-gray-200 dark:border-gray-800 rounded-full transition-colors">
             <table className="w-full text-left text-sm text-gray-600 dark:text-gray-300">
               <thead className="bg-gray-50 dark:bg-gray-800/50 text-gray-700 dark:text-gray-300 uppercase text-xs transition-colors">
                 <tr>

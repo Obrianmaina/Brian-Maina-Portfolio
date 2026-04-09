@@ -49,7 +49,7 @@ const UXCaseStudyLayout = ({ lightbox }: { lightbox: Showcase }) => (
 
     <div>
       <h4 className="text-2xl font-semibold mb-4 text-gray-900 dark:text-gray-100 transition-colors">Final Prototype</h4>
-      <div className="w-full aspect-video bg-gray-100 dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm transition-colors">
+      <div className="w-full aspect-video bg-gray-100 dark:bg-gray-800 rounded-full overflow-hidden shadow-sm transition-colors">
         <MediaDisplay project={lightbox} />
       </div>
     </div>
@@ -150,7 +150,7 @@ const LogoLayout = ({ lightbox, setExpandedMockup }: { lightbox: Showcase; setEx
                   <h4 className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-6 transition-colors">Typography</h4>
                   <div className="flex flex-wrap justify-center gap-4">
                     {concept.fonts.map((font, fIdx) => (
-                      <span key={fIdx} className="text-xl sm:text-2xl font-medium text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-800 px-6 py-3 rounded-xl border border-gray-100 dark:border-gray-700 shadow-inner transition-colors">
+                      <span key={fIdx} className="text-xl sm:text-2xl font-medium text-gray-800 dark:text-gray-200 bg-gray-50 dark:bg-gray-800 px-6 py-3 rounded-full border border-gray-100 dark:border-gray-700 shadow-inner transition-colors">
                         Aa {font}
                       </span>
                     ))}

@@ -168,7 +168,7 @@ export default function ResumeCMS() {
     });
   };
 
-  const inputClasses = "w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-orange-500 transition-colors";
+  const inputClasses = "w-full p-3 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-orange-500 transition-colors";
 
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-950 py-12 px-6 transition-colors duration-300">
@@ -217,7 +217,7 @@ export default function ResumeCMS() {
                 </div>
 
                 {entries.map((entry, idx) => (
-                  <div key={idx} className="p-4 bg-white dark:bg-gray-900 border border-orange-100 dark:border-orange-900/50 rounded-xl relative shadow-sm dark:shadow-none transition-colors">
+                  <div key={idx} className="p-4 bg-white dark:bg-gray-900 border border-orange-100 dark:border-orange-900/50 rounded-full relative shadow-sm dark:shadow-none transition-colors">
                     {entries.length > 1 && (
                       <button type="button" onClick={() => handleRemoveEntryField(idx)} className="absolute -top-3 -right-3 bg-red-100 dark:bg-red-900/50 text-red-600 dark:text-red-400 p-2 rounded-full hover:bg-red-200 dark:hover:bg-red-900 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500" title="Remove this role">
                         <Trash2 size={16} />
@@ -232,7 +232,7 @@ export default function ResumeCMS() {
                 ))}
               </div>
 
-              <button type="submit" className="w-full bg-orange-600 text-white font-bold py-4 mt-6 rounded-xl hover:bg-orange-700 shadow-md dark:shadow-none transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900">
+              <button type="submit" className="w-full bg-orange-600 text-white font-bold py-4 mt-6 rounded-full hover:bg-orange-700 shadow-md dark:shadow-none transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900">
                 {editingId ? "Update Entry" : "Save Entry"}
               </button>
             </form>
@@ -281,9 +281,9 @@ export default function ResumeCMS() {
 
             {activeTab === 'skills' && (
               <div>
-                <form onSubmit={handleAddSkill} className="flex flex-col sm:flex-row gap-4 mb-8 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl border border-gray-100 dark:border-gray-800 transition-colors">
+                <form onSubmit={handleAddSkill} className="flex flex-col sm:flex-row gap-4 mb-8 bg-gray-50 dark:bg-gray-800/50 p-4 rounded-full border border-gray-100 dark:border-gray-800 transition-colors">
                   <input required type="text" placeholder="Add a new skill (e.g. Next.js, Figma)..." className={inputClasses} value={newSkill} onChange={e => setNewSkill(e.target.value)} />
-                  <button type="submit" className="bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-bold px-6 py-3 rounded-xl hover:bg-gray-800 dark:hover:bg-gray-200 shadow-sm whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900">
+                  <button type="submit" className="bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 font-bold px-6 py-3 rounded-full hover:bg-gray-800 dark:hover:bg-gray-200 shadow-sm whitespace-nowrap transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900">
                     <Plus size={20} className="inline mr-1" /> Add Skill
                   </button>
                 </form>

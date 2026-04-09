@@ -180,7 +180,7 @@ export default function BlogsPage() {
   };
 
   // Reusable UI classes for the editor
-  const inputClasses = "w-full p-4 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-xl outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white dark:focus:bg-gray-900 transition-all duration-200";
+  const inputClasses = "w-full p-4 border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-full outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white dark:focus:bg-gray-900 transition-all duration-200";
   const labelClasses = "block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5 ml-1";
   const sectionClasses = "bg-white dark:bg-gray-800/60 p-6 sm:p-8 rounded-3xl border border-gray-100 dark:border-gray-700/50 shadow-sm space-y-6 transition-colors";
 
@@ -215,7 +215,7 @@ export default function BlogsPage() {
                     </span>
                   </div>
 
-                  <div className="h-40 relative bg-gray-200 dark:bg-gray-800 shrink-0 rounded-xl overflow-hidden m-4 border border-gray-100 dark:border-gray-700 transition-colors">
+                  <div className="h-40 relative bg-gray-200 dark:bg-gray-800 shrink-0 rounded-full overflow-hidden m-4 border border-gray-100 dark:border-gray-700 transition-colors">
                     {blog.featuredImage ? (
                       <Image src={blog.featuredImage} alt={blog.title} fill className="object-cover" unoptimized />
                     ) : (
@@ -360,7 +360,7 @@ export default function BlogsPage() {
                   type="button" 
                   onClick={(e) => { e.preventDefault(); handleSubmit(false); }} 
                   disabled={loading} 
-                  className="flex-1 py-4 border-2 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-lg font-bold rounded-xl hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-50"
+                  className="flex-1 py-4 border-2 border-gray-300 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-lg font-bold rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-50"
                 >
                   {loading ? "Saving..." : "Save as Draft"}
                 </button>
@@ -368,7 +368,7 @@ export default function BlogsPage() {
                   type="button" 
                   onClick={(e) => { e.preventDefault(); handleSubmit(true); }} 
                   disabled={loading} 
-                  className="flex-1 py-4 bg-teal-600 text-white text-lg font-bold rounded-xl hover:bg-teal-700 transition-all transform hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-teal-500/25 dark:shadow-none disabled:opacity-50 disabled:transform-none"
+                  className="flex-1 py-4 bg-teal-600 text-white text-lg font-bold rounded-full hover:bg-teal-700 transition-all transform hover:-translate-y-0.5 active:translate-y-0 shadow-lg shadow-teal-500/25 dark:shadow-none disabled:opacity-50 disabled:transform-none"
                 >
                   {loading ? "Publishing..." : "Publish Article"}
                 </button>
