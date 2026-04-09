@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import { Home, PenTool, Settings, Briefcase, FileText, BookOpen } from "lucide-react";
+import { Home, PenTool, Briefcase, FileText, BookOpen } from "lucide-react";
 import { useState } from "react";
 import GetQuoteModal from "./GetQuoteModal";
 import { ThemeToggle } from "./ThemeToggle";
@@ -68,7 +68,7 @@ export default function Navbar() {
           <div className="sm:hidden flex-1" />
 
           {/* Right Side Items */}
-          <div className="flex items-center gap-2 sm:gap-6 md:gap-8">
+          <div className="flex items-center gap-3 sm:gap-6 md:gap-8">
             
             {/* Desktop Links (Hidden on Mobile) */}
             <div className="hidden sm:flex items-center gap-6">
@@ -91,26 +91,18 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* Always Visible Icons (Mobile & Desktop) */}
+            {/* Get Quote Button */}
             <button
               onClick={() => setIsModalOpen(true)}
-              className="p-3 text-gray-900 dark:text-gray-100 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+              className="flex items-center gap-2 bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors shadow-sm"
               aria-label="Get a Quote"
-              title="Get a Quote"
             >
-              <PenTool className="w-5 h-5" />
+              <PenTool className="w-4 h-4" />
+              <span>Get Quote</span>
             </button>
 
-            <Link
-              href="/admin"
-              className="p-3 text-gray-900 dark:text-gray-100 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
-              aria-label="Admin Portal"
-              title="Admin Portal"
-            >
-              <Settings className="w-5 h-5" />
-            </Link>
-
-            <div className="p-3">
+            {/* Theme Toggle */}
+            <div className="p-1 sm:p-3">
               <ThemeToggle />
             </div>
 
