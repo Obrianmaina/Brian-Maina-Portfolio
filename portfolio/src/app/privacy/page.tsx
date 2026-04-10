@@ -52,21 +52,28 @@ export default function PrivacyPolicyPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 transition-colors">4. Third-Party Services</h2>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 transition-colors">4. Third-Party Services and Hosting</h2>
             <p>
-              Certain features of this website rely on secure third-party services. For example, email subscriptions and communications are handled via Resend, and payments are securely processed via Paystack. These services act as data processors and have their own stringent privacy policies governing how they handle your data securely.
+              This website relies on secure third-party services for hosting and functionality. The site is hosted on Vercel and Strato, which automatically collect standard server logs (such as IP addresses) for security and performance purposes. Email subscriptions and communications are handled via Resend, and payments are securely processed via Paystack. These services act as data processors and have their own stringent privacy policies governing how they handle your data securely.
             </p>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 transition-colors">5. Your Rights and Choices</h2>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 transition-colors">5. Data Retention</h2>
+            <p>
+              Your personal data is only kept for as long as necessary to fulfill the purposes outlined in this policy. Contact and project information is retained until the project concludes. If you have subscribed to the newsletter or blog, your email address is retained until you actively unsubscribe.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 transition-colors">6. Your Rights and Choices</h2>
             <p>
               You have the right to access, update, or request the deletion of your personal information at any time. You can easily withdraw your consent for email communications by using the secure unsubscribe link provided at the bottom of any automated email or by visiting the unsubscribe page directly.
             </p>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 transition-colors">6. Contact</h2>
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3 transition-colors">7. Contact</h2>
             <p>
               If you have any questions or concerns about this Privacy Policy or how your data is handled, please feel free to reach out via the contact form or email directly.
             </p>
