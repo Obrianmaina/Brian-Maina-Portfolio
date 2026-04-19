@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import { Home, PenTool, Briefcase, FileText, BookOpen } from "lucide-react";
+import { Home, PenTool, Briefcase, FileText, BookOpen, AppWindow } from "lucide-react";
 import { useState } from "react";
 import GetQuoteModal from "./GetQuoteModal";
 import { ThemeToggle } from "./ThemeToggle";
@@ -12,35 +12,30 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isModalOpen, setIsModalOpen] = useState(false);
   
-  // State to control top navbar visibility
   const [hidden, setHidden] = useState(false);
   const { scrollY } = useScroll();
 
-  // Listen to scroll events to hide or show the top navbar
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
     
-    // If scrolling down and past 150px, hide the navbar
     if (latest > previous && latest > 150) {
       setHidden(true);
-    } 
-    // If scrolling up, show the navbar
-    else {
+    } else {
       setHidden(false);
     }
   });
 
-  // Define navigation links to map them easily in both navbars
+  // Added the new Apps route here
   const navLinks = [
     { href: "/", icon: Home, label: "Home" },
     { href: "/portfolio", icon: Briefcase, label: "Portfolio" },
     { href: "/resume", icon: FileText, label: "Resume" },
     { href: "/blog", icon: BookOpen, label: "Blog" },
+    { href: "/apps", icon: AppWindow, label: "Apps" },
   ];
 
   return (
     <>
-      {/* Top Navbar (Desktop & Mobile) - Animates out of view on scroll down */}
       <motion.nav 
         variants={{
           visible: { y: 0 },
@@ -52,7 +47,6 @@ export default function Navbar() {
       >
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
           
-          {/* Desktop Home Icon (Hidden on Mobile) */}
           <div className="hidden sm:block">
             <Link
               href="/"
@@ -64,13 +58,10 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Spacer to push mobile icons to the right */}
           <div className="sm:hidden flex-1" />
 
-          {/* Right Side Items */}
           <div className="flex items-center gap-3 sm:gap-6 md:gap-8">
             
-            {/* Desktop Links (Hidden on Mobile) */}
             <div className="hidden sm:flex items-center gap-6">
               {navLinks.slice(1).map((link) => (
                 <Link
@@ -91,7 +82,6 @@ export default function Navbar() {
               ))}
             </div>
 
-            {/* Get Quote Button */}
             <button
               onClick={() => setIsModalOpen(true)}
               className="flex items-center gap-2 bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded-full text-sm font-medium transition-colors shadow-sm"
@@ -101,7 +91,6 @@ export default function Navbar() {
               <span>Get Quote</span>
             </button>
 
-            {/* Theme Toggle */}
             <div className="p-1 sm:p-3">
               <ThemeToggle />
             </div>
@@ -110,11 +99,10 @@ export default function Navbar() {
         </div>
       </motion.nav>
 
-      {/* Bottom Mobile Navbar (Floating Capsule) - Hidden on Desktop */}
+      {/* Increased max-w slightly to fit the 5th icon perfectly */}
       <nav className="fixed bottom-6 inset-x-0 z-50 sm:hidden flex justify-center px-4 pointer-events-none">
-        <div className="bg-white/40 dark:bg-gray-950/40 backdrop-blur-xl backdrop-saturate-150 border border-white/40 dark:border-white/10 shadow-xl shadow-black/10 dark:shadow-black/40 rounded-full px-2 h-16 w-full max-w-[22rem] flex items-center justify-between relative pointer-events-auto">
+        <div className="bg-white/40 dark:bg-gray-950/40 backdrop-blur-xl backdrop-saturate-150 border border-white/40 dark:border-white/10 shadow-xl shadow-black/10 dark:shadow-black/40 rounded-full px-2 h-16 w-full max-w-[24rem] flex items-center justify-between relative pointer-events-auto">
           {navLinks.map((link) => {
-            // Check if active (exact match for home, partial for others)
             const isActive = link.href === "/" ? pathname === "/" : pathname.includes(link.href);
 
             return (
@@ -124,7 +112,6 @@ export default function Navbar() {
                 className="relative flex flex-col items-center justify-center w-14 h-12 z-10 group"
                 aria-label={link.label}
               >
-                {/* Active Background Pill (Sliding Animation) */}
                 {isActive && (
                   <motion.div
                     layoutId="mobile-active-pill"
@@ -133,7 +120,6 @@ export default function Navbar() {
                   />
                 )}
 
-                {/* Floating Icon */}
                 <motion.div
                   animate={{ 
                     y: isActive ? -1 : 0,
@@ -148,7 +134,6 @@ export default function Navbar() {
                   <link.icon className="w-5 h-5" strokeWidth={isActive ? 2.5 : 2} />
                 </motion.div>
                 
-                {/* Tiny Active Dot */}
                 {isActive && (
                   <motion.div 
                     layoutId="mobile-active-dot"
