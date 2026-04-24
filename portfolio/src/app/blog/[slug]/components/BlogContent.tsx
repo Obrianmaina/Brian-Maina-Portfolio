@@ -1,18 +1,109 @@
 import { forwardRef } from "react";
 import ReactMarkdown from "react-markdown";
 
+
+import remarkGfm from "remark-gfm";
+
+import remarkMath from "remark-math";
+
+import rehypeKatex from "rehype-katex";
+
 interface BlogContentProps {
   content: string;
+  bibliography?: string;
 }
 
-const BlogContent = forwardRef<HTMLDivElement, BlogContentProps>(({ content }, ref) => {
+// Auto-converts raw BibTeX into standard inline citations (Author Year)
+const processCitations = (markdown: string, bibtex?: string) => {
+  if (!bibtex || !bibtex.trim() || !markdown.includes('[@')) return markdown;
+
+  let parsedMarkdown = markdown;
+  const references: string[] = [];
+  const entries = bibtex.split('@').slice(1);
+
+  entries.forEach(entry => {
+    const firstBrace = entry.indexOf('{');
+    const firstComma = entry.indexOf(',');
+
+    if (firstBrace !== -1 && firstComma !== -1) {
+      const id = entry.substring(firstBrace + 1, firstComma).trim();
+      const citationTag = `[@${id}]`;
+
+      if (parsedMarkdown.includes(citationTag)) {
+        const extract = (field: string) => {
+          const regex = new RegExp(`${field}\\s*=\\s*([\\s\\S]*?)(?:,|\\n|\\r|$)`, 'i');
+          const match = entry.match(regex);
+          return match ? match[1].replace(/[{}]/g, '').replace(/"/g, '').trim() : '';
+        };
+
+        const author = extract('author') || extract('editor') || 'Unknown Author';
+        const title = extract('title') || 'Untitled';
+        const year = extract('year') || 'n.d.';
+        const publisher = extract('publisher') || extract('journal') || extract('booktitle') || '';
+        const url = extract('url') || extract('doi') || '';
+
+        // Extract the Last Name for the inline tag
+        let lastName = "Unknown";
+        if (author) {
+          const authorsList = author.split(/ and /i);
+          const firstAuthor = authorsList[0].trim();
+          
+          if (firstAuthor.includes(',')) {
+            // Format: "Pallen, Mark"
+            lastName = firstAuthor.split(',')[0].trim();
+          } else {
+            // Format: "Mark Pallen"
+            const parts = firstAuthor.split(' ');
+            lastName = parts[parts.length - 1];
+          }
+          
+          if (authorsList.length > 1) {
+            lastName += ' et al.';
+          }
+        }
+
+        // Build a clean APA-style reference string
+        let fullCitation = `${author} (${year}). *${title}*${publisher ? `. ${publisher}` : ''}.`;
+        if (url) fullCitation += ` [Source](${url})`;
+
+        // Replace [@id] with an inline clickable Markdown link
+        const inlineLink = `[(${lastName} ${year})](#references)`;
+        parsedMarkdown = parsedMarkdown.split(citationTag).join(inlineLink);
+
+        // Push to the bibliography list
+        references.push(`**${lastName} ${year}:** ${fullCitation}`);
+      }
+    }
+  });
+
+  if (references.length > 0) {
+    references.sort(); // Sort alphabetically by author
+    // Append the compiled references to the bottom
+    parsedMarkdown += '\n\n---\n\n### References\n\n' + references.map(ref => `- ${ref}`).join('\n');
+  }
+
+  return parsedMarkdown;
+};
+
+const BlogContent = forwardRef<HTMLDivElement, BlogContentProps>(({ content, bibliography }, ref) => {
+  
+  const processedContent = processCitations(content, bibliography);
+
   return (
     <article className="text-gray-800 dark:text-gray-200 mb-20 leading-relaxed transition-colors duration-300">
       <ReactMarkdown
+        remarkPlugins={[remarkGfm, remarkMath]}
+        rehypePlugins={[rehypeKatex]}
         components={{
           h1: ({ ...props }) => <h1 className="text-4xl font-extrabold mt-12 mb-6 text-gray-900 dark:text-gray-50 leading-tight transition-colors" {...props} />,
           h2: ({ ...props }) => <h2 className="text-3xl font-bold mt-10 mb-4 text-gray-900 dark:text-gray-50 leading-tight transition-colors" {...props} />,
-          h3: ({ ...props }) => <h3 className="text-2xl font-bold mt-8 mb-4 text-gray-900 dark:text-gray-50 leading-snug transition-colors" {...props} />,
+          
+          // Dynamic ID generation for jumping to sections
+          h3: ({ children, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => {
+            const slug = String(children).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)+/g, '');
+            return <h3 id={slug || undefined} className="text-2xl font-bold mt-8 mb-4 text-gray-900 dark:text-gray-50 leading-snug transition-colors" {...props}>{children}</h3>;
+          },
+          
           p:  ({ ...props }) => <p className="mb-6 text-lg text-gray-700 dark:text-gray-300 transition-colors" {...props} />,
           ul: ({ ...props }) => <ul className="list-disc ml-6 mb-6 space-y-2 text-lg text-gray-700 dark:text-gray-300 marker:text-teal-500 dark:marker:text-teal-400 transition-colors" {...props} />,
           ol: ({ ...props }) => <ol className="list-decimal ml-6 mb-6 space-y-2 text-lg text-gray-700 dark:text-gray-300 marker:text-teal-500 dark:marker:text-teal-400 transition-colors" {...props} />,
@@ -28,7 +119,7 @@ const BlogContent = forwardRef<HTMLDivElement, BlogContentProps>(({ content }, r
                 {children}
               </code>
             ) : (
-              <div className="bg-gray-900 dark:bg-gray-950 border border-transparent dark:border-gray-800 rounded-full overflow-hidden mb-6 shadow-md transition-colors">
+              <div className="bg-gray-900 dark:bg-gray-950 border border-transparent dark:border-gray-800 rounded-xl overflow-hidden mb-6 shadow-md transition-colors">
                 <pre className="p-4 overflow-x-auto text-sm text-gray-100 dark:text-gray-300 font-mono leading-relaxed">
                   <code className={className} {...props}>
                     {children}
@@ -41,7 +132,7 @@ const BlogContent = forwardRef<HTMLDivElement, BlogContentProps>(({ content }, r
           hr:  ({ ...props }) => <hr className="my-12 border-gray-200 dark:border-gray-800 transition-colors" {...props} />,
         }}
       >
-        {content}
+        {processedContent}
       </ReactMarkdown>
 
       <div ref={ref} className="h-1 w-full mt-10" />

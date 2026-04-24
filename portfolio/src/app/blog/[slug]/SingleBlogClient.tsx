@@ -179,7 +179,11 @@ export default function SingleBlogClient({ initialSlug, initialPost }: SingleBlo
 
           <BlogHero blog={blog} />
 
-          <BlogContent ref={articleEndRef} content={blog.content} />
+          <BlogContent 
+  ref={articleEndRef} 
+  content={blog.content} 
+  bibliography={blog.bibliography} // Pass the database references here!
+/>
 
           <BlogComments
             comments={comments}
