@@ -111,8 +111,12 @@ export default function BlogLandingPage() {
                       {featuredBlog.description || (featuredBlog.content.substring(0, 150) + "...")}
                     </p>
                     <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mt-auto transition-colors">
-                      <span>{new Date(featuredBlog.createdAt).toLocaleDateString(undefined, { dateStyle: 'long' })}</span>
-                    </div>
+  <span>
+    {featuredBlog.createdAt 
+      ? new Date(featuredBlog.createdAt).toLocaleDateString(undefined, { dateStyle: 'long' }) 
+      : 'Recently Published'}
+  </span>
+</div>
                   </div>
                   
                 </div>
@@ -155,8 +159,10 @@ export default function BlogLandingPage() {
                       </div>
                       <div className="flex items-center justify-between mt-auto pt-4 border-t border-gray-50 dark:border-gray-800 transition-colors">
                         <span className="text-xs text-gray-400 dark:text-gray-500 font-medium transition-colors">
-                          {new Date(blog.createdAt).toLocaleDateString()}
-                        </span>
+  {blog.createdAt 
+    ? new Date(blog.createdAt).toLocaleDateString() 
+    : 'New'}
+</span>
                         <span className="text-teal-600 dark:text-teal-400 text-xs font-bold uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all">
                           Read More
                         </span>

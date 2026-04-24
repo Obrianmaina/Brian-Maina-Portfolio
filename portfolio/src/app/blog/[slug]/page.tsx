@@ -30,9 +30,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   // Use the actual blog featured image instead of the generated text image
   // This logic ensures the URL is absolute, which social scrapers require
-  const imageUrl = post.featuredImage.startsWith('http') 
-    ? post.featuredImage 
-    : `${SITE_URL}${post.featuredImage.startsWith('/') ? '' : '/'}${post.featuredImage}`;
+  // Safely check if the image exists before formatting, with a fallback
+  const imageUrl = post.featuredImage 
+    ? (post.featuredImage.startsWith('http') 
+        ? post.featuredImage 
+        : `${SITE_URL}${post.featuredImage.startsWith('/') ? '' : '/'}${post.featuredImage}`)
+    : `${SITE_URL}/og-image.png`; // Fallback image if no featured image is set
 
   return {
     title: `${post.title} | Brian Maina Nyawira`,
