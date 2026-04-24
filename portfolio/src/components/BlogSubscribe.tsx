@@ -49,25 +49,25 @@ export default function BlogSubscribe() {
   };
 
   return (
-    <div className="bg-teal-50 dark:bg-teal-900/20 border border-teal-100 dark:border-teal-900/50 rounded-2xl p-8 my-12 max-w-2xl mx-auto text-center transition-colors duration-300">
-      <div className="w-12 h-12 bg-teal-100 dark:bg-teal-900/50 text-teal-600 dark:text-teal-400 rounded-full flex items-center justify-center mx-auto mb-4 transition-colors">
-        <Mail size={24} />
+    <div className="w-full h-full flex flex-col items-center justify-center bg-teal-50 dark:bg-teal-900/20 p-8 sm:p-12 text-center transition-colors duration-300 rounded-3xl shadow-lg">
+      <div className="w-16 h-16 bg-teal-100 dark:bg-teal-900/50 text-teal-600 dark:text-teal-400 rounded-full flex items-center justify-center mb-6 transition-colors shadow-sm">
+        <Mail size={32} />
       </div>
-      <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-50 mb-2 transition-colors">
+      <h3 className="text-3xl font-extrabold text-gray-900 dark:text-gray-50 mb-3 transition-colors tracking-tight">
         Never miss an update
       </h3>
-      <p className="text-gray-600 dark:text-gray-300 mb-6 transition-colors">
+      <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-md transition-colors">
         Get notified whenever I publish a new article. No spam, unsubscribe at any time.
       </p>
 
       {status === 'success' ? (
-        <div className="flex items-center justify-center text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/20 py-3 px-4 rounded-full font-medium transition-colors">
-          <CheckCircle size={20} className="mr-2" />
+        <div className="flex items-center justify-center text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-900/20 py-4 px-6 rounded-2xl font-medium transition-colors w-full max-w-md shadow-sm">
+          <CheckCircle size={24} className="mr-3" />
           {message}
         </div>
       ) : (
-        <div className="max-w-md mx-auto">
-          <form onSubmit={handleSubscribe} className="flex flex-col gap-3">
+        <div className="w-full max-w-md">
+          <form onSubmit={handleSubscribe} className="flex flex-col gap-4">
             <div className="flex flex-col sm:flex-row gap-3">
                <input
                 type="text"
@@ -75,7 +75,7 @@ export default function BlogSubscribe() {
                 placeholder="Your nickname"
                 value={nickname}
                 onChange={(e) => setNickname(e.target.value)}
-                className="flex-grow p-3 rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
+                className="flex-grow p-3.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors shadow-sm"
               />
               <input
                 type="email"
@@ -83,22 +83,22 @@ export default function BlogSubscribe() {
                 placeholder="Email address"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="flex-grow p-3 rounded-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors"
+                className="flex-grow p-3.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-teal-500 transition-colors shadow-sm"
               />
             </div>
             <button
               type="submit"
               disabled={loading}
-              className="bg-teal-600 text-white px-6 py-3 rounded-full font-bold hover:bg-teal-700 transition-colors flex items-center justify-center disabled:opacity-70 w-full focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900"
+              className="bg-teal-600 text-white px-6 py-4 rounded-xl font-bold hover:bg-teal-700 transition-all flex items-center justify-center disabled:opacity-70 w-full focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 shadow-md hover:shadow-lg hover:-translate-y-0.5"
             >
               {loading ? "Sending..." : "Subscribe"}
-              {!loading && <ArrowRight size={18} className="ml-2" />}
+              {!loading && <ArrowRight size={20} className="ml-2" />}
             </button>
           </form>
           
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-4 leading-relaxed transition-colors">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mt-6 leading-relaxed transition-colors">
             By subscribing, you consent to the storage of your nickname and email address to receive blog updates. Read our{" "}
-            <Link href="/privacy" className="text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 font-medium underline transition-colors">
+            <Link href="/privacy" className="text-teal-600 dark:text-teal-400 hover:text-teal-700 dark:hover:text-teal-300 font-semibold underline decoration-teal-300/50 hover:decoration-teal-500 transition-colors">
               Privacy Policy
             </Link>{" "}
             for full details.
@@ -107,7 +107,9 @@ export default function BlogSubscribe() {
       )}
       
       {status === 'error' && (
-        <p className="text-red-500 dark:text-red-400 text-sm mt-3 font-medium transition-colors">{message}</p>
+        <p className="text-red-500 dark:text-red-400 text-sm mt-4 font-medium transition-colors bg-red-50 dark:bg-red-900/20 py-2 px-4 rounded-lg">
+          {message}
+        </p>
       )}
     </div>
   );

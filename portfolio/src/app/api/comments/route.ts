@@ -3,22 +3,44 @@ import clientPromise from '@/lib/mongodb';
 
 const DB_NAME = "portfolio";
 
+// Simple in-memory rate limiter to prevent DoS/Spam attacks
+const rateLimitMap = new Map<string, { count: number, resetTime: number }>();
+const RATE_LIMIT_WINDOW = 60 * 1000; // 1 minute
+const MAX_REQUESTS = 5;
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const userData = rateLimitMap.get(ip);
+
+  if (!userData || now > userData.resetTime) {
+    rateLimitMap.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW });
+    return false;
+  }
+  
+  if (userData.count >= MAX_REQUESTS) {
+    return true; // Blocked
+  }
+  
+  userData.count += 1;
+  return false;
+}
+
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
     const postSlug = searchParams.get('postSlug');
 
-    if (!postSlug) {
-      return NextResponse.json({ error: "postSlug is required" }, { status: 400 });
+    // Strict type validation
+    if (!postSlug || typeof postSlug !== 'string') {
+      return NextResponse.json({ error: "postSlug is required and must be a string" }, { status: 400 });
     }
 
     const client = await clientPromise;
     const db = client.db(DB_NAME);
     
-    // Fetch only approved comments OR legacy comments that lack a status field
     const comments = await db.collection("comments")
       .find({ 
-        postSlug,
+        postSlug: String(postSlug), // Force string to prevent NoSQL object injection
         $or: [
           { status: "approved" },
           { status: { $exists: false } }
@@ -34,18 +56,28 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
+  // Apply Rate Limiting
+  const ip = req.headers.get('x-forwarded-for') || 'unknown';
+  if (isRateLimited(ip)) {
+    return NextResponse.json({ error: "Too many requests. Please wait a minute." }, { status: 429 });
+  }
+
   try {
-    const { postSlug, text } = await req.json();
+    const body = await req.json();
+    const { postSlug, text } = body;
     
-    // Server-side validation
-    if (!text || text.trim() === "" || text.length > 1000) {
+    // Strict Input Sanitization and Type Checking
+    if (typeof text !== 'string' || !text || text.trim() === "" || text.length > 1000) {
       return NextResponse.json({ error: "Invalid comment content" }, { status: 400 });
     }
 
-    if (!postSlug) {
+    if (typeof postSlug !== 'string' || !postSlug) {
       return NextResponse.json({ error: "Target post is required" }, { status: 400 });
     }
     
+    // Strip HTML tags to prevent basic XSS persistence
+    const sanitizedText = text.replace(/</g, "&lt;").replace(/>/g, "&gt;").trim();
+
     const animals = [
       { name: "Happy Ducky", icon: "🦆" },
       { name: "Playful Penguin", icon: "🐧" },
@@ -215,8 +247,8 @@ export async function POST(req: Request) {
     const db = client.db(DB_NAME);
     
     const newComment = {
-      postSlug,
-      text: text.trim(), 
+      postSlug: String(postSlug),
+      text: sanitizedText, 
       animalIdentity: randomAnimal.name,
       animalIcon: randomAnimal.icon,
       status: "pending", 
