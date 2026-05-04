@@ -41,7 +41,7 @@ export default function HomePage() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-lg mb-6 text-gray-700 dark:text-gray-300"
         >
-          Visual Designer
+          AI-Empowered Multidisciplinary Designer & Communications Professional
         </motion.p>
 
         {/* Dynamic Button Container */}

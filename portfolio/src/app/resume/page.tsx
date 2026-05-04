@@ -281,7 +281,7 @@ export default function ResumePage() {
                 Professional Summary
               </h2>
               <p className="mb-4 text-gray-700 dark:text-gray-300 leading-relaxed transition-colors">
-                Results-oriented Visual Designer and AFRIKA KOMMT! alumni with experience creating compelling visual solutions for global brands like SAP. Skilled in designing UI components, multimedia assets, long-form document layout, editorial design and marketing collateral for diverse campaigns. Complemented by a foundational year of Computer Science study at DHBW Mosbach, which enhances the creation of practical, buildable designs and collaboration with development teams.
+                AI-powered Visual & Web Designer, Communication Strategist, and AFRIKA KOMMT! alumnus, with experience creating impactful design solutions for global brands like SAP. I specialize in UI design, multimedia content, and strategic communication materials that support real-world campaigns. With a foundation in Computer Science from DHBW Mosbach, I bridge design and development to create practical, buildable, and user-centered digital experiences.
               </p>
               <ul className="space-y-2 text-gray-700 dark:text-gray-300 transition-colors">
                 <li>Address: Kikuyu, Kenya</li>

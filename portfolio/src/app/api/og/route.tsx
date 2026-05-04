@@ -40,7 +40,7 @@ export async function GET(request: Request) {
               Brian Maina Nyawira
             </div>
             <div style={{ color: '#6b7280', fontSize: 32, marginLeft: '16px' }}>
-              | Visual Designer
+              | AI-Empowered Visual & Web Designer | Communication Strategist
             </div>
           </div>
         </div>

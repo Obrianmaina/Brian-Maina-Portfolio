@@ -19,10 +19,10 @@ const geistMono = Geist_Mono({
 // Update your global metadata here
 export const metadata: Metadata = {
   metadataBase: new URL('https://brianmaina.de/'), // Replace with your actual live domain
-  title: 'Brian Maina Nyawira | Visual Designer & IT Professional',
+  title: 'Brian Maina Nyawira | AI-Empowered Visual & Web Designer | Communication Strategist',
   description: 'The professional portfolio of Brian Maina Nyawira, showcasing work in UI/UX, presentation design, branding, and graphics.',
   openGraph: {
-    title: 'Brian Maina Nyawira | Visual Designer',
+    title: 'Brian Maina Nyawira | AI-Empowered Visual & Web Designer | Communication Strategist',
     description: 'The professional portfolio of Brian Maina Nyawira, showcasing work in UI/UX, presentation design, branding, and graphics.',
     url: '/',
     siteName: 'Brian Maina Portfolio',
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Brian Maina Nyawira | Visual Designer',
+    title: 'Brian Maina Nyawira | AI-Empowered Visual & Web Designer | Communication Strategist',
     description: 'The professional portfolio of Brian Maina Nyawira.',
     images: ['/og-image.png'],
   },
