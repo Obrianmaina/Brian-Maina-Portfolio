@@ -44,7 +44,7 @@ export async function POST(req: Request) {
       const htmlContent: string = buildLeadReplyHtml(message);
 
       const { data, error } = await resend.emails.send({
-        from: "Brian Maina <brian@brianmaina.de>",
+        from: "Brian Maina <brian@brianmaina.stream>",
         to: email,
         subject: subject,
         html: htmlContent,

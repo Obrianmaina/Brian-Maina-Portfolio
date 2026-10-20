@@ -44,7 +44,7 @@ export default function Footer() {
       
       <Button
         className="bg-teal-500 hover:bg-teal-600 text-lg px-6 py-3 rounded-2xl border-none dark:text-white mb-12"
-        onClick={() => (window.location.href = "mailto:request@brianmaina.de")}
+        onClick={() => (window.location.href = "mailto:request@brianmaina.stream")}
       >
         Contact Me
       </Button>

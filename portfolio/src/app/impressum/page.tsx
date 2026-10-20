@@ -20,7 +20,7 @@ export default function Impressum() {
           <h2 className="text-2xl font-semibold mb-3">Contact</h2>
           <p className="text-gray-700 dark:text-gray-300">
             Phone: +254 728 036 420<br />
-            Email: brian@brianmaina.de
+            Email: brian@brianmaina.stream
           </p>
         </section>
 

@@ -3,7 +3,7 @@ import SingleBlogClient from "./SingleBlogClient";
 import { BlogPost } from "@/types"; 
 
 // Define your base URL for absolute paths required by Open Graph
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://brianmaina.de"; 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://brianmaina.stream"; 
 
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
   try {
